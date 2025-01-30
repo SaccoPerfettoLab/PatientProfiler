@@ -92,9 +92,9 @@ omics_update <- function(df_tr = NULL,
                                                            zmethod,
                                                            metric)
     
-    write_xlsx(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.xlsx")
+    write_xlsx(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.xlsx"))
                
-               message("Phosphoproteomics update complete!")
+    message("Phosphoproteomics update complete!")
   }
   
 }
