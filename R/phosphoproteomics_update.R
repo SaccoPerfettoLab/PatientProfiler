@@ -10,6 +10,7 @@
 #' @param seq_len_i an integer specifying the length of the sequence window to be considered around the phosphopeptide.
 #' @param peptide_col_name (Optional) A string representing the name of the peptide column in the data frame.
 #' If not provided, the function assumes no peptide column exists.
+#' @param output_dir a string indicating the updated output folder.
 #'
 #' @return A data frame with the processed phosphoproteomics data, including modified peptide sequences,
 #' updated amino acid positions, and sequence windows. If no peptide column is provided, the function
@@ -34,51 +35,52 @@ phosphoproteomics_update <- function(df_pho,
                                      impute_method = NULL,
                                      zscore = TRUE,
                                      zmethod = "column",
-                                     metric = "median"){
-
+                                     metric = "median",
+                                     output_dir){
+  
   message("Phosphoproteomics data: updating phosphorylation site informations")
   df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7,peptide_col_name = pep_col_name)
   message("Done!")
-
+  
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
-
-  write_xlsx(df_pho_clean, "Phosphoproteomics_clean.xlsx")
+  
+  write_xlsx(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.xlsx"))
   message("Done!")
-
+  
   message("Phosphoproteomics data: missing values imputation")
   df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = impute_method)
-  write_xlsx(df_pho_imputed, "Phosphoproteomics_imputed.xlsx")
+  write_xlsx(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.xlsx"))
   message("Done!")
-
+  
   if (zscore) {
     message("Phosphoproteomics data: computing Z-scores")
     if ("sequence_window" %in% colnames(df_pho_imputed)) {
       df_pho_numeric <- df_pho_imputed %>%
-      dplyr::select(-UNIPROT, -sequence_window, -position, -aminoacid, -gene_name)
-
-     metadata_columns <- df_pho_imputed %>%
-      dplyr::select(UNIPROT, sequence_window, position, aminoacid, gene_name)
+        dplyr::select(-UNIPROT, -sequence_window, -position, -aminoacid, -gene_name)
+      
+      metadata_columns <- df_pho_imputed %>%
+        dplyr::select(UNIPROT, sequence_window, position, aminoacid, gene_name)
     } else {
       df_pho_numeric <- df_pho_imputed %>%
         dplyr::select(-UNIPROT, -position, -aminoacid, -gene_name)
-
+      
       metadata_columns <- df_pho_imputed %>%
         dplyr::select(UNIPROT, position, aminoacid, gene_name)
-
+      
     }
-
+    
     df_pho_matrix <- as.matrix(df_pho_numeric)
     df_pho_zscore <<- compute_zscore(df_pho_matrix, zmethod, metric)
     df_pho_zscore <<- mutate_all(as.data.frame(df_pho_zscore), as.numeric)
-
+    
     df_pho_zscore <<- cbind(metadata_columns, df_pho_zscore)
     return(df_pho_zscore)
-    write_xlsx(df_pho_zscore, "Phosphoproteomics_zscore.xlsx")
-
+    write_xlsx(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_zscore.xlsx"))
+    
     message("Done!")
   } else {
     return(df_pho_imputed)
   }
-
+  
 }
