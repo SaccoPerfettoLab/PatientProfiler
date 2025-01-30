@@ -7,7 +7,7 @@
 #' - df_pr: 'gene_name' and sample columns.
 #' - df_ph: 'gene_name', 'Site' (containing phosphorylation sites in the format: T161), and 'Peptide'
 #'   (containing the peptide sequence; the name and the presence of the peptide column is optional).
-
+#'
 #' @param df_tr dataframe containing transcriptomics data.
 #' @param df_pr dataframe containing proteomics data.
 #' @param df_ph dataframe containing phosphoproteomics data.
@@ -20,7 +20,8 @@
 #' @param zscore logical, whether to perform Z-score normalization (default: "TRUE").
 #' @param zmethod string, specifies whether Z-score normalization is performed by "row" or "column" (default: "column").
 #' @param metric string, the centering metric for Z-score normalization. Options are "median" (default) or "mean".
-
+#' @param output_dir a string indicating the updated output folder.
+#' 
 #' @return This function updates the following global variables:
 #'
 #' transctriptomics_updated -> A data frame containing the updated transcriptomics data.
@@ -48,38 +49,39 @@
 #' @export
 
 omics_update <- function(df_tr = NULL,
-                 df_pr = NULL,
-                 df_ph = NULL,
-                 threshold = 80,
-                 sw_len = 7,
-                 pep_col_name = NULL,
-                 imp_method = "pmm",
-                 zscore = "TRUE",
-                 zmethod = "column",
-                 metric = "median") {
-
-
+                         df_pr = NULL,
+                         df_ph = NULL,
+                         threshold = 80,
+                         sw_len = 7,
+                         pep_col_name = NULL,
+                         imp_method = "pmm",
+                         zscore = "TRUE",
+                         zmethod = "column",
+                         metric = "median",
+                         output_dir = "PatientProfiler_processed_input") {
+  
+  
   if (!is.null(sw_len) && !sw_len %in% c(7, 15)) {
     stop("sw_len parameter has to be 7, 15 or NULL (if you do not have the phosphoproteomics dataframe")
   }
-
+  
   if (!is.null(df_tr)) {
     message("Transcriptomics update started..")
-
+    
     transcriptomics_updated <<- transcriptomics_update(df_tr,threshold,zscore,zmethod,metric)
-
-    write_xlsx(transcriptomics_updated, "Transcriptomics_updated.xlsx")
+    
+    write_xlsx(transcriptomics_updated, paste0(output_dir,"/","Transcriptomics_updated.xlsx"))
     message("Transcriptomics update complete!")
-    }
-
+  }
+  
   if(!is.null(df_pr)){
     message("Proteomics update started..")
     proteomics_updated <<- proteomics_update(df_pr,imp_method,zscore,zmethod,metric)
-    write_xlsx(proteomics_updated, "Proteomics_updated.xlsx")
-
+    write_xlsx(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.xlsx"))
+    
     message("Proteomics update complete!")
-    }
-
+  }
+  
   if(!is.null(df_ph)){
     message("Phosphoproteomics update started..")
     phosphoproteomics_updated <<- phosphoproteomics_update(df_pho = df_ph,
@@ -89,12 +91,13 @@ omics_update <- function(df_tr = NULL,
                                                            zscore,
                                                            zmethod,
                                                            metric)
-
-    write_xlsx(phosphoproteomics_updated, "Phosphoproteomics_updated.xlsx")
-
-    message("Phosphoproteomics update complete!")
-    }
-
+    
+    write_xlsx(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.xlsx")
+               
+               message("Phosphoproteomics update complete!")
+  }
+  
 }
+
 
 
