@@ -11,10 +11,13 @@ phosphoproteomics_update(
   impute_method = NULL,
   zscore = TRUE,
   zmethod = "column",
-  metric = "median"
+  metric = "median",
+  output_dir
 )
 }
 \arguments{
+\item{output_dir}{a string indicating the updated output folder.}
+
 \item{df}{a data frame containing the phosphoproteomics data.}
 
 \item{seq_len_i}{an integer specifying the length of the sequence window to be considered around the phosphopeptide.}

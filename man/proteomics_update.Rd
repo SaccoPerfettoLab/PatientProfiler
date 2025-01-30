@@ -9,7 +9,8 @@ proteomics_update(
   impute_method = NULL,
   zscore = TRUE,
   zmethod = "column",
-  metric = "median"
+  metric = "median",
+  output_dir
 )
 }
 \arguments{
@@ -24,6 +25,8 @@ or "column" to compute z-scores for each column of the data.}
 \item{metric}{string, it indicates the method for centering the data when z-scores are computed.
 It could be "mean" or "median".}
 
+\item{output_dir}{a string indicating the updated output folder.}
+
 \item{sequence}{A boolean (TRUE or FALSE) indicating whether the dataset includes a column named "sequence".
 If TRUE, the function assumes the "sequence" column is present and may process it accordingly.
 If FALSE, the function proceeds without expecting the "sequence" column.}
@@ -36,5 +39,4 @@ proteomics_update
 }
 \examples{
 prot_updated <- proteomics_update(df, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
-
 }

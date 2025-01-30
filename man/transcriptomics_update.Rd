@@ -9,7 +9,8 @@ transcriptomics_update(
   threshold = 80,
   zscore = TRUE,
   zmethod = "column",
-  metric = "median"
+  metric = "median",
+  output_dir
 )
 }
 \arguments{
@@ -26,6 +27,8 @@ or "column" to compute z-scores for each column of the data.}
 
 \item{metric}{string, it indicates the method for centering the data when z-scores are computed.
 It could be "mean" or "median".}
+
+\item{output_dir}{a string indicating the updated output folder.}
 }
 \value{
 tibble, it contains the filtered and processed transcriptomics data.

@@ -14,7 +14,8 @@ omics_update(
   imp_method = "pmm",
   zscore = "TRUE",
   zmethod = "column",
-  metric = "median"
+  metric = "median",
+  output_dir = "PatientProfiler_processed_input"
 )
 }
 \arguments{
@@ -39,6 +40,8 @@ zeros in a row, the row will be removed (default: 80).}
 \item{zmethod}{string, specifies whether Z-score normalization is performed by "row" or "column" (default: "column").}
 
 \item{metric}{string, the centering metric for Z-score normalization. Options are "median" (default) or "mean".}
+
+\item{output_dir}{a string indicating the updated output folder.}
 }
 \value{
 This function updates the following global variables:

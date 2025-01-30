@@ -73,7 +73,7 @@ The available parameters are the same as those in \code{phosphoscore_params} and
 No return value. The final results are saved in Excel files in the output directory.
 }
 \description{
-This function extracts and analyzes the protein activity for a specific patient starting from omic data: transcriptomics, proteomics and phosphoproteomics.
+This wrapper to SignalingProfiler preotein activity inference, extracts and analyzes the protein activity for a specific patient starting from omic data: transcriptomics, proteomics and phosphoproteomics.
 It combines footprint based analysis (TFEA and KSEA), with phosphorylation scores (Phosphoscore), generating aggregated results for the patient.
 }
 \details{
