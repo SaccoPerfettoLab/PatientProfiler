@@ -20,7 +20,9 @@
 #' modified_df <- modify_peptide(sample_df, mult_col = 3, peptide_col = 2, site_col = 4)
 
 modify_peptide <- function(phospho_df, mult_col, peptide_col, site_col) {
-
+  
+  phospho_df[[peptide_col]] <- str_extract(phospho_df[[peptide_col]], "(?<=\\.).+?(?=\\.)")
+  
   for (i in 1:nrow(phospho_df)) {
 
     multiplicity <- phospho_df[i, mult_col]
