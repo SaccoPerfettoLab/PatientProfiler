@@ -13,6 +13,8 @@
 #'                or "column" to compute z-scores for each column of the data.
 #' @param metric  string, it indicates the method for centering the data when z-scores are computed.
 #'                It could be "mean" or "median".
+#' @param output_dir a string indicating the updated output folder.
+#'                
 #' @return tibble, it contains the filtered and processed transcriptomics data.
 #'
 #' @examples
@@ -26,33 +28,34 @@ transcriptomics_update <- function(df_tra,
                                    threshold = 80,
                                    zscore = TRUE,
                                    zmethod = "column",
-                                   metric = "median") {
-
- # df_tra_cod <- retrieve_coding(df_tra)
-
+                                   metric = "median",
+                                   output_dir) {
+  
+  # df_tra_cod <- retrieve_coding(df_tra)
+  
   df_tra_clean <<- remove_nas(df_tra, threshold)
-
-  write_xlsx(df_tra_clean, "Transcriptomics_clean.xlsx")
-
+  
+  write_xlsx(df_tra_clean, paste0(output_dir,"/","Transcriptomics_clean.xlsx"))
+  
   if (zscore) {
-
+    
     message("Transcriptomics data: computing zscore")
-
+    
     df_tra_numeric <- df_tra_clean %>%
       dplyr::select(-gene_name)
-
+    
     metadata_columns <- df_tra_clean %>%
       dplyr::select(gene_name)
-
+    
     df_tra_matrix <- as.matrix(df_tra_numeric)
-
+    
     df_tra_zscore <<- compute_zscore(df_tra_matrix, zmethod, metric)
-
+    
     df_tra_zscore <<- mutate_all(as.data.frame(df_tra_zscore), as.numeric)
-
+    
     df_tra_zscore <<- cbind(metadata_columns, df_tra_zscore)
-
-    write_xlsx(df_tra_zscore, "Transcriptomics_zscore.xlsx")
+    
+    write_xlsx(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.xlsx"))
     return(df_tra_zscore)
   } else {
     return(df_tra_clean)
