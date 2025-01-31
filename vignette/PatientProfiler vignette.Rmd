@@ -20,7 +20,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# PatientProfiler {style="color: #274472"}
+# PatientProfiler
 
 PatientProfiler is an R package that allows personalized analysis of an
 entire cohort and specific individuals. The main functions can be used
@@ -38,7 +38,7 @@ divide the pipeline into 4 main steps:
 
 -   **STEP 4** - Network generation
 
-![](images/PatientProfiler%20-%20visual%20selection.png){width="300"}
+![](images/PatientProfiler-visual_selection.png)
 
 ## PREPARE YOUR DATA {style="color: #41729F"}
 
@@ -59,9 +59,8 @@ The input has to have specific columns, as described here:
 
     -   patients
 
-```{=html}
 <!-- -->
-```
+
 -   **Phosphoproteomics:**
 
     -   ***gene_name** - it indicates the names of genes/analytes*
@@ -76,16 +75,16 @@ The input has to have specific columns, as described here:
 
 ## Install PatientProfiler {style="color: #A45C40"}
 
-#### --\> qui cosa posso mettere? {style="color: red"}
+To install PatientProfiler execute the following command in R.
 
 ```{r chunk1, eval=FALSE}
 devtools::install("PatientProfiler")
 ```
 
-## RAW DATA HARMONIZATION {style="color: #41729F"}
+## STEP 1) RAW DATA HARMONIZATION {style="color: #41729F"}
 
 ::: {style="display: flex; align-items: center; color: red"}
-![Description](img/warning.png){alt="Description" height="2em"
+![Description](../img/warning.png){alt="Description" height="2em"
 style="margin-right: 8px;"} [If the IDs of your samples start with a
 number, it is necessary to modify the IDs (e.g., with an 'X' before the
 number).]{style="font-size: 1.2em;"}
@@ -121,9 +120,9 @@ patients to give you a general vision of
 ### Example of usage: {style="color: #C38370"}
 
 ```{r chunk2, eval = FALSE}
-transcriptomics_data <- read_tsv("Ov_transc.tsv") 
-proteomics_data <- read_tsv("Ov_prot.tsv") 
-phosphoproteomics_data <- read_tsv("Ov_phospho.tsv")  
+transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_transc.tsv") 
+proteomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_prot.tsv") 
+phosphoproteomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_phospho.tsv")  
 
 omics_update(
              df_tr = NULL,   
@@ -135,7 +134,8 @@ omics_update(
              imp_method = "pmm",   
              zscore = TRUE,   
              zmethod = "column",   
-             metric = "median" 
+             metric = "median",
+             output_dir = 'PatientProfiler_processed_input'
              )
 ```
 
@@ -144,13 +144,11 @@ to the chosen parameters. If, for example, the phosphoproteomics update
 was made, it will have the information regarding phosphosites updated
 with the ***sequence_window*** column and ***Uniprot_ID*** added, it
 will be imputed, and it will have a distribution based on whether or not
-Z-score was to be calculated.
+Z-score should be calculated.
 
 After this step, tables are ready for the ***omics_preparation***.
 
 ## ACCESS TO PRE-HARMONIZED CPTAC DATA {style="color: #41729F"}
-
-## *--\>DA CAMBIARE IN BASE A COME GESTIAMO I FILE SU SERVER* {style="color: red"}
 
 ### *access_harmonized_CPTAC_data* {style="color: black"}
 
@@ -196,23 +194,30 @@ access_harmonized_CPTAC_data(tumors = c("Ov"), omics = c("phospho", "prot"))
 
 The output is a local variable for each data frame you acceded.
 
-## INPUT TABLES TO INFER PROTEIN ACTIVITY {style="color: #41729F"}
+## INPUT TABLES TO INFER PROTEIN ACTIVITY AND NETWORK CONSTRUCTION {style="color: #41729F"}
 
-When you obtain the harmonized data using ***omics_update*** or
-***access_harmonized_CPTAC_data***
+The next steps of PatientProfiler include wrapper functions to our
+in-house developed
+[SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6)
+pipeline. As such, the harmonized data obtained with ***omics_update***
+or ***access_harmonized_CPTAC_data*** should be transformed in
+SignalingProfiler-compliant format. To this aim, in **PatientProfiler**,
+we developed *omics_preparation* function.
 
 ### *omics_preparation* {style="color: #274472"}
 
-This function allows to create the input files for the first step of
-***SignalingProfiler*** tool (inference of protein activity).
+For each uploaded omic type, a folder with a user-defined name will be
+created. Each folder will contain a file (data frame) for each patient,
+representing the needed omic input needed in SignalingProfiler-compliant
+format for the next steps.
 
 ### Example of usage: {style="color: #C38370"}
 
 ```{r chunk4, eval = FALSE}
 
-tr_updated <- read_xlsx("Transcriptomics_updated.xlsx")
-pr_updated <- read_xlsx("Proteomics_updated.xlsx")
-ph_updated <- read_xlsx("Phosphoproteomics_updated.xlsx")
+tr_updated <- read_xlsx("PatientProfiler_processed_input/Transcriptomics_updated.xlsx")
+pr_updated <- read_xlsx("PatientProfiler_processed_input/Proteomics_updated.xlsx")
+ph_updated <- read_xlsx("PatientProfiler_processed_input/Phosphoproteomics_updated.xlsx")
 
 omics_preparation(
               df_tr_updated = tr_updated,           
@@ -224,14 +229,9 @@ omics_preparation(
               )
 ```
 
-For each type of uploaded omic, a folder with a user-defined name will
-be created. Each folder will contain a file (data frame) for each
-patient, which will represent the input needed for protein activity
-estimation ([*extract_protein_activity*]*, [extract_cohort_activity])*.
-
 ::: {style="display: flex; align-items: center;"}
 ::: {style="color: blue"}
-![Description](img/info.png){alt="Description" height="2em"
+![Description](../img/info.png){alt="Description" height="2em"
 style="margin-right: 10px;"} [To perform the following steps, the
 SignalingProfiler tool is used: you can check out its tutorial
 [here](https://html-preview.github.io/?url=https://github.com/SaccoPerfettoLab/SignalingProfiler/blob/main/SignalingProfiler-2.0-tutorial/SignalingProfiler-2.0-tutorial.html)
@@ -240,19 +240,15 @@ and the publication regarding it
 :::
 :::
 
-## PROTEIN ACTIVITY INFERENCE {style="color: #41729F"}
-
-The next steps of PatientProfiler include a wrapper to
-SignalingProfiler, the pipeline developed in our lab by *Veronica
-Venafra*.
+## STEP 2) PROTEIN ACTIVITY INFERENCE {style="color: #41729F"}
 
 ## *Infer one patient* {style="color: #050A30"}
 
 ### *extract_protein_activity* {style="color: #274472"}
 
-This function allows to infer protein activity using
-[SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6)
-first step, for a single specific patient.
+This function is a wrapper to *SignalingProfiler* first step functions,
+wherein protein activity modulation is inferred from multi-omics data
+combining footprint-based techniques with PhosphoScore algorithm.
 
 To extract protein activity for a single patient, you need to upload
 transcriptomics, proteomics, or phosphoproteomics data (or all of them)
@@ -270,7 +266,9 @@ tf_params <- list(reg_minsize = 5, collectri = TRUE)
 kin_params <- list(exp_sign = TRUE, GO_annotation = FALSE) 
 
 extract_protein_activity(
-                prot_file = "Prot_patients/Prot_Patient_X01OV007.xlsx",                            trans_file = "Transc_patients/Transc_Patient_X01OV007.xlsx",                       phospho_file = "Phospho_patients/Phospho_Patient_X01OV007.xlsx", 
+                prot_file = "Prot_patients/Prot_Patient_X01OV007.xlsx",                       
+                trans_file = "Transc_patients/Transc_Patient_X01OV007.xlsx",                  
+                phospho_file = "Phospho_patients/Phospho_Patient_X01OV007.xlsx", 
                 tf_params,
                 kin_params,
                 output_dir = "Activities"
@@ -279,9 +277,9 @@ extract_protein_activity(
 
 ***Results output***
 
-Final results for each patient will be saved as an xlsx files inside the
-'Activities' directory created by the function with this format:
-`⁠Activity_patient_{patient_id}.xlsx⁠`. Each file contains these columns:
+For each patient an .xlsx file (`Activity_patient_{patient_id}.xlsx`)
+will be saved inside the `output_dir` directory (default, 'Activities'),
+with these columns:
 
 -   `UNIPROT`: protein Uniprot ID.
 
@@ -297,9 +295,9 @@ Final results for each patient will be saved as an xlsx files inside the
 
 ### *extract_cohort_activity* {style="color: #274472"}
 
-If you prefer to infer the entire cohort and not just a patient, this
-function loops on each omic file for each patient and infer protein
-activity using [*extract_protein_activity*]*.*
+To perform the protein activity inference step for all the patients of a
+cohort, this function loops on each omic file for each patient and infer
+protein activity using [*extract_protein_activity*]*.*
 
 ```{r chunk6, eval = FALSE}
 tf_params <- list(reg_minsize = 5, collectri = TRUE)
@@ -317,13 +315,14 @@ extract_cohort_activity(
 
 ***Results output***
 
-Final results for each patient will be saved as an xlsx files inside the
-'Activities' directory created by the function with this format:
-`⁠Activity_patient_{patient_id}.xlsx⁠`. Each file contains these columns:
+The cohort final results will be saved as a set of .xlsx files (1 file -
+1 patient=) inside the `output_dir` directory (default, 'Activities').
+Each patient-specific file (`Activity_patient_{patient_id}.xlsx`)
+contains these columns:
 
 -   `UNIPROT`: protein Uniprot ID.
 
--   `gene_name`: name of the gene.
+-   `gene_name`: name of the protein.
 
 -   `mf`: molecular functions.
 
@@ -331,67 +330,95 @@ Final results for each patient will be saved as an xlsx files inside the
 
 -   `method`: how final_score is calculated.
 
-## NETWORK GENERATION {style="color: #41729F"}
+## STEP 3) NETWORK GENERATION {style="color: #41729F"}
 
-## *Create a network for a single patient* {style="color: #050A30"}
+## *Create a network for each patient* {style="color: #050A30"}
+
+In this step, PatientProfiler creates for each patient a causal network
+connecting mutated genes to a user-defined set of cellular functional
+traits (e.g., APOPTOSIS, PROLIFERATION).
+
+Importantly, this step requires a **mutations file** where rows are
+patients and columns are genes, and each cell is the impact on protein
+function of the mutation.
+
+To this aim, we implemented a wrapper to SignalingProfiler network
+creation step
 
 ### *create_network* {style="color: #274472"}
 
-This wrapper to SignalingProfiler network creation step sequentially:
+This function sequentially calls five functions to:
 
-1.  Selects a PKN using `get_PKN` function of PatientProfiler
+1.  Select a PKN derived from SIGNOR and PhosphoSitePlus (`get_PKN`);
 
-2.  Creates a naive network using `create_naive_network` function of
-    PatientProfiler
+2.  Create a naive-network connecting mutations to inferred proteins
+    (`create_naive_network`);
 
-3.  Optimizes the naive network over CARNIVAL activity using
-    `optimize_network_with_carnival` function of PatientProfiler
+3.  Optimize the naive network over protein activity
+    (`optimize_network_with_carnival`);
 
-4.  Infers the activity of phenotypes from model proteins and connect
-    them in a proteins-to-phenotypes network using
-    `infer_and_link_phenotypes` function of PatientProfiler
+4.  Infer the activity of phenotypes from model proteins and connect
+    them in a proteins-to-phenotypes network
+    (`infer_and_link_phenotypes`);
 
-5.  Manipulates the proteins-to-phenotypes model for visualization and
-    functional circuits creation using `format_patient_networks`
-    function of PatientProfiler
+5.  Manipulate the proteins-to-phenotypes model for visualization and
+    functional circuits creation (`format_patient_networks`).
 
-#### **--\> QUALI ALTRI DETTAGLI BISOGNA AGGIUNGERE?** {style="color: red"}
+Each step inside network creation requires a set of parameters,
+extensively described in the functions documentation (type
+*?initialize_net_default_params"* in your console. The following
+function is called internally and automatically set up the default
+parameters, as identified in SignalingProfiler benchmarking. However,
+the user can customize the parameters for each step modifying
+`PKN_options`, `naive_options`, `carnival_options`,
+`phenoscore_options`, `format_options` parameters list.
+
+```{r eval = FALSE}
+output_dir <- 'Networks_output'
+network_params <- initialize_net_default_params(output_dir)
+```
 
 ### Example of usage: {style="color: #C38370"}
 
 ```{r chunk7, eval = FALSE}
+
 patient_id <- 'X01OV007'
 
-mutations_df <- readr::read_delim('./mutations.csv',delim = ',')
+# Read mutation file (starting nodes of the model)
+mutations_df <- readr::read_delim('./PatientProfiler_raw_input/mutations.csv',delim = ',')
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
+
+# Read activity file (intermediate nodes of the model)
 activities <- readxl::read_xlsx(paste0('./Activity_Patient_', patient_id))
 
+# Set the functional traits vector (final nodes of the model)
+desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
+
+# Read omics file
 proteomics <- readxl::read_xlsx(paste0('./Prot_Patient_', patient_id))
 transcriptomics <- readxl::read_xlsx(paste0('./Trans_Patient_', patient_id))
 phosphoproteomics <- readxl::read_xlsx(paste0('./Phospho_Patient_', patient_id))
 
-output_dir <- './Networks_output/'
-desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
-pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, phosphoproteomics = phosphoproteomics)
+# ProxPath proteins-to-phenotypes pre-processing
+pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, 
+                                                phosphoproteomics = phosphoproteomics)
 
-network_params <- initialize_net_default_params(output_dir)
-create_network(patient_id = 'X01OV008',
+create_network(patient_id = patient_id,
               sources = sources,
               activities = activities,
-               transcriptomics = transcriptomics,
-               proteomics = proteomics,
-               phosphoproteomics = phosphoproteomics,
-               desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
-               pheno_distances_table = pheno_distances_table,
-               output_dir = output_dir,
-               PKN_options = list(direct = FALSE),
-               naive_options = list(layers = 3, max_length = c(2,1,3)),
-               carnival_options = list(carnival_type = 'vanilla_one_shot'),
-               phenoscore_options = list(),
-               format_options = list(optimize_on_phenotypes = TRUE,
-                                     circuits_params = list(k = -1),
-                                     vis_cytoscape = TRUE))
-
+              transcriptomics = transcriptomics,
+              proteomics = proteomics,
+              phosphoproteomics = phosphoproteomics,
+              desired_phenotypes = desired_phenotypes,
+              pheno_distances_table = pheno_distances_table,
+              output_dir = 'Networks_output',
+              PKN_options = list(direct = FALSE),
+              naive_options = list(layers = 3, max_length = c(2,1,3)),
+              carnival_options = list(carnival_type = 'vanilla_one_shot'),
+              phenoscore_options = list(), # keep default params
+              format_options = list(optimize_on_phenotypes = TRUE,
+                                    circuits_params = list(k = 10),
+                                    vis_cytoscape = FALSE))
 ```
 
 ## *Create a network for a cohort* {style="color: #050A30"}
@@ -402,7 +429,7 @@ This function loops on the folder of omics and activity data of a cohort
 of patients creating a network of each of the patients from mutations to
 desired phenotypes.
 
-For the files generated for each patient, refer to [create_network]
+For the files generated for each patient, refer to *create_network*
 function documentation.
 
 ### Example of usage: {style="color: #C38370"}
@@ -412,12 +439,18 @@ create_cohort_networks(trans_dir = './Trans_test/',
                       prot_dir = './Prot_test/',
                       phospho_dir = './Phos_test/',
                       act_dir = './Act_test/',
-                      mut_file = 'mutations.csv',
+                      mut_file = './PatientProfiler_raw_input/mutations.csv',
                       output_dir = './Networks_output/',
                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
                       pheno_distances_table = TRUE,
                       PKN_options = list(direct = FALSE),
                       naive_options = list(layers = 2, max_length = c(1,4)),
-              carnival_options = list(solver = 'cplex', carnival_type = 'inverse'),
-      format_options = list(optimize_on_phenotypes = TRUE, vis_cytoscape = FALSE))
+                      carnival_options = list(solver = 'cplex', carnival_type = 'inverse'),
+                      format_options = list(optimize_on_phenotypes = TRUE, 
+                                            vis_cytoscape = FALSE)
+                      )
 ```
+
+## STEP 4) COMMUNITIES DETECTION {style="color: #41729F"}
+
+## STEP 5) SIGNATURES IDENTIFICATIONS {style="color: #41729F"}
