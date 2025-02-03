@@ -20,9 +20,8 @@
 #' @export
 
 access_harmonized_CPTAC_data <- function(tumors, omics) {
-  file_rds <- system.file("extdata", "CPTAC_df.rds", package = "PatientProfiler")
-
-  data <- readRDS(file_rds)
+  
+  data <- readRDS("http://151.100.141.57/cptac/CPTAC_df.rds") # this link is not valid for now, we'll change it soon
 
   suffix <- c("phospho", "prot", "transc")
 
