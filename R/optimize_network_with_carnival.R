@@ -13,6 +13,7 @@
 #' @param naive_network igraph object representing the naive network
 #' @param network_params check *initialize_net_default_params* documentation, in the `$carnival_options` part.
 #' @param phosphoproteomics dataframe of phosphoproteomics; default: `NULL` (no phosphoproteomics mapping on network).
+#' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
 #'
 #' @return A list of three elements:
 #'  - `igraph_network`: optimized network in igraph format
@@ -50,6 +51,7 @@ optimize_network_with_carnival <- function(sources,
                                            activities,
                                            naive_network,
                                            phosphoproteomics = NULL,
+                                           save_all_files = FALSE,
                                            network_params = list()){
 
   # Set default technical CARNIVAL parameters
@@ -221,7 +223,7 @@ optimize_network_with_carnival <- function(sources,
     carnival_output <- SignalingProfiler::union_of_graphs(graph_1 = union_run1_run2,
                                                           graph_2 = output3$igraph_network,
                                                           proteins_df = carnival_input,
-                                                          files =TRUE,
+                                                          files = TRUE,
                                                           path_sif = paste0(network_params$carnival_options$opt_path, '.sif'),
                                                           path_rds =  paste0(network_params$carnival_options$opt_path, '.RDS'))
 
@@ -231,14 +233,17 @@ optimize_network_with_carnival <- function(sources,
 
   # Map phosphoproteomics on CARNIVAL output if available
   if(!is.null(phosphoproteomics)){
-    carnival_output <- SignalingProfiler::expand_and_map_edges(optimized_object = carnival_output,
-                                                               organism = 'human',
-                                                               phospho_df = phosphoproteomics,
-                                                               files = TRUE,
-                                                               direct = network_params$PKN_options$direct,
-                                                               with_atlas = network_params$PKN_options$with_atlas,
-                                                               path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
-                                                               path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
+
+    if('sequence_window' %in% colnames(phosphoproteomics)){
+      carnival_output <- SignalingProfiler::expand_and_map_edges(optimized_object = carnival_output,
+                                                                 organism = 'human',
+                                                                 phospho_df = phosphoproteomics,
+                                                                 files = save_all_files,
+                                                                 direct = network_params$PKN_options$direct,
+                                                                 with_atlas = network_params$PKN_options$with_atlas,
+                                                                 path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
+                                                                 path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
+    }
   }
 
   return(carnival_output)

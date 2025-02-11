@@ -65,3 +65,18 @@ igraphToSif <- function(inGraph, outfile="output.sif", edgeLabel="label") {
   }
 }
 
+
+#' extract_patient_id
+#'
+#' Extract patients_IDs from PatientProfiler directories structures
+#'
+#' @param file_path
+#'
+#' @return
+#' @export
+#'
+#' @examples
+extract_patient_id <- function(file_path) {
+  basename(file_path) %>%
+    sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_)(.*)\\.xlsx$", "\\2", .)
+}

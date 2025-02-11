@@ -212,7 +212,7 @@ extract_protein_activity <- function(
   # Save final results
   if (!is.null(toy_activity_df) && nrow(toy_activity_df) > 0) {
     patient_name <- extract_patient_id(basename(prot_file %||% trans_file %||% phospho_file))
-    write_xlsx(toy_activity_df, paste0(output_dir, "/Activity_patient_", patient_name, ".xlsx"))
+    write_xlsx(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".xlsx"))
   } else {
     warning("No activity data could be extracted.")
   }

@@ -13,7 +13,8 @@
 #'
 #' @param desired_phenotypes SIGNOR phenotypes vector to infer the activity and include in the model; default:  `NULL`.
 #' @param pheno_distances_table character, any character except NULL to internally compute it; default:  `NULL`.
-
+#' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
+#'
 #' @param PKN_options  check *initialize_net_default_params* documentation, in the `$PKN_options` part.
 #' @param naive_options check *initialize_net_default_params* documentation, in the `$naive_options` part.
 #' @param carnival_options check *initialize_net_default_params* documentation, in the `$carnival_options` part.
@@ -54,12 +55,28 @@ create_cohort_networks <- function(
     pheno_distances_table = NULL,
     mut_file = NULL, #csv file with mutations...
     output_dir = './Networks_output/',
+    save_all_files = FALSE,
     PKN_options = list(),
     naive_options = list(),
     carnival_options = list(),
     phenoscore_options = list(),
     format_options = list()
 ){
+
+  # trans_dir = './vignette/Transc_patients/'
+  # prot_dir = './vignette/Prot_patients/'
+  # phospho_dir = './Phospho_patients/'
+  # act_dir = './vignette/Activities/'
+  # mut_file = './vignette/PatientProfiler_raw_input/mutations.csv'
+  # output_dir = './vignette/Networks_output/'
+  # desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION')
+  # pheno_distances_table = TRUE
+  # PKN_options = list(direct = FALSE)
+  # naive_options = list(layers = 2, max_length = c(1,4))
+  # carnival_options = list(solver = 'cplex', carnival_type = 'vanilla_one_shot')
+  # format_options = list(optimize_on_phenotypes = FALSE,
+  #                       circuits_params = list(k = -1),
+  #                       vis_cytoscape = FALSE)
 
 
   # CHECK ON INPUTS
@@ -88,14 +105,8 @@ create_cohort_networks <- function(
 
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
-    readr::read_delim(mut_file, delim = ',')
+    readr::read_delim(mut_file, delim = ',',show_col_types = FALSE)
   }else character()
-
-  # Get all patients IDs
-  extract_patient_id <- function(file_path) {
-    basename(file_path) %>%
-      sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_)(.*)\\.xlsx$", "\\2", .)
-  }
 
   trans_ids <- sapply(trans_files, extract_patient_id)
   prot_ids <- sapply(prot_files, extract_patient_id)
@@ -182,6 +193,7 @@ create_cohort_networks <- function(
                      desired_phenotypes = desired_phenotypes,
                      pheno_distances_table = pheno_distances_table,
                      output_dir = output_dir,
+                     save_all_files = save_all_files,
                      PKN_options = PKN_options,
                      naive_options = naive_options,
                      carnival_options = carnival_options,

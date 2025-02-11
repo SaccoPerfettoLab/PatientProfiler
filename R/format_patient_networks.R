@@ -18,6 +18,7 @@
 #' @param phosphoproteomics a dataframe of phosphoproteomics
 #' @param proteomics a dataframe of proteomics
 #' @param desired_phenotypes SIGNOR phenotypes vector to infer the activity and include in the model; default:  `NULL`.
+#' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
 #' @param network_params  check *initialize_net_default_params* documentation, in the `$format_options` part.
 #' @return A list of two elements:
 #'  - `patient_opt_pheno_network`: a list of four elements with same structure as *infer_and_link_phenotypes* output;  if `format_options$optimize_on_phenotypes = TRUE`, `sp_object_phenotypes` is optimized on phenotypes activity;
@@ -46,6 +47,7 @@ format_patient_network <- function(patient_id,
                                    proteomics,
                                    sources,
                                    desired_phenotypes = NULL,
+                                   save_all_files = FALSE,
                                    network_params){
 
   if(is.null(desired_phenotypes)){
@@ -73,14 +75,15 @@ format_patient_network <- function(patient_id,
                                                                    organism = 'human',
                                                                    phospho_df = phosphoproteomics,
                                                                    carnival_options = network_params$carnival_options$carnival_params,
-                                                                   files = TRUE,
+                                                                   files = save_all_files,
                                                                    direct = network_params$PKN_options$direct,
                                                                    with_atlas = network_params$PKN_options$with_atlas,
                                                                    path_sif = paste0(network_params$pheno_options$pheno_path, '_opt_network.sif'),
                                                                    path_rds =  paste0(network_params$pheno_options$pheno_path, '_opt_network.RDS'))
 
-    write_rds(phenoscore_output, paste0(network_params$pheno_options$pheno_path,'_object_opt.RDS'))
-
+    if(save_all_files){
+      write_rds(phenoscore_output, paste0(network_params$pheno_options$pheno_path,'_object_opt.RDS'))
+    }
   }
 
   if(network_params$format_options$circuits_params$k == -1){
@@ -140,7 +143,10 @@ format_patient_network <- function(patient_id,
                                                          k = network_params$format_options$circuits_params$k,
                                                          start_to_top = network_params$format_options$circuits_params$start_to_top)
 
-    saveRDS(circuit, file =  paste0(network_params$phenoscore_options$pheno_path, '_circuit.RDS'))
+    if(save_all_files){
+      saveRDS(circuit, file =  paste0(network_params$phenoscore_options$pheno_path, '_circuit.RDS'))
+    }
+
 
     if(network_params$format_options$vis_cytoscape){
       # Visualize according to PatientProfiler visualization style

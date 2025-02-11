@@ -44,6 +44,7 @@ create_naive_network <- function(PKN,
                                                                 PKN_table = PKN, #or PKN_human
                                                                 max_length = naive_network_parameters$max_length[1],
                                                                 connect_all = naive_network_parameters$connect_all,
+                                                                files = TRUE,
                                                                 sif_path = paste0(naive_network_parameters$naive_path, '.sif'),
                                                                 rds_path = paste0(naive_network_parameters$naive_path, '.rds')
     )
@@ -59,6 +60,7 @@ create_naive_network <- function(PKN,
                                                                 max_length_1 =  naive_network_parameters$max_length[1],
                                                                 max_length_2 =  naive_network_parameters$max_length[2],
                                                                 connect_all = naive_network_parameters$connect_all,
+                                                                files = TRUE,
                                                                 sif_path = paste0(naive_network_parameters$naive_path, '.sif'),
                                                                 rds_path = paste0(naive_network_parameters$naive_path, '.rds')
     )
@@ -79,6 +81,7 @@ create_naive_network <- function(PKN,
                                                                   max_length_2 =  naive_network_parameters$max_length[2],
                                                                   max_length_3 =  naive_network_parameters$max_length[3],
                                                                   connect_all =  naive_network_parameters$connect_all,
+                                                                  files = TRUE,
                                                                   sif_path = paste0(naive_network_parameters$naive_path, '.sif'),
                                                                   rds_path = paste0(naive_network_parameters$naive_path, '.rds')
     )

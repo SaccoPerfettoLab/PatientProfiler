@@ -34,4 +34,5 @@ Imports:
     ggfortify,
     org.Hs.eg.db,
     AnnotationDbi,
-    dplyr
+    dplyr,
+    SignalingProfiler

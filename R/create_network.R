@@ -53,10 +53,10 @@
 initialize_net_default_params <- function(output_dir) {
   list(
     PKN_options = list(preprocess = TRUE, organism = 'human', direct = TRUE, with_atlas = FALSE, custom = FALSE, custom_path = FALSE),
-    naive_options = list(layers = 2, max_length = c(1, 4), connect_all = TRUE, naive_path = paste0(output_dir, 'Naive_')),
-    carnival_options = list(solver = 'cplex', carnival_type = 'inverse', opt_path = paste0(output_dir, 'Opt_'), carnival_params = list()),
+    naive_options = list(layers = 2, max_length = c(1, 4), connect_all = TRUE, naive_path = paste0(output_dir, '/Naive_')),
+    carnival_options = list(solver = 'cplex', carnival_type = 'inverse', opt_path = paste0(output_dir, '/Opt_'), carnival_params = list()),
     phenoscore_options = list(
-      pheno_path = paste0(output_dir, 'Pheno_'),
+      pheno_path = paste0(output_dir, '/Pheno_'),
       pheno_distance_table = NULL,
       phenoscore_params = list(
         path_length = 3, stat = 'mean', zscore_threshold = -1.96,
@@ -113,6 +113,7 @@ initialize_net_default_params <- function(output_dir) {
 
 #' @param pheno_distances_table dataframe of ProxPath protein-to-phenotypes distances; default:  `NULL`.
 #' @param output_dir string, path to network folder; default `'./Networks_output/'`.
+#' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
 
 #' @param PKN_options  check *initialize_net_default_params* documentation, in the `$PKN_options` part.
 #' @param naive_options check *initialize_net_default_params* documentation, in the `$naive_options` part.
@@ -159,6 +160,21 @@ initialize_net_default_params <- function(output_dir) {
 #'                                      vis_cytoscape = TRUE))
 #'
 #'
+#' @param patient_id
+#' @param sources
+#' @param activities
+#' @param transcriptomics
+#' @param proteomics
+#' @param phosphoproteomics
+#' @param desired_phenotypes
+#' @param pheno_distances_table
+#' @param save_all_files
+#' @param output_dir
+#' @param PKN_options
+#' @param naive_options
+#' @param carnival_options
+#' @param phenoscore_options
+#' @param format_options
 create_network <- function(patient_id,
                            sources,
                            activities,
@@ -167,6 +183,7 @@ create_network <- function(patient_id,
                            phosphoproteomics = NULL,
                            desired_phenotypes = NULL,
                            pheno_distances_table = NULL,
+                           save_all_files = FALSE,
                            output_dir = './Networks_output/',
                            PKN_options = list(),
                            naive_options = list(),
@@ -206,20 +223,22 @@ create_network <- function(patient_id,
   # Optimize Network with CARNIVAL
   network_params$carnival_options$opt_path <- paste0(network_params$carnival_options$opt_path, patient_id)
   carnival_output <- optimize_network_with_carnival(sources = sources,
-                                                      activities = activities,
-                                                      naive_network = naive_network,
-                                                      phosphoproteomics = phosphoproteomics,
-                                                      network_params = network_params)
+                                                    activities = activities,
+                                                    naive_network = naive_network,
+                                                    phosphoproteomics = phosphoproteomics,
+                                                    save_all_files = save_all_files,
+                                                    network_params = network_params)
   message('CARNIVAL optimization done!')
 
   # PhenoScore analysis
   message('Running phenotypic inference...')
   network_params$phenoscore_options$pheno_path <- paste0(network_params$phenoscore_options$pheno_path, patient_id)
   phenoscore_output <- infer_and_link_phenotypes(carnival_output = carnival_output,
-                                                  desired_phenotypes = desired_phenotypes,
-                                                  proteomics = proteomics,
-                                                  phosphoproteomics = phosphoproteomics,
-                                                  network_params = network_params)
+                                                desired_phenotypes = desired_phenotypes,
+                                                proteomics = proteomics,
+                                                phosphoproteomics = phosphoproteomics,
+                                                save_all_files = save_all_files,
+                                                network_params = network_params)
   message('Phenotypic inference done!')
 
   phenoscore_network <- format_patient_network(patient_id,
@@ -227,6 +246,7 @@ create_network <- function(patient_id,
                                                phosphoproteomics = phosphoproteomics,
                                                desired_phenotypes = desired_phenotypes,
                                                sources = sources,
+                                               save_all_files = save_all_files,
                                                network_params = network_params)
 
 }

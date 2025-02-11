@@ -14,6 +14,7 @@
 #' @param phosphoproteomics  dataframe of phosphoproteomics; default: `NULL`.
 #' @param network_params  check *initialize_net_default_params* documentation, in the `$phenoscore_options` part.
 #' @param pheno_distances_table dataframe of ProxPath protein-to-phenotypes distances; default:  `NULL`.
+#' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
 #'
 #' @return A list of four elements:
 #'  - `barplot`: a ggplot2 object representing phenotype modulation inferred from model proteins;
@@ -47,6 +48,7 @@ infer_and_link_phenotypes <- function(carnival_output,
                                       pheno_distances_table = NULL,
                                       proteomics = NULL,
                                       phosphoproteomics = NULL,
+                                      save_all_files = FALSE,
                                       network_params = list()){
 
   if(is.null(pheno_distances_table)){
@@ -79,7 +81,10 @@ infer_and_link_phenotypes <- function(carnival_output,
             paste0(network_params$phenoscore_options$pheno_path, '_network.RDS'))
   }
 
-  saveRDS(phenoscore_output,  paste0(network_params$phenoscore_options$pheno_path, '_object.RDS'))
+  if(save_all_files){
+    saveRDS(phenoscore_output,  paste0(network_params$phenoscore_options$pheno_path, '_object.RDS'))
+  }
+
   return(phenoscore_output)
 }
 
