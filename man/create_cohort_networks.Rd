@@ -13,6 +13,7 @@ create_cohort_networks(
   pheno_distances_table = NULL,
   mut_file = NULL,
   output_dir = "./Networks_output/",
+  save_all_files = FALSE,
   PKN_options = list(),
   naive_options = list(),
   carnival_options = list(),
@@ -34,6 +35,8 @@ create_cohort_networks(
 \item{mut_file}{string, path to cohort mutations csv file, default \code{NULL}.}
 
 \item{output_dir}{string, path to network folder; default \code{'./Networks_output/'}.}
+
+\item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
 
 \item{PKN_options}{check \emph{initialize_net_default_params} documentation, in the \verb{$PKN_options} part.}
 

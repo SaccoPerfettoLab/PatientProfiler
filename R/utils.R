@@ -72,10 +72,12 @@ igraphToSif <- function(inGraph, outfile="output.sif", edgeLabel="label") {
 #'
 #' @param file_path
 #'
-#' @return
+#' @return it returns a string representing patient id
 #' @export
 #'
 #' @examples
+#' extract_patient_id('Prot_Patient_X11.xlsx')
+#'
 extract_patient_id <- function(file_path) {
   basename(file_path) %>%
     sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_)(.*)\\.xlsx$", "\\2", .)

@@ -11,6 +11,7 @@ format_patient_network(
   proteomics,
   sources,
   desired_phenotypes = NULL,
+  save_all_files = FALSE,
   network_params
 )
 }
@@ -26,6 +27,8 @@ format_patient_network(
 \item{sources}{dataframe of perturbed nodes (e.g., patient mutations), starting point of the model}
 
 \item{desired_phenotypes}{SIGNOR phenotypes vector to infer the activity and include in the model; default:  \code{NULL}.}
+
+\item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
 
 \item{network_params}{check \emph{initialize_net_default_params} documentation, in the \verb{$format_options} part.}
 }

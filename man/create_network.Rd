@@ -13,6 +13,7 @@ create_network(
   phosphoproteomics = NULL,
   desired_phenotypes = NULL,
   pheno_distances_table = NULL,
+  save_all_files = FALSE,
   output_dir = "./Networks_output/",
   PKN_options = list(),
   naive_options = list(),
@@ -37,6 +38,8 @@ create_network(
 \item{desired_phenotypes}{SIGNOR phenotypes vector to infer the activity and include in the model; default:  \code{NULL}.}
 
 \item{pheno_distances_table}{dataframe of ProxPath protein-to-phenotypes distances; default:  \code{NULL}.}
+
+\item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
 
 \item{output_dir}{string, path to network folder; default \code{'./Networks_output/'}.}
 
@@ -124,6 +127,5 @@ create_network(patient_id = 'CPT000814',
                format_options = list(optimize_on_phenotypes = TRUE,
                                      circuits_params = list(k = -1),
                                      vis_cytoscape = TRUE))
-
 
 }

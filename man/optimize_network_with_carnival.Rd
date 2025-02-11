@@ -9,6 +9,7 @@ optimize_network_with_carnival(
   activities,
   naive_network,
   phosphoproteomics = NULL,
+  save_all_files = FALSE,
   network_params = list()
 )
 }
@@ -20,6 +21,8 @@ optimize_network_with_carnival(
 \item{naive_network}{igraph object representing the naive network}
 
 \item{phosphoproteomics}{dataframe of phosphoproteomics; default: \code{NULL} (no phosphoproteomics mapping on network).}
+
+\item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
 
 \item{network_params}{check \emph{initialize_net_default_params} documentation, in the \verb{$carnival_options} part.}
 }

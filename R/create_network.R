@@ -159,22 +159,6 @@ initialize_net_default_params <- function(output_dir) {
 #'                                      circuits_params = list(k = -1),
 #'                                      vis_cytoscape = TRUE))
 #'
-#'
-#' @param patient_id
-#' @param sources
-#' @param activities
-#' @param transcriptomics
-#' @param proteomics
-#' @param phosphoproteomics
-#' @param desired_phenotypes
-#' @param pheno_distances_table
-#' @param save_all_files
-#' @param output_dir
-#' @param PKN_options
-#' @param naive_options
-#' @param carnival_options
-#' @param phenoscore_options
-#' @param format_options
 create_network <- function(patient_id,
                            sources,
                            activities,

@@ -10,6 +10,7 @@ infer_and_link_phenotypes(
   pheno_distances_table = NULL,
   proteomics = NULL,
   phosphoproteomics = NULL,
+  save_all_files = FALSE,
   network_params = list()
 )
 }
@@ -23,6 +24,8 @@ infer_and_link_phenotypes(
 \item{proteomics}{dataframe of proteomics; default: \code{NULL}.}
 
 \item{phosphoproteomics}{dataframe of phosphoproteomics; default: \code{NULL}.}
+
+\item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
 
 \item{network_params}{check \emph{initialize_net_default_params} documentation, in the \verb{$phenoscore_options} part.}
 }

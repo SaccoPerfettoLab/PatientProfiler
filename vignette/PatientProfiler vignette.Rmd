@@ -40,7 +40,7 @@ divide the pipeline into 4 main steps:
 
 ![](images/PatientProfiler-visual_selection.png)
 
-## <span style="color: #41729F;">PREPARE YOUR DATA</span>
+## [PREPARE YOUR DATA]{style="color: #41729F;"}
 
 To use this R package, you need to have the right format for your input
 data frames.
@@ -73,7 +73,7 @@ The input has to have specific columns, as described here:
 
     -   patients
 
-## <span style="color: #A45C40;"> Install PatientProfiler</span>
+## [Install PatientProfiler]{style="color: #A45C40;"}
 
 To install PatientProfiler execute the following command in R.
 
@@ -81,7 +81,7 @@ To install PatientProfiler execute the following command in R.
 devtools::install("PatientProfiler")
 ```
 
-## <span style="color: #41729F;">STEP 1) RAW DATA HARMONIZATION</span>
+## [STEP 1) RAW DATA HARMONIZATION]{style="color: #41729F;"}
 
 ::: {style="display: flex; align-items: center; color: red"}
 ![Description](../img/warning.png){alt="Description" height="2em"
@@ -117,7 +117,7 @@ This step for big dataframes requires many hours of working mainly due
 the imputation. For this tutorial we are using a smaller amount of
 patients to give you a general vision of
 
-###<span style="color: #C38370;">Example of usage: </span>
+\###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
 transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_transc.tsv") 
@@ -148,7 +148,7 @@ Z-score should be calculated.
 
 After this step, tables are ready for the ***omics_preparation***.
 
-## <span style="color: #41729F;">ACCESS TO PRE-HARMONIZED CPTAC DATA</span>
+## [ACCESS TO PRE-HARMONIZED CPTAC DATA]{style="color: #41729F;"}
 
 ### *access_harmonized_CPTAC_data* {style="color: black"}
 
@@ -183,7 +183,7 @@ for 10 different tumors:
 
 All the data has been harmonized using [omics_update] function.
 
-### <span style="color: #C38370;">Example of usage: </span>
+### [Example of usage:]{style="color: #C38370;"}
 
 If you need to extract **Hnscc** and **Ov** **phosphoproteomics** and
 **proteomics** data:
@@ -194,7 +194,8 @@ access_harmonized_CPTAC_data(tumors = c("Ov"), omics = c("phospho", "prot"))
 
 The output is a local variable for each data frame you acceded.
 
-## <span style="color: #41729F;">INPUT TABLES TO INFER PROTEIN ACTIVITY AND NETWORK CONSTRUCTION</span>
+## [INPUT TABLES TO INFER PROTEIN ACTIVITY AND NETWORK CONSTRUCTION]{style="color: #41729F;"}
+
 The next steps of PatientProfiler include wrapper functions to our
 in-house developed
 [SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6)
@@ -203,13 +204,14 @@ or ***access_harmonized_CPTAC_data*** should be transformed in
 SignalingProfiler-compliant format. To this aim, in **PatientProfiler**,
 we developed *omics_preparation* function.
 
-### <span style="color: #274472;">*omics_preparation*</span>
+### [*omics_preparation*]{style="color: #274472;"}
+
 For each uploaded omic type, a folder with a user-defined name will be
 created. Each folder will contain a file (data frame) for each patient,
 representing the needed omic input needed in SignalingProfiler-compliant
 format for the next steps.
 
-### <span style="color: #C38370;">Example of usage:</span>
+### [Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk4, eval = FALSE}
 
@@ -238,11 +240,11 @@ and the publication regarding it
 :::
 :::
 
-## <span style="color: #41729F;">STEP 2) PROTEIN ACTIVITY INFERENCE</span>
+## [STEP 2) PROTEIN ACTIVITY INFERENCE]{style="color: #41729F;"}
 
-## <span style="color: #050A30;">*Infer signaling proteins activity at single patient level*</span>
+## [*Infer signaling proteins activity at single patient level*]{style="color: #050A30;"}
 
-### <span style="color: #274472;">*extract_protein_activity*</span>
+### [*extract_protein_activity*]{style="color: #274472;"}
 
 This function is a wrapper to *SignalingProfiler* first step functions,
 wherein protein activity modulation is inferred from multi-omics data
@@ -257,8 +259,7 @@ your console).
 The parameters are managed as a **list of default parameters** that you
 can change as you wish, either inside or outside the function call.
 
-
-### <span style="color: #C38370;">Example of usage:</span>
+### [Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk5, eval = FALSE}
 tf_params <- list(reg_minsize = 5, collectri = TRUE) 
@@ -292,16 +293,17 @@ with these columns:
 
 -   `method`: how final_score is calculated.
 
-## <span style="color: #050A30;">*Infer signaling proteins activity at cohort level*</span>
+## [*Infer signaling proteins activity at cohort level*]{style="color: #050A30;"}
 
-### <span style="color: #274472;">*extract_cohort_activity*</span>
+### [*extract_cohort_activity*]{style="color: #274472;"}
+
 To perform the protein activity inference step for all the patients of a
 cohort, this function loops on each omic file for each patient and infer
 protein activity using [*extract_protein_activity*]*.*
 
 ```{r chunk6, eval = FALSE}
 tf_params <- list(reg_minsize = 5, collectri = TRUE)
-kin_params <- list(reg_minsize = 10, exp_sign = TRUE)
+kin_params <- list(exp_sign = TRUE)
 
 extract_cohort_activity(
                         prot_dir = "Prot_patients/", 
@@ -330,9 +332,10 @@ contains these columns:
 
 -   `method`: how final_score is calculated.
 
-## <span style="color: #41729F;">STEP 3) NETWORK GENERATION</span>
+## [STEP 3) NETWORK GENERATION]{style="color: #41729F;"}
 
-## <span style="color: #050A30;">**Create a signaling network for a single patient**</span>
+## [**Create a signaling network for a single patient**]{style="color: #050A30;"}
+
 In this step, PatientProfiler creates for each patient a causal network
 connecting mutated genes to a user-defined set of cellular functional
 traits (e.g., APOPTOSIS, PROLIFERATION).
@@ -344,7 +347,8 @@ function of the mutation.
 To this aim, we implemented a wrapper to SignalingProfiler network
 creation step
 
-### <span style="color: #274472;">*create_network*</span>
+### [*create_network*]{style="color: #274472;"}
+
 This function sequentially calls five functions to:
 
 1.  Select a PKN derived from SIGNOR and PhosphoSitePlus (`get_PKN`);
@@ -376,7 +380,7 @@ output_dir <- 'Networks_output'
 network_params <- initialize_net_default_params(output_dir)
 ```
 
-### <span style="color: #C38370;">Example of usage:</span>
+### [Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk7, eval = FALSE}
 
@@ -420,9 +424,10 @@ create_network(patient_id = patient_id,
                                     vis_cytoscape = FALSE))
 ```
 
-## <span style="color: #050A30;">*Create signaling networks at cohort level*</span>
+## [*Create signaling networks at cohort level*]{style="color: #050A30;"}
 
-### <span style="color: #274472;">*create_cohort_network*</span>
+### [*create_cohort_network*]{style="color: #274472;"}
+
 This function loops on the folder of omics and activity data of a cohort
 of patients creating a network of each of the patients from mutations to
 desired phenotypes.
@@ -430,7 +435,8 @@ desired phenotypes.
 For the files generated for each patient, refer to *create_network*
 function documentation.
 
-### <span style="color: #C38370;">Example of usage:</span>
+### [Example of usage:]{style="color: #C38370;"}
+
 ```{r chunk8, eval = FALSE}
 create_cohort_networks(trans_dir = './Transc_patients/',
                       prot_dir = './Prot_patients/',
