@@ -7,42 +7,67 @@
 #'@param tumors vector of strings with tumor names. The user can choose from these names: "Brca", "Ccrcc", "Coad", "Gbm", "Hnscc", "Lscc",
 #'"Luad", "Ov", "Pdac", "Ucec".
 #'
-#'@param omics vector of strings containing the omics types to extract. The options could be "phospho", "prot" and "transc"
-#'(respectively phosphoproteomics, proteomics and transcriptomics)
+#'@param data_types vector of strings containing the data types to extract. The options could be "phospho", "prot", "transc" and "mut"
+#'(respectively phosphoproteomics, proteomics, transcriptomics and somatic mutations)
 #'
 #'
 #'@examples
 #' # Extract Phosphoproteomic and Proteomic dataframes for Brca and Ccrcc
-#' access_harmonized_CPTAC_data(tumors = c("Brca", "Ccrcc"), omics = c("phospho", "prot"))
+#' access_harmonized_CPTAC_data(tumors = c("Brca", "Ccrcc"), data_types = c("phospho", "prot", "mut"))
 #'
-#' # Four local variables, Brca_phospho, Brca_prot, Ccrcc_phospho and Ccrcc_prot will be generated.
+#' # Six local variables, Brca_phospho, Brca_prot, Brca_mut, Ccrcc_phospho, Ccrcc_prot and Ccrcc_mut will be generated.
 #'
 #' @export
 
-access_harmonized_CPTAC_data <- function(tumors, omics) {
+access_harmonized_CPTAC_data <- function(tumors, data_types) {
   
-  data <- readRDS("http://151.100.141.57/cptac/CPTAC_df.rds") # this link is not valid for now, we'll change it soon
-
-  suffix <- c("phospho", "prot", "transc")
-
-  if (!all(omics %in% suffix)) {
-    stop("Omics has to be one or more between 'phospho', 'prot' and 'transc'")
-  }
-
+  base_url <- "http://userver.bio.uniroma1.it/apps/CPTAC"
+  
   for (tumor in tumors) {
-    if (!tumor %in% names(data)) {
-      warning(paste("Tumor not found:", tumor))
-      next
-    }
-    for (omic in omics) {
-      if (!omic %in% names(data[[tumor]])) {
-        warning(paste("Omic not found for", tumor, ":", omic))
-        next
+    
+    tumor_dir <- file.path(base_url, tumor)
+    
+    for (data_type in data_types) {
+      
+      if (data_type == "mut") {
+        mut_file_name <- paste0(tumor, "_mut_matrix.csv")
+        mut_file_path <- file.path(tumor_dir, mut_file_name)
+        
+        # Usa httr per fare il download del file
+        response <- GET(mut_file_path)
+        if (status_code(response) == 200) {
+          mut_data <- read.csv(text = content(response, "text"))
+          
+          # Crea una variabile dinamica per il dataframe delle mutazioni
+          var_name <- paste0(tumor, "_mut")
+          assign(var_name, mut_data, envir = .GlobalEnv)
+          cat("Read mutation data:", mut_file_name, "\n")
+        } else {
+          warning(paste("Unable to download mutation file:", mut_file_name))
+        }
+        
+      } else if (data_type %in% c("phospho", "prot", "transc")) {
+        # Percorso del file omico (proteomica, fosfoproteomica, trascrittomica)
+        file_name <- paste0(tumor, "_", data_type, "_updated.xlsx")
+        file_path <- file.path(tumor_dir, file_name)
+        
+        response <- GET(file_path)
+        if (status_code(response) == 200) {
+          temp_file <- tempfile(fileext = ".xlsx")
+          writeBin(content(response, "raw"), temp_file)
+          
+          omic_data <- read_xlsx(temp_file)
+          
+          var_name <- paste0(tumor, "_", data_type)
+          assign(var_name, omic_data, envir = .GlobalEnv)
+          cat("Read omic data:", file_name, "\n")
+        } else {
+          warning(paste("Unable to download omic file:", file_name))
+        }
+        
+      } else {
+        warning(paste("Unknown data type:", data_type))
       }
-      local_var <- paste0(tumor, "_", omic)
-
-      assign(local_var, data[[tumor]][[omic]], envir = .GlobalEnv)
-
     }
   }
 }
