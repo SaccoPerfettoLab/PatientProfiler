@@ -37,3 +37,4 @@ Imports:
     org.Mm.eg.db,
     org.Hs.eg.db,
     AnnotationDbi
+biocViews:
