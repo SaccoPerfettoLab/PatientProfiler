@@ -22,9 +22,6 @@
 #' cleaned_data <- remove_duplicates_phosphoproteomics(phosphoproteomics_data)
 #' head(cleaned_data)
 #'
-#' @importFrom dplyr group_by summarise filter mutate left_join relocate distinct
-
-
 remove_duplicates_phosphoproteomics <- function(df) {
 
   df_unique <- unique(df)

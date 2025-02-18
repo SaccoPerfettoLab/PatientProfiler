@@ -14,7 +14,6 @@
 #' cleaned_proteomics <- remove_duplicates_proteomics(proteomics_data)
 #' head(cleaned_proteomics)
 #'
-#' @importFrom dplyr group_by reframe distinct select left_join relocate
 
 
 remove_duplicates_proteomics <- function(df) {
@@ -22,17 +21,17 @@ remove_duplicates_proteomics <- function(df) {
   duplicated_genes <- df$gene_name[duplicated(df$gene_name)]
 
   proteomics_combined <- df %>%
-    group_by(gene_name) %>%  # Gruppo per 'gene_name'
-    reframe(UNIPROT = paste(unique(UNIPROT), collapse = ";"))
+    dplyr::group_by(gene_name) %>%  # Gruppo per 'gene_name'
+    dplyr::reframe(UNIPROT = paste(unique(UNIPROT), collapse = ";"))
 
   proteomics_unique <- df %>%
-    distinct(gene_name, .keep_all = TRUE)
+    dplyr::distinct(gene_name, .keep_all = TRUE)
 
   proteomics_unique <- proteomics_unique %>%
     dplyr::select(-UNIPROT)
 
   proteomics_final <- proteomics_unique %>%
-    left_join(proteomics_combined, by = "gene_name")
+    dplyr::left_join(proteomics_combined, by = "gene_name")
 
   proteomics_final <- proteomics_final %>%
     dplyr::relocate(UNIPROT)

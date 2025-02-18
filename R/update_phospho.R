@@ -21,12 +21,6 @@
 #' updated_phospho_df <- update_phospho(phospho_data, site_col = 3, gn_idx = 2, seq_len_i = 7, peptide_col_name = "Peptide")
 #' head(updated_phospho_df)
 #'
-#' @importFrom dplyr relocate select
-#' @importFrom stringr str_remove
-#' @importFrom tidyr separate_rows
-#' @importFrom AnnotationDbi select
-#' @importFrom org.Hs.eg.db org.Hs.eg.db
-#' @importFrom org.Mm.eg.db org.Mm.eg.db
 
 update_phospho <- function(df, site_col, gn_idx, seq_len_i=7, peptide_col_name = NULL) {
 

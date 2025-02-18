@@ -12,7 +12,6 @@
 #' filtered_df <- retrieve_coding(my_df, gn_col = "GeneSymbol")
 #' head(filtered_df)
 #'
-#' @importFrom AnnotationDbi select keys
 
 retrieve_coding <- function(df) {
   # Check and install BiocManager if not already installed
