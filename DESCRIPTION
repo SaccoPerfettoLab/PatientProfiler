@@ -35,5 +35,5 @@ Imports:
     org.Hs.eg.db,
     AnnotationDbi,
     dplyr,
-    SignalingProfiler
-
+    SignalingProfiler,
+    Org.Mm.eg.db
