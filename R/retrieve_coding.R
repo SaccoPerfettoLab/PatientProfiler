@@ -33,13 +33,6 @@ retrieve_coding <- function(df) {
     BiocManager::install("org.Hs.eg.db")
   }
 
-  # Load the required packages
-  library(AnnotationDbi)
-  library(org.Hs.eg.db)
-
-  message("AnnotationDbi and org.Hs.eg.db are successfully loaded!")
-
-
   # Retrieve coding genes
   message("Retrieving coding genes from org.Hs.eg.db...")
   coding_genes <- AnnotationDbi::select(
