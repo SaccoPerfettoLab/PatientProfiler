@@ -31,12 +31,9 @@ Imports:
     ggrepel,
     ggfortify,
     dplyr,
-    SignalingProfiler
-
-Remotes: 
-    Bioconductor/Org.Mm.eg.db, 
-    Bioconductor/AnnotationDbi, 
-    Bioconductor/org.Hs.eg.db, 
-    Bioconductor/fgsea, 
-    Bioconductor/sva
-
+    SignalingProfiler,
+    fgsea,
+    sva,
+    Org.Mm.eg.db,
+    org.Hs.eg.db,
+    AnnotationDbi
