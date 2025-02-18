@@ -4,14 +4,14 @@
 \alias{access_harmonized_CPTAC_data}
 \title{access_harmonized_CPTAC_data}
 \usage{
-access_harmonized_CPTAC_data(tumors, omics)
+access_harmonized_CPTAC_data(tumors, data_types)
 }
 \arguments{
 \item{tumors}{vector of strings with tumor names. The user can choose from these names: "Brca", "Ccrcc", "Coad", "Gbm", "Hnscc", "Lscc",
 "Luad", "Ov", "Pdac", "Ucec".}
 
-\item{omics}{vector of strings containing the omics types to extract. The options could be "phospho", "prot" and "transc"
-(respectively phosphoproteomics, proteomics and transcriptomics)}
+\item{data_types}{vector of strings containing the data types to extract. The options could be "phospho", "prot", "transc" and "mut"
+(respectively phosphoproteomics, proteomics, transcriptomics and somatic mutations)}
 }
 \description{
 This function provides access to harmonized CPTAC data for 10 tumor types and 3 omics per tumor type. The data has been harmonized using the
@@ -20,8 +20,8 @@ for network creation. It creates local variables with the dataframe(s) selected 
 }
 \examples{
 # Extract Phosphoproteomic and Proteomic dataframes for Brca and Ccrcc
-access_harmonized_CPTAC_data(tumors = c("Brca", "Ccrcc"), omics = c("phospho", "prot"))
+access_harmonized_CPTAC_data(tumors = c("Brca", "Ccrcc"), data_types = c("phospho", "prot", "mut"))
 
-# Four local variables, Brca_phospho, Brca_prot, Ccrcc_phospho and Ccrcc_prot will be generated.
+# Six local variables, Brca_phospho, Brca_prot, Brca_mut, Ccrcc_phospho, Ccrcc_prot and Ccrcc_mut will be generated.
 
 }
