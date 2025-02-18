@@ -32,7 +32,7 @@ get_PKN <- function(PKN_params = list(),
 
   default_PKN_params = list(organism = 'human', direct = TRUE, with_atlas = FALSE, custom = FALSE, custom_path = FALSE)
   PKN_params = modifyList(default_PKN_params, PKN_params)
-  PKN = do.call(choose_PKN, PKN_params)
+  PKN = do.call(SignalingProfiler::choose_PKN, PKN_params)
 
   if(preprocess){
     message('Preprocessing PKN...')
