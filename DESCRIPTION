@@ -31,4 +31,9 @@ Imports:
     ggrepel,
     ggfortify,
     dplyr,
-    SignalingProfiler
+    SignalingProfiler,
+    Org.Mm.eg.db,
+    sva,
+    fgsea,
+    org.Hs.eg.db,
+    AnnotationDbi
