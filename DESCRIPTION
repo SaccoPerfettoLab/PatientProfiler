@@ -34,13 +34,6 @@ Imports:
     SignalingProfiler,
     fgsea,
     sva,
-    Org.Mm.eg.db,
+    org.Mm.eg.db,
     org.Hs.eg.db,
     AnnotationDbi
-
-Remotes:
-    Bioconductor/AnnotationDbi,
-    Bioconductor/org.Hs.eg.db,
-    Bioconductor/Org.Mm.eg.db,
-    Bioconductor/fgsea,
-    Bioconductor/sva
