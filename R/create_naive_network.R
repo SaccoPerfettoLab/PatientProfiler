@@ -153,7 +153,7 @@ validate_naive_network_parameters <- function(PKN,
   }
 
   # Generate the a vector of sources for naive network
-  sources %>% column_to_rownames('Patient_ID') -> sources_mat
+  sources %>% tibble::column_to_rownames('Patient_ID') -> sources_mat
   sources_gn <- colnames(sources_mat)[sources_mat != 0]
 
   if (length(sources_gn) == 0) {
