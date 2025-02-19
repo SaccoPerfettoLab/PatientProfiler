@@ -403,7 +403,7 @@ network_params <- initialize_net_default_params(output_dir)
 patient_id <- 'X01OV007'
 
 # Read mutation file (starting nodes of the model)
-mutations_df <- readr::read_delim('./PatientProfiler_raw_input/Ov_mutations.csv',delim = ',')
+mutations_df <- readxl::read_xlsx('./PatientProfiler_raw_input/Ov_mutations.xlsx')
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
 
 # Read activity file (intermediate nodes of the model)
@@ -458,7 +458,7 @@ create_cohort_networks(trans_dir = './Transc_patients/',
                       prot_dir = './Prot_patients/',
                       phospho_dir = './Phospho_patients/',
                       act_dir = './Activities/',
-                      mut_file = './PatientProfiler_raw_input/Ov_mutations.csv',
+                      mut_file = './PatientProfiler_raw_input/Ov_mutations.xlsx',
                       output_dir = './Networks_output/',
                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
                       pheno_distances_table = TRUE,

@@ -128,7 +128,7 @@ initialize_net_default_params <- function(output_dir) {
 #'
 #' patient_id <- 'CPT000814'
 #'
-#' mutations_df <- readr::read_delim('./mutations.csv',delim = ',')
+#' mutations_df <- readxl::read_xlsx('./mutations.xlsx')
 #' sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
 #' activities <- readxl::read_xlsx(paste0('./Activity_Patient_', patient_id))
 #'

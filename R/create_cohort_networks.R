@@ -8,7 +8,7 @@
 #' @param prot_dir string, path to cohort proteomics data folder, default `NULL`.
 #' @param phospho_dir  string, path to cohort proteomics data folder, default `NULL`.
 #' @param act_dir  string, path to cohort proteomics data folder, default `NULL`.
-#' @param mut_file  string, path to cohort mutations csv file, default `NULL`.
+#' @param mut_file  string, path to cohort mutations .xlsx file, default `NULL`.
 #' @param output_dir  string, path to network folder; default `'./Networks_output/'`.
 #'
 #' @param desired_phenotypes SIGNOR phenotypes vector to infer the activity and include in the model; default:  `NULL`.
@@ -36,7 +36,7 @@
 #'                       prot_dir = './Prot_test/',
 #'                       phospho_dir = './Phos_test/',
 #'                       act_dir = './Act_test/',
-#'                       mut_file = 'mutations.csv',
+#'                       mut_file = 'mutations.xlsx',
 #'                       output_dir = './Networks_output/',
 #'                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
 #'                       pheno_distances_table = TRUE,
@@ -53,7 +53,7 @@ create_cohort_networks <- function(
     act_dir = NULL,
     desired_phenotypes = c(),
     pheno_distances_table = NULL,
-    mut_file = NULL, #csv file with mutations...
+    mut_file = NULL, #xlsx file with mutations...
     output_dir = './Networks_output/',
     save_all_files = FALSE,
     PKN_options = list(),
@@ -62,22 +62,6 @@ create_cohort_networks <- function(
     phenoscore_options = list(),
     format_options = list()
 ){
-
-  # trans_dir = './vignette/Transc_patients/'
-  # prot_dir = './vignette/Prot_patients/'
-  # phospho_dir = './Phospho_patients/'
-  # act_dir = './vignette/Activities/'
-  # mut_file = './vignette/PatientProfiler_raw_input/mutations.csv'
-  # output_dir = './vignette/Networks_output/'
-  # desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION')
-  # pheno_distances_table = TRUE
-  # PKN_options = list(direct = FALSE)
-  # naive_options = list(layers = 2, max_length = c(1,4))
-  # carnival_options = list(solver = 'cplex', carnival_type = 'vanilla_one_shot')
-  # format_options = list(optimize_on_phenotypes = FALSE,
-  #                       circuits_params = list(k = -1),
-  #                       vis_cytoscape = FALSE)
-
 
   # CHECK ON INPUTS
   if(length(desired_phenotypes) == 0){
@@ -105,7 +89,7 @@ create_cohort_networks <- function(
 
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
-    readr::read_delim(mut_file, delim = ',',show_col_types = FALSE)
+    readxl::read_xlsx(mut_file)
   }else character()
 
   trans_ids <- sapply(trans_files, extract_patient_id)
