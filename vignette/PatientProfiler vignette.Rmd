@@ -40,6 +40,29 @@ divide the pipeline into 4 main steps:
 
 ![](images/PatientProfiler-visual_selection.png)
 
+## [Install PatientProfiler]{style="color: #A45C40;"}
+
+To install PatientProfiler execute the following command in R.
+
+```{r chunk1, eval=FALSE}
+devtools::install_github('https://github.com/SaccoPerfettoLab/PatientProfiler/')
+```
+
+## [Set up Python PatientProfiler environment]{style="color: #A45C40;"}
+
+PatientProfiler contains some functions executing Python source code To correctly set up the Python PatientProfiler environment please execute the following code line the first time you use PatientProfiler:
+
+```{r eval = FALSE}
+install_pp_py()
+```
+
+## [Load necessary libraries]{style="color: #A45C40;"}
+```{r}
+library(PatientProfiler)
+library(SignalingProfiler)
+library(tidyverse)
+```
+
 ## [PREPARE YOUR DATA]{style="color: #41729F;"}
 
 To use this R package, you need to have the right format for your input
@@ -73,13 +96,6 @@ The input has to have specific columns, as described here:
 
     -   patients
 
-## [Install PatientProfiler]{style="color: #A45C40;"}
-
-To install PatientProfiler execute the following command in R.
-
-```{r chunk1, eval=FALSE}
-devtools::install("PatientProfiler")
-```
 
 ## [STEP 1) RAW DATA HARMONIZATION]{style="color: #41729F;"}
 
@@ -117,7 +133,7 @@ This step for big dataframes requires many hours of working mainly due
 the imputation. For this tutorial we are using a smaller amount of
 patients to give you a general vision of
 
-\###[Example of usage:]{style="color: #C38370;"}
+###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
 transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_transc.tsv") 
