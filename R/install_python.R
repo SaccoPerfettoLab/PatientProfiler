@@ -25,5 +25,5 @@ install_pp_py <- function(..., envname = "r-patientprofiler",
   reticulate::py_install("requests", envname = envname, ...)
   reticulate::py_install("pandas", envname = envname, ...)
   reticulate::py_install("networkx", envname = envname, ...)
-  reticulate::py_install("pyreadr", envname = envname, ...)
+  reticulate::py_install("openpyxl", envname = envname, ...)
 }
