@@ -128,13 +128,13 @@ initialize_net_default_params <- function(output_dir) {
 #'
 #' patient_id <- 'CPT000814'
 #'
-#' mutations_df <- readxl::read_xlsx('./mutations.xlsx')
+#' mutations_df <- read_csv('./mutations.csv')
 #' sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
-#' activities <- readxl::read_xlsx(paste0('./Activity_Patient_', patient_id))
+#' activities <- read_csv(paste0('./Activity_Patient_', patient_id))
 #'
-#' proteomics <- readxl::read_xlsx(paste0('./Prot_Patient_', patient_id))
-#' transcriptomics <- readxl::read_xlsx(paste0('./Trans_Patient_', patient_id))
-#' phosphoproteomics <- readxl::read_xlsx(paste0('./Phospho_Patient_', patient_id))
+#' proteomics <- read_csv(paste0('./Prot_Patient_', patient_id))
+#' transcriptomics <- read_csv(paste0('./Trans_Patient_', patient_id))
+#' phosphoproteomics <- read_csv(paste0('./Phospho_Patient_', patient_id))
 #'
 #' output_dir <- './Networks_output/'
 #' desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')

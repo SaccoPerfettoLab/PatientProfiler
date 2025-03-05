@@ -3,7 +3,7 @@
 #'
 #' This function must be executed the first time PatientProfiler is installed
 #'
-#' @param ...
+#' @param ... flexible arguments
 #' @param envname "r-patientprofiler"
 #' @param new_env used-specified name for the environment
 #'
@@ -25,5 +25,6 @@ install_pp_py <- function(..., envname = "r-patientprofiler",
   reticulate::py_install("requests", envname = envname, ...)
   reticulate::py_install("pandas", envname = envname, ...)
   reticulate::py_install("networkx", envname = envname, ...)
+  reticulate::py_install("pyreadr", envname = envname, ...)
   reticulate::py_install("openpyxl", envname = envname, ...)
 }

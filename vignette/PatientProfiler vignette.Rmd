@@ -30,13 +30,16 @@ If we want to imagine a sequential way to use PatientProfiler, we can
 divide the pipeline into 4 main steps:
 
 -   **STEP 1** - Raw data harmonization / Access to harmonized CPTAC
-    data
+    data and Input tables preparation
 
--   **STEP 2** - Input tables preparation
+-   **STEP 2** - Protein activity inference
 
--   **STEP 3** - Protein activity inference
+-   **STEP 3** - Generation of mechanistic models
 
--   **STEP 4** - Network generation
+-   **STEP 4** - Network-based stratification: communities detection
+
+-   **STEP 5** - Identification of biomarkers
+
 
 ![](images/PatientProfiler-visual_selection.png)
 
@@ -49,6 +52,8 @@ devtools::install_github('https://github.com/SaccoPerfettoLab/PatientProfiler/')
 ```
 
 ## [Set up Python PatientProfiler environment]{style="color: #A45C40;"}
+
+dire come prerequisito di installare python
 
 PatientProfiler contains some functions executing Python source code To correctly set up the Python PatientProfiler environment please execute the following code line the first time you use PatientProfiler:
 
@@ -136,9 +141,9 @@ patients to give you a general vision of
 ###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
-transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_transc.tsv") 
-proteomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_prot.tsv") 
-phosphoproteomics_data <- read_tsv("./PatientProfiler_raw_input/Ov_phospho.tsv")  
+transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_transc.tsv") 
+proteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_prot.tsv") 
+phosphoproteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_phospho.tsv")  
 
 omics_update(
              df_tr = NULL,   
@@ -201,11 +206,11 @@ All the data has been harmonized using [omics_update] function.
 
 ### [Example of usage:]{style="color: #C38370;"}
 
-If you need to extract **Hnscc** and **Ov** **phosphoproteomics** and
+If you need to extract **Brca** and **Ov** **phosphoproteomics** and
 **proteomics** data:
 
 ```{r chunk3, eval = FALSE}
-access_harmonized_CPTAC_data(tumors = c("Ov"), omics = c("phospho", "prot"))
+access_harmonized_CPTAC_data(tumors = c("Brca", "Ov"), omics = c("phospho", "prot"))
 ```
 
 The output is a local variable for each data frame you acceded.
@@ -231,9 +236,9 @@ format for the next steps.
 
 ```{r chunk4, eval = FALSE}
 
-tr_updated <- read_xlsx("PatientProfiler_processed_input/Transcriptomics_updated.xlsx")
-pr_updated <- read_xlsx("PatientProfiler_processed_input/Proteomics_updated.xlsx")
-ph_updated <- read_xlsx("PatientProfiler_processed_input/Phosphoproteomics_updated.xlsx")
+tr_updated <- read_tsv("PatientProfiler_processed_input/Transcriptomics_updated.tsv")
+pr_updated <- read_tsv("PatientProfiler_processed_input/Proteomics_updated.tsv")
+ph_updated <- read_tsv("PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
 
 omics_preparation(
               df_tr_updated = tr_updated,           
@@ -281,12 +286,12 @@ can change as you wish, either inside or outside the function call.
 tf_params <- list(reg_minsize = 5, collectri = TRUE) 
 kin_params <- list(reg_minsize = 5)
 
-patient_id <- 'X01OV007'
+patient_id <- 'CPT000814'
 
 extract_protein_activity(
-                prot_file = paste0("Prot_patients/Prot_Patient_", patient_id, ".xlsx"),       
-                trans_file = paste0("Transc_patients/Transc_Patient_", patient_id, ".xlsx"),   
-                phospho_file = paste0("Phospho_patients/Phospho_Patient_", patient_id, ".xlsx"), 
+                prot_file = paste0("Prot_patients/Prot_Patient_", patient_id, ".csv"),       
+                trans_file = paste0("Transc_patients/Transc_Patient_", patient_id, ".csv"),   
+                phospho_file = paste0("Phospho_patients/Phospho_Patient_", patient_id, ".csv"), 
                 tf_params,
                 kin_params,
                 output_dir = "Activities"
@@ -400,22 +405,22 @@ network_params <- initialize_net_default_params(output_dir)
 
 ```{r chunk7, eval = FALSE}
 
-patient_id <- 'X01OV007'
+patient_id <- 'CPT000814'
 
 # Read mutation file (starting nodes of the model)
-mutations_df <- readxl::read_xlsx('./PatientProfiler_raw_input/Ov_mutations.xlsx')
+mutations_df <- read_csv('./PatientProfiler_raw_input/Brca_mutations.csv')
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
 
 # Read activity file (intermediate nodes of the model)
-activities <- readxl::read_xlsx(paste0('./Activities/Activity_Patient_', patient_id, '.xlsx'))
+activities <- read_csv(paste0('./Activities/Activity_Patient_', patient_id, '.csv'))
 
 # Set the functional traits vector (final nodes of the model)
 desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
 
 # Read omics file
-proteomics <- readxl::read_xlsx(paste0('./Prot_patients/Prot_Patient_', patient_id, '.xlsx'))
-transcriptomics <- readxl::read_xlsx(paste0('./Transc_patients/Transc_Patient_', patient_id, '.xlsx'))
-phosphoproteomics <- readxl::read_xlsx(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.xlsx'))
+proteomics <- read_csv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.csv'))
+transcriptomics <- read_csv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.csv'))
+phosphoproteomics <- read_csv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.csv'))
 
 # ProxPath proteins-to-phenotypes pre-processing
 pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, 
@@ -458,7 +463,7 @@ create_cohort_networks(trans_dir = './Transc_patients/',
                       prot_dir = './Prot_patients/',
                       phospho_dir = './Phospho_patients/',
                       act_dir = './Activities/',
-                      mut_file = './PatientProfiler_raw_input/Ov_mutations.xlsx',
+                      mut_file = './PatientProfiler_raw_input/Brca_mutations.csv',
                       output_dir = './Networks_output/',
                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
                       pheno_distances_table = TRUE,
@@ -476,4 +481,69 @@ create_cohort_networks(trans_dir = './Transc_patients/',
 
 ## STEP 4) COMMUNITIES DETECTION {style="color: #41729F"}
 
+## [*Generate communities from patient-specific mechanistic models*]{style="color: #050A30;"}
+
+### [*generate_communities*]{style="color: #274472;"}
+
+In this step, PatientProfiler extracts communities from the patient-specific mechanistic
+models generated in Step 3.
+
+Importantly, this step requires a patient stratification file (patients_stratification.tsv), 
+where each row represents a patient and the column indicates the subtype. 
+ou need to place this file in a designated directory (dir_path), which will be deleted after this step.
+
+
+### [Example of usage:]{style="color: #C38370;"}
+
+```{r chunk9, eval = FALSE}
+
+generate_communities(dir_path = "vignette/Communities/input_communities", 
+                     network_dir = "vignette/Networks_output",
+                     output_dir = "vignette/Communities/output_communities",
+                     local = TRUE)
+
+```
+
+***Results output***
+
+The output_dir directory contains a subdirectory for 
+each detected community. Each community directory includes:
+
+A file for edges.
+A file for nodes.
+A file listing the patients belonging to the community.
+
+
+
 ## STEP 5) SIGNATURES IDENTIFICATIONS {style="color: #41729F"}
+
+## [*Extract signaling-driven transcriptomics signature from communities*]{style="color: #050A30;"}
+
+### [*extract_signatures*]{style="color: #274472;"}
+
+Thanks to this function, we can extract signaling-driven 
+transcriptomic signatures.
+To do this, you need the transcriptomics dataset obtained after 
+Step 1 and the communities detected in Step 4.
+
+
+
+### [Example of usage:]{style="color: #C38370;"}
+
+```{r chunk10, eval = FALSE}
+
+extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
+                               transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
+                               output_file = "Anova_result.csv",
+                               padj_thres = 0.01,
+                               diff_thres = 0.7,
+                               mean_exp_clus_thres = 0,
+                               max_val = 50)
+```
+
+***Results output***
+
+The Signatures directory containing a dataframe 
+for each signature with the genes list.
+
+

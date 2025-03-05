@@ -11,6 +11,8 @@ install_pp_py(
 )
 }
 \arguments{
+\item{...}{flexible arguments}
+
 \item{envname}{"r-patientprofiler"}
 
 \item{new_env}{used-specified name for the environment}

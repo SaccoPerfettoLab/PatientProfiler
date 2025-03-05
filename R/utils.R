@@ -1,6 +1,3 @@
-# readr::read_delim('./test/matrice_geni_CPTAC_col.csv',delim = ',') -> mut_df
-# df <- mut_df[mut_df$Patient_ID == 'CPT000814', ]
-
 
 #' From df to list
 #'
@@ -76,9 +73,9 @@ igraphToSif <- function(inGraph, outfile="output.sif", edgeLabel="label") {
 #' @export
 #'
 #' @examples
-#' extract_patient_id('Prot_Patient_X11.xlsx')
+#' extract_patient_id('Prot_Patient_X11.csv')
 #'
 extract_patient_id <- function(file_path) {
   basename(file_path) %>%
-    sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_)(.*)\\.xlsx$", "\\2", .)
+    sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_)(.*)\\.csv$", "\\2", .)
 }
