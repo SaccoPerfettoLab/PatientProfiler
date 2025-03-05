@@ -16,6 +16,6 @@ it returns a string representing patient id
 Extract patients_IDs from PatientProfiler directories structures
 }
 \examples{
-extract_patient_id('Prot_Patient_X11.xlsx')
+extract_patient_id('Prot_Patient_X11.csv')
 
 }

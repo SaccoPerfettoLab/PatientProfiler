@@ -79,8 +79,8 @@ with phosphorylation scores (Phosphoscore), generating aggregated results for ea
 }
 \details{
 \emph{Results output}:
-Final results for each patient will be saved as an xlsx files inside the 'Activities' directory created by the function with this format:
-\verb{Activity_patient_\{patient_id\}.xlsx}.
+Final results for each patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
+\verb{Activity_patient_\{patient_id\}.csv}.
 Each file contains these columns:
 \itemize{
 \item \code{UNIPROT}: protein Uniprot ID.
