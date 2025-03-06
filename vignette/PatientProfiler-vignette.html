@@ -822,11 +822,13 @@ dataset obtained after Step 1 and the communities detected in Step
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a></span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>extract_signatures <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">base_path =</span> <span class="st">&quot;./vignette/Communities/output_communities/&quot;</span>,          </span>
 <span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                               <span class="at">transcriptomics_file =</span> <span class="st">&quot;./PatientProfiler_processed_input/Transcriptomics_updated.csv&quot;</span>, </span>
-<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                               <span class="at">output_file =</span> <span class="st">&quot;Anova_result.csv&quot;</span>,</span>
+<span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                               <span class="at">output_dir =</span> <span class="st">&quot;./vignette&quot;</span>,</span>
 <span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>                               <span class="at">padj_thres =</span> <span class="fl">0.01</span>,</span>
 <span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>                               <span class="at">diff_thres =</span> <span class="fl">0.7</span>,</span>
 <span id="cb13-7"><a href="#cb13-7" tabindex="-1"></a>                               <span class="at">mean_exp_clus_thres =</span> <span class="dv">0</span>,</span>
-<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>                               <span class="at">max_val =</span> <span class="dv">50</span>)</span></code></pre></div>
+<span id="cb13-8"><a href="#cb13-8" tabindex="-1"></a>                               <span class="at">max_val =</span> <span class="dv">50</span>)</span>
+<span id="cb13-9"><a href="#cb13-9" tabindex="-1"></a>  </span>
+<span id="cb13-10"><a href="#cb13-10" tabindex="-1"></a>  </span></code></pre></div>
 <p><strong><em>Results output</em></strong></p>
 <p>The Signatures directory containing a dataframe for each signature
 with the genes list.</p>

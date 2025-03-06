@@ -502,6 +502,7 @@ generate_communities(dir_path = "vignette/Communities/input_communities",
                      output_dir = "vignette/Communities/output_communities",
                      local = TRUE)
 
+
 ```
 
 ***Results output***
@@ -534,11 +535,13 @@ Step 1 and the communities detected in Step 4.
 
 extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
                                transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
-                               output_file = "Anova_result.csv",
+                               output_dir = "./vignette",
                                padj_thres = 0.01,
                                diff_thres = 0.7,
                                mean_exp_clus_thres = 0,
                                max_val = 50)
+  
+  
 ```
 
 ***Results output***
