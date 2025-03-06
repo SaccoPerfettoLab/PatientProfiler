@@ -53,7 +53,7 @@ extract_signatures <- function(base_path = "./vignette/Communities/output_commun
     }
   }
   
-  Transcriptomics_patients <- read_excel(transcriptomics_file) %>%
+  Transcriptomics_patients <- read_csv(transcriptomics_file) %>%
     pivot_longer(cols = -1, names_to = "Patient_ID", values_to = "value")
   Transcriptomics_patients <- left_join(Transcriptomics_patients, stratification_table, by = 'Patient_ID')
   
