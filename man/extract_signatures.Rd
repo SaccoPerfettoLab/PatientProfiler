@@ -5,9 +5,9 @@
 \title{Extract signaling-driven transcriptomics signature from communities}
 \usage{
 extract_signatures(
-  base_path = "./vignette/Communities/output_communities/",
-  transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv",
-  output_file = "Anova_result.csv",
+  base_path,
+  transcriptomics_file,
+  output_dir,
   padj_thres = 0.01,
   diff_thres = 0.7,
   mean_exp_clus_thres = 0,
@@ -19,7 +19,7 @@ extract_signatures(
 
 \item{transcriptomics_file}{Character. Path to the transcriptomic data file.}
 
-\item{output_file}{Character. Name of the output file containing all results.}
+\item{output_dir}{Character. Path to the directory containing all function's results.}
 
 \item{padj_thres}{Numeric. Adjusted p-value threshold for filtering significant results. Default: \code{0.01}.}
 
@@ -31,7 +31,7 @@ extract_signatures(
 }
 \value{
 A data frame containing the results of the transcriptomic signature for each community.
-The function also saves an Excel file with the anova results and generates a "Signatures" directory where filtered signature files for each community are stored.
+The function also saves a csv file with the anova results and generates a "Signatures" directory where filtered signature files for each community are stored.
 }
 \description{
 This function analyzes transcriptomic data by performing ANOVA-Tukey on gene expression levels and then generating community-specific gene expression signatures
@@ -39,7 +39,7 @@ This function analyzes transcriptomic data by performing ANOVA-Tukey on gene exp
 \examples{
 extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
 transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
-output_file = "Anova_result.csv",
+output_dir = "./Anova_result.csv",
 padj_thres = 0.01,
 diff_thres = 0.5,
 mean_exp_clus_thres = 0,

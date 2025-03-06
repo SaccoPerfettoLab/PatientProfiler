@@ -4,7 +4,14 @@
 \alias{generate_communities}
 \title{Generate communities from patient-specif mechanistic models}
 \usage{
-generate_communities(dir_path, network_dir, output_dir, local = FALSE)
+generate_communities(
+  dir_path,
+  network_dir,
+  output_dir,
+  t_lower,
+  t_upper,
+  local = FALSE
+)
 }
 \arguments{
 \item{dir_path}{Character. Path to the directory containing the patients_stratification.tsv in Subtype}
@@ -12,6 +19,10 @@ generate_communities(dir_path, network_dir, output_dir, local = FALSE)
 \item{network_dir}{Character. Path to the directory containing patient-specific mechanistic models obtained in Step 3}
 
 \item{output_dir}{Character. Path to the directory containing the output of this function}
+
+\item{t_lower}{Numeric. The lower threshold for filtering edges based on their frequency across patients. Default is 4.}
+
+\item{t_upper}{Numeric. The upper threshold for filtering edges based on their frequency across patients.  If not provided, no upper limit is applied, and all edges above \code{t_lower} will be included.}
 
 \item{local}{Boolean.}
 }

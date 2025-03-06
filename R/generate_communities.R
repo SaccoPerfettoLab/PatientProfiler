@@ -4,6 +4,8 @@
 #' @param dir_path Character. Path to the directory containing the patients_stratification.tsv in Subtype
 #' @param network_dir Character. Path to the directory containing patient-specific mechanistic models obtained in Step 3
 #' @param output_dir Character. Path to the directory containing the output of this function
+#' @param t_lower Numeric. The lower threshold for filtering edges based on their frequency across patients. Default is 4.
+#' @param t_upper Numeric. The upper threshold for filtering edges based on their frequency across patients.  If not provided, no upper limit is applied, and all edges above `t_lower` will be included.
 #' @param local Boolean. 
 #'
 #'
@@ -15,7 +17,7 @@
 #' network_dir = "Networks_output",
 #' output_dir = "output_communities")
 
-generate_communities <- function(dir_path, network_dir, output_dir, local = FALSE) {
+generate_communities <- function(dir_path, network_dir, output_dir, t_lower, t_upper, local = FALSE) {
   if (local == TRUE) {
     path_package <- './inst/'
   } else {
@@ -56,7 +58,10 @@ generate_communities <- function(dir_path, network_dir, output_dir, local = FALS
   }
   
   # Find communities
-  communities <- find_communities(dir_path, output_dir) 
+  communities <- find_communities(dir_path = dir_path, 
+                                  output_dir = output_dir,
+                                  t_lower = t_lower, 
+                                  t_upper = t_upper) 
   
   # Remove the temporary directory
   unlink(dir_path, recursive = TRUE)

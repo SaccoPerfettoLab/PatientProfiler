@@ -1,25 +1,26 @@
 
+
 #' Extract signaling-driven transcriptomics signature from communities
 #' 
 #' This function analyzes transcriptomic data by performing ANOVA-Tukey on gene expression levels and then generating community-specific gene expression signatures
 #'
 #' @param base_path Character. Path to the directory containing community folders.
 #' @param transcriptomics_file Character. Path to the transcriptomic data file. 
-#' @param output_file Character. Name of the output file containing all results. 
+#' @param output_dir Character. Path to the directory containing all function's results. 
 #' @param padj_thres Numeric. Adjusted p-value threshold for filtering significant results. Default: `0.01`.
 #' @param diff_thres Numeric. Minimum difference threshold for gene expression filtering. Default: `0.7`.
 #' @param mean_exp_clus_thres Numeric. Minimum mean expression threshold for gene filtering. Default: `0`.
 #' @param max_val Integer. Maximum number of genes to include in each community-specific signature. Default: `50`.
 #'
 #' @return A data frame containing the results of the transcriptomic signature for each community.
-#' The function also saves an Excel file with the anova results and generates a "Signatures" directory where filtered signature files for each community are stored.
+#' The function also saves a csv file with the anova results and generates a "Signatures" directory where filtered signature files for each community are stored.
 #'
 #' @export
 #'
 #' @examples
 #' extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
 #' transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
-#' output_file = "Anova_result.csv",
+#' output_dir = "./Anova_result.csv",
 #' padj_thres = 0.01,
 #' diff_thres = 0.5,
 #' mean_exp_clus_thres = 0,
@@ -27,14 +28,20 @@
 
 
 
-
-extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
-                               transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
-                               output_file = "Anova_result.csv",
+extract_signatures <- function(base_path,          
+                               transcriptomics_file, 
+                               output_dir,
                                padj_thres = 0.01,
                                diff_thres = 0.7,
                                mean_exp_clus_thres = 0,
                                max_val = 50) {
+  
+  dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
+  
+  output_file <- file.path(output_dir, "Anova_result.csv")
+  
+  signature_dir <- file.path(output_dir, "Signatures")
+  dir.create(signature_dir, showWarnings = FALSE)
   
   community_folders <- list.dirs(base_path, recursive = FALSE)
   stratification_table <- data.frame()
@@ -53,14 +60,12 @@ extract_signatures <- function(base_path = "./vignette/Communities/output_commun
     }
   }
   
-  Transcriptomics_patients <- read_csv(transcriptomics_file) %>%
+  Transcriptomics_patients <- readr::read_csv(transcriptomics_file) %>%
     pivot_longer(cols = -1, names_to = "Patient_ID", values_to = "value")
   Transcriptomics_patients <- left_join(Transcriptomics_patients, stratification_table, by = 'Patient_ID')
   
   final_results <- perform_anova(Transcriptomics_patients, stratification_table)
   write_csv(final_results, output_file)
-  
-  dir.create("Signatures", showWarnings = FALSE)
   
   for (cluster_i in unique(final_results$cluster)) {
     final_results_filtered <- final_results %>%
@@ -74,7 +79,7 @@ extract_signatures <- function(base_path = "./vignette/Communities/output_commun
       final_results_filtered <- final_results_filtered[1:max_val,]
     }
     
-    write_csv(final_results_filtered[, 5:6], paste0('Signatures/signature_', cluster_i, 'csv'))
+    write_csv(final_results_filtered[, 5:6], file.path(signature_dir, paste0('signature_', cluster_i, '.csv')))
   }
   
   return(final_results)
