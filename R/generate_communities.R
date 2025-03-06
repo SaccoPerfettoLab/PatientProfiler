@@ -17,7 +17,7 @@
 #' network_dir = "Networks_output",
 #' output_dir = "output_communities")
 
-generate_communities <- function(dir_path, network_dir, output_dir, t_lower, t_upper, local = FALSE) {
+generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4, t_upper = 30, local = FALSE) {
   if (local == TRUE) {
     path_package <- './inst/'
   } else {
@@ -58,10 +58,10 @@ generate_communities <- function(dir_path, network_dir, output_dir, t_lower, t_u
   }
   
   # Find communities
-  communities <- find_communities(dir_path = dir_path, 
-                                  output_dir = output_dir,
+  communities <- find_communities(path = dir_path,
                                   t_lower = t_lower, 
-                                  t_upper = t_upper) 
+                                  t_upper = t_upper,
+                                  output_dir = output_dir) 
   
   # Remove the temporary directory
   unlink(dir_path, recursive = TRUE)
