@@ -1,8 +1,8 @@
 
 #' Generate communities from patient-specif mechanistic models
 #'
-#' @param dir_path Character. Path to the directory containing the patients stratification.tsv in Subtype
-#' @param network_dir Character. Path to the directory containing patinet-specific mechanistic models obtained in Step 3
+#' @param dir_path Character. Path to the directory containing the patients_stratification.tsv in Subtype
+#' @param network_dir Character. Path to the directory containing patient-specific mechanistic models obtained in Step 3
 #' @param output_dir Character. Path to the directory containing the output of this function
 #' @param local Boolean. 
 #'
@@ -11,9 +11,9 @@
 #' @export
 #'
 #' @examples
-#' NULL
-#' 
-#' 
+#' generate_communities(dir_path = "input_communities", 
+#' network_dir = "Networks_output",
+#' output_dir = "output_communities")
 
 generate_communities <- function(dir_path, network_dir, output_dir, local = FALSE) {
   if (local == TRUE) {
@@ -46,11 +46,11 @@ generate_communities <- function(dir_path, network_dir, output_dir, local = FALS
     
     opt1 <- readRDS(file)
     
-    nodes <- opt1$nodes_df[, c(1:2,7)]
+    nodes <- opt1$sp_object_phenotypes$nodes_df[, c(1:2,7)]
     nodes_path <- file.path(temp_nodes_dir, paste0("nodes_", pat_name, ".xlsx"))
     writexl::write_xlsx(nodes, nodes_path)
     
-    edges <- opt1$edges_df[, c(1:4,6)]
+    edges <- opt1$sp_object_phenotypes$edges_df[, c(1:4,6)]
     edges_path <- file.path(temp_edges_dir, paste0("edges_", pat_name, ".xlsx"))
     writexl::write_xlsx(edges, edges_path)
   }

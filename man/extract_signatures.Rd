@@ -37,5 +37,11 @@ The function also saves an Excel file with the anova results and generates a "Si
 This function analyzes transcriptomic data by performing ANOVA-Tukey on gene expression levels and then generating community-specific gene expression signatures
 }
 \examples{
-NULL
+extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
+transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
+output_file = "Anova_result.csv",
+padj_thres = 0.01,
+diff_thres = 0.5,
+mean_exp_clus_thres = 0,
+max_val = 50)
 }

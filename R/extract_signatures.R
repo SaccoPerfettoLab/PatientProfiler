@@ -17,7 +17,13 @@
 #' @export
 #'
 #' @examples
-#' NULL
+#' extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
+#' transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
+#' output_file = "Anova_result.csv",
+#' padj_thres = 0.01,
+#' diff_thres = 0.5,
+#' mean_exp_clus_thres = 0,
+#' max_val = 50)
 
 
 

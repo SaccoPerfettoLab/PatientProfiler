@@ -7,9 +7,9 @@
 generate_communities(dir_path, network_dir, output_dir, local = FALSE)
 }
 \arguments{
-\item{dir_path}{Character. Path to the directory containing the patients stratification.tsv in Subtype}
+\item{dir_path}{Character. Path to the directory containing the patients_stratification.tsv in Subtype}
 
-\item{network_dir}{Character. Path to the directory containing patinet-specific mechanistic models obtained in Step 3}
+\item{network_dir}{Character. Path to the directory containing patient-specific mechanistic models obtained in Step 3}
 
 \item{output_dir}{Character. Path to the directory containing the output of this function}
 
@@ -22,7 +22,7 @@ A directory for each community containing nodes table, edges table e patients st
 Generate communities from patient-specif mechanistic models
 }
 \examples{
-NULL
-
-
+generate_communities(dir_path = "input_communities", 
+network_dir = "Networks_output",
+output_dir = "output_communities")
 }
