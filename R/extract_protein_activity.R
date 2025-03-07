@@ -4,8 +4,8 @@
 #' It combines footprint based analysis (TFEA and KSEA), with phosphorylation scores (Phosphoscore), generating aggregated results for the patient.
 #'
 #' *Results output*:
-#'    Final results for the patient will be saved as an xlsx files inside the 'Activities' directory created by the function with this format:
-#'    `Activity_patient_{patient_id}.xlsx`.
+#'    Final results for the patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
+#'    `Activity_patient_{patient_id}.csv`.
 #'    Each file contains these columns:
 #'    - `UNIPROT`: protein Uniprot ID.
 #'    - `gene_name`: name of the gene.
@@ -65,9 +65,9 @@
 #' @examples
 #' tf_params <- list(reg_minsize = 5, collectri = TRUE)
 #' kin_params <- list(exp_sign = TRUE, GO_annotation = FALSE)
-#' extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.xlsx",
-#'                          trans_file = "Transc_patients/Transc_Patient_CPT000814.xlsx",
-#'                          phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.xlsx",
+#' extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.csv",
+#'                          trans_file = "Transc_patients/Transc_Patient_CPT000814.csv",
+#'                          phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.csv",
 #'                          tf_params,
 #'                          kin_params,
 #'                          output_dir = "Activities")
@@ -97,15 +97,15 @@ extract_protein_activity <- function(
 
   # Load files if they exist
   if (!is.null(prot_file)) {
-    Prot_P <- read_xlsx(prot_file)
+    Prot_P <- read_csv(prot_file)
   }
 
   if (!is.null(trans_file)) {
-    Trans_P <- read_xlsx(trans_file)
+    Trans_P <- read_csv(trans_file)
   }
 
   if (!is.null(phospho_file)) {
-    Phospho_P <- read_xlsx(phospho_file)
+    Phospho_P <- read_csv(phospho_file)
   }
 
   # Initialize activity results
@@ -212,7 +212,7 @@ extract_protein_activity <- function(
   # Save final results
   if (!is.null(toy_activity_df) && nrow(toy_activity_df) > 0) {
     patient_name <- extract_patient_id(basename(prot_file %||% trans_file %||% phospho_file))
-    write_xlsx(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".xlsx"))
+    write_csv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".csv"))
   } else {
     warning("No activity data could be extracted.")
   }

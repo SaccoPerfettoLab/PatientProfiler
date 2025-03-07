@@ -78,8 +78,8 @@ It combines footprint based analysis (TFEA and KSEA), with phosphorylation score
 }
 \details{
 \emph{Results output}:
-Final results for the patient will be saved as an xlsx files inside the 'Activities' directory created by the function with this format:
-\verb{Activity_patient_\{patient_id\}.xlsx}.
+Final results for the patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
+\verb{Activity_patient_\{patient_id\}.csv}.
 Each file contains these columns:
 \itemize{
 \item \code{UNIPROT}: protein Uniprot ID.
@@ -92,9 +92,9 @@ Each file contains these columns:
 \examples{
 tf_params <- list(reg_minsize = 5, collectri = TRUE)
 kin_params <- list(exp_sign = TRUE, GO_annotation = FALSE)
-extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.xlsx",
-                         trans_file = "Transc_patients/Transc_Patient_CPT000814.xlsx",
-                         phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.xlsx",
+extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.csv",
+                         trans_file = "Transc_patients/Transc_Patient_CPT000814.csv",
+                         phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.csv",
                          tf_params,
                          kin_params,
                          output_dir = "Activities")

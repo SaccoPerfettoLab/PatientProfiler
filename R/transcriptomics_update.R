@@ -35,7 +35,7 @@ transcriptomics_update <- function(df_tra,
   
   df_tra_clean <<- remove_nas(df_tra, threshold)
   
-  write_xlsx(df_tra_clean, paste0(output_dir,"/","Transcriptomics_clean.xlsx"))
+  write_csv(df_tra_clean, paste0(output_dir,"/","Transcriptomics_clean.csv"))
   
   if (zscore) {
     
@@ -55,7 +55,7 @@ transcriptomics_update <- function(df_tra,
     
     df_tra_zscore <<- cbind(metadata_columns, df_tra_zscore)
     
-    write_xlsx(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.xlsx"))
+    write_csv(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.csv"))
     return(df_tra_zscore)
   } else {
     return(df_tra_clean)

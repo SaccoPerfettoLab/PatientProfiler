@@ -32,7 +32,7 @@ create_cohort_networks(
 
 \item{pheno_distances_table}{character, any character except NULL to internally compute it; default:  \code{NULL}.}
 
-\item{mut_file}{string, path to cohort mutations csv file, default \code{NULL}.}
+\item{mut_file}{string, path to cohort mutations .csv file, default \code{NULL}.}
 
 \item{output_dir}{string, path to network folder; default \code{'./Networks_output/'}.}
 

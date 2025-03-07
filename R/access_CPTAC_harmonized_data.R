@@ -48,15 +48,15 @@ access_harmonized_CPTAC_data <- function(tumors, data_types) {
         
       } else if (data_type %in% c("phospho", "prot", "transc")) {
         # Percorso del file omico (proteomica, fosfoproteomica, trascrittomica)
-        file_name <- paste0(tumor, "_", data_type, "_updated.xlsx")
+        file_name <- paste0(tumor, "_", data_type, "_updated.csv")
         file_path <- file.path(tumor_dir, file_name)
         
         response <- GET(file_path)
         if (status_code(response) == 200) {
-          temp_file <- tempfile(fileext = ".xlsx")
+          temp_file <- tempfile(fileext = ".csv")
           writeBin(content(response, "raw"), temp_file)
           
-          omic_data <- read_xlsx(temp_file)
+          omic_data <- read_csv(temp_file)
           
           var_name <- paste0(tumor, "_", data_type)
           assign(var_name, omic_data, envir = .GlobalEnv)

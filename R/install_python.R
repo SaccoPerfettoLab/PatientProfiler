@@ -3,7 +3,7 @@
 #'
 #' This function must be executed the first time PatientProfiler is installed
 #'
-#' @param ...
+#' @param ... flexible arguments
 #' @param envname "r-patientprofiler"
 #' @param new_env used-specified name for the environment
 #'
