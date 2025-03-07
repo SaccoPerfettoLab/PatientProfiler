@@ -97,15 +97,15 @@ extract_protein_activity <- function(
 
   # Load files if they exist
   if (!is.null(prot_file)) {
-    Prot_P <- read_csv(prot_file)
+    Prot_P <- readr::read_csv(prot_file)
   }
 
   if (!is.null(trans_file)) {
-    Trans_P <- read_csv(trans_file)
+    Trans_P <- readr::read_csv(trans_file)
   }
 
   if (!is.null(phospho_file)) {
-    Phospho_P <- read_csv(phospho_file)
+    Phospho_P <- readr::read_csv(phospho_file)
   }
 
   # Initialize activity results

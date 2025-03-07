@@ -56,7 +56,7 @@ access_harmonized_CPTAC_data <- function(tumors, data_types) {
           temp_file <- tempfile(fileext = ".csv")
           writeBin(content(response, "raw"), temp_file)
           
-          omic_data <- read_csv(temp_file)
+          omic_data <- readr::read_csv(temp_file)
           
           var_name <- paste0(tumor, "_", data_type)
           assign(var_name, omic_data, envir = .GlobalEnv)

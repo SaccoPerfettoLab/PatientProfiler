@@ -89,7 +89,7 @@ create_cohort_networks <- function(
 
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
-    read_csv(mut_file)
+    readr::read_csv(mut_file)
   }else character()
 
   trans_ids <- sapply(trans_files, extract_patient_id)
@@ -130,26 +130,26 @@ create_cohort_networks <- function(
 
     # Read files
     if(!is.na(trans_file)){
-      Trans_P <- read_csv(trans_file)
+      Trans_P <- readr::read_csv(trans_file)
     }else{
       Trans_P <- NULL
     }
 
     if(!is.na(prot_file)){
-      Prot_P <- read_csv(prot_file)
+      Prot_P <- readr::read_csv(prot_file)
     }else{
       Prot_P <- NULL
     }
 
     if(!is.na(phospho_file)){
-      Phospho_P <- readxl::read_xlsx(phospho_file)
+      Phospho_P <- readr::read_csv(phospho_file)
     }else{
       Phospho_P <- NULL
     }
 
 
     if (!is.na(act_file)) {
-      act_P <- readxl::read_xlsx(act_file)
+      act_P <- readr::read_csv(act_file)
     } else {
       act_P <- NULL
     }
