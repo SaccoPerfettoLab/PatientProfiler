@@ -32,7 +32,7 @@ extract_signatures <- function(base_path,
                                transcriptomics_file, 
                                output_dir,
                                padj_thres = 0.01,
-                               diff_thres = 0.7,
+                               diff_thres = 0.5,
                                mean_exp_clus_thres = 0,
                                max_val = 50) {
   

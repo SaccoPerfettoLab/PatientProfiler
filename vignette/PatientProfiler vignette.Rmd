@@ -142,9 +142,9 @@ patients to give you a general vision of
 \###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
-transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_transc.tsv") 
-proteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_prot.tsv") 
-phosphoproteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_phospho.tsv")  
+transcriptomics_data <- read_csv("./PatientProfiler_raw_input/Brca_transc.csv") 
+proteomics_data <- read_csv("./PatientProfiler_raw_input/Brca_prot.csv") 
+phosphoproteomics_data <- read_csv("./PatientProfiler_raw_input/Brca_phospho.csv")  
 
 omics_update(
              df_tr = NULL,   
@@ -153,7 +153,7 @@ omics_update(
              threshold = 80,
              sw_len = 7,  
              pep_col_name = "Peptide",
-             imp_method = "pmm",   
+             imp_method = "norm",   
              zscore = TRUE,   
              zmethod = "column",   
              metric = "median",
@@ -237,9 +237,9 @@ format for the next steps.
 
 ```{r chunk4, eval = FALSE}
 
-tr_updated <- read_tsv("PatientProfiler_processed_input/Transcriptomics_updated.tsv")
-pr_updated <- read_tsv("PatientProfiler_processed_input/Proteomics_updated.tsv")
-ph_updated <- read_tsv("PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
+tr_updated <- read_csv("PatientProfiler_processed_input/Transcriptomics_updated.csv")
+pr_updated <- read_csv("PatientProfiler_processed_input/Proteomics_updated.csv")
+ph_updated <- read_csv("PatientProfiler_processed_input/Phosphoproteomics_updated.csv")
 
 omics_preparation(
               df_tr_updated = tr_updated,           
@@ -532,7 +532,7 @@ extract_signatures <- function(base_path = "./vignette/Communities/output_commun
                                transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
                                output_dir = "./vignette",
                                padj_thres = 0.01,
-                               diff_thres = 0.7,
+                               diff_thres = 0.5,
                                mean_exp_clus_thres = 0,
                                max_val = 50)
   
