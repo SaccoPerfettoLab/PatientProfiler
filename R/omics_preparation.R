@@ -51,7 +51,7 @@ omics_preparation <- function(
         mutate(logpval = 2 * pnorm(as.numeric(difference), lower.tail = FALSE))
       df_tr_updated_5 = cbind(tstat = df_tr_updated_4[, 3], df_tr_updated_4)
       df_tr_updated_5 = df_tr_updated_5 %>% relocate(gene_ID, gene_name, difference, tstat, logpval, significant)
-      write_csv(df_tr_updated_5, paste0(transc_dir_name, "/Transc_Patient_", as.character(colnames(df_tr_updated)[c]), ".csv"))
+      write_tsv(df_tr_updated_5, paste0(transc_dir_name, "/Transc_Patient_", as.character(colnames(df_tr_updated)[c]), ".tsv"))
     }
     message("Done!")
   }
@@ -73,7 +73,7 @@ omics_preparation <- function(
       patients = patients %>%
         mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA)) %>%
         mutate(logpval = 2 * pnorm(as.numeric(difference), lower.tail = FALSE))
-      write_csv(patients, paste0(prot_dir_name, "/Prot_Patient_", as.character(colnames(df_pr_updated)[i]), ".csv"))
+      write_tsv(patients, paste0(prot_dir_name, "/Prot_Patient_", as.character(colnames(df_pr_updated)[i]), ".tsv"))
     }
     message("Done!")
   }
@@ -98,7 +98,7 @@ omics_preparation <- function(
         mutate(logpval = 2 * pnorm(difference, lower.tail = FALSE))
       patients = patients %>%
         mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA))
-      write_csv(patients, paste0(phospho_dir_name, "/Phospho_Patient_", as.character(colnames(df_ph_updated)[i]), ".csv"))
+      write_tsv(patients, paste0(phospho_dir_name, "/Phospho_Patient_", as.character(colnames(df_ph_updated)[i]), ".tsv"))
     }
     message("Done!")
   }

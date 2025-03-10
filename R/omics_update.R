@@ -68,14 +68,14 @@ omics_update <- function(df_tr = NULL,
 
     transcriptomics_updated <<- transcriptomics_update(df_tr,threshold,zscore,zmethod,metric,output_dir)
 
-    write_csv(transcriptomics_updated, paste0(output_dir,"/","Transcriptomics_updated.csv"))
+    write_tsv(transcriptomics_updated, paste0(output_dir,"/","Transcriptomics_updated.tsv"))
     message("Transcriptomics update complete!")
   }
 
   if(!is.null(df_pr)){
     message("Proteomics update started..")
     proteomics_updated <<- proteomics_update(df_pr,imp_method,zscore,zmethod,metric, output_dir)
-    write_csv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.csv"))
+    write_tsv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.tsv"))
 
     message("Proteomics update complete!")
   }
@@ -91,7 +91,7 @@ omics_update <- function(df_tr = NULL,
                                                            metric,
                                                            output_dir)
 
-    write_csv(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.csv"))
+    write_tsv(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.tsv"))
 
     message("Phosphoproteomics update complete!")
   }

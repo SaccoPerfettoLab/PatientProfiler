@@ -19,8 +19,8 @@
 #'
 #' @examples
 #' extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
-#' transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
-#' output_dir = "./Anova_result.csv",
+#' transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.tsv", 
+#' output_dir = "./Anova_result.tsv",
 #' padj_thres = 0.01,
 #' diff_thres = 0.5,
 #' mean_exp_clus_thres = 0,
@@ -38,7 +38,7 @@ extract_signatures <- function(base_path,
   
   dir.create(output_dir, recursive = TRUE, showWarnings = FALSE)
   
-  output_file <- file.path(output_dir, "Anova_result.csv")
+  output_file <- file.path(output_dir, "Anova_result.tsv")
   
   signature_dir <- file.path(output_dir, "Signatures")
   dir.create(signature_dir, showWarnings = FALSE)
@@ -51,7 +51,7 @@ extract_signatures <- function(base_path,
     patients_file <- file.path(community_folder, "patients.txt") 
     
     if (file.exists(patients_file)) {
-      community_data <- read.csv(patients_file, header = TRUE, stringsAsFactors = FALSE)
+      community_data <- read.tsv(patients_file, header = TRUE, stringsAsFactors = FALSE)
       colnames(community_data)[1] <- "Patient_ID"  
       community_data$community <- community_id  
       stratification_table <- rbind(stratification_table, community_data)
@@ -65,7 +65,7 @@ extract_signatures <- function(base_path,
   Transcriptomics_patients <- left_join(Transcriptomics_patients, stratification_table, by = 'Patient_ID')
   
   final_results <- perform_anova(Transcriptomics_patients, stratification_table)
-  write_csv(final_results, output_file)
+  write_tsv(final_results, output_file)
   
   for (cluster_i in unique(final_results$cluster)) {
     final_results_filtered <- final_results %>%
@@ -79,7 +79,7 @@ extract_signatures <- function(base_path,
       final_results_filtered <- final_results_filtered[1:max_val,]
     }
     
-    write_csv(final_results_filtered[, 5:6], file.path(signature_dir, paste0('signature_', cluster_i, '.csv')))
+    write_tsv(final_results_filtered[, 5:6], file.path(signature_dir, paste0('signature_', cluster_i, '.tsv')))
   }
   
   return(final_results)

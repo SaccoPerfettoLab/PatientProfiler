@@ -44,13 +44,13 @@ proteomics_update <- function(df_pro,
   # Rimuovi i duplicati
   message("Proteomics data: removing duplicates")
   df_pro_clean <<- remove_duplicates_proteomics(df_pro_update)
-  write_csv(df_pro_clean, paste0(output_dir,"/","Proteomics_clean.csv"))
+  write_tsv(df_pro_clean, paste0(output_dir,"/","Proteomics_clean.tsv"))
   message("Done!")
   
   # Imputazione dei valori mancanti
   message("Proteomics data: missing values imputation")
   df_pro_imputed <<- impute_proteomics(df_pro_clean, 3, impute_method)
-  write_csv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.csv"))
+  write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
   message("Done!")
   
   if (zscore) {
@@ -66,7 +66,7 @@ proteomics_update <- function(df_pro,
     df_pro_zscore <<- mutate_all(as.data.frame(df_pro_zscore), as.numeric)
     
     df_pro_zscore <<- cbind(metadata_columns, df_pro_zscore)
-    write_csv(df_pro_zscore, paste0(output_dir,"/","Proteomics_zscore.csv"))
+    write_tsv(df_pro_zscore, paste0(output_dir,"/","Proteomics_zscore.tsv"))
     
     return(df_pro_zscore)
     message("Done!")

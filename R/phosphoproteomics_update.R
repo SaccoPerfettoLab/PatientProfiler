@@ -39,12 +39,12 @@ phosphoproteomics_update <- function(df_pho,
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
 
-  write_csv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.csv"))
+  write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv"))
   message("Done!")
 
   message("Phosphoproteomics data: missing values imputation")
   df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = impute_method)
-  write_csv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.csv"))
+  write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
   message("Done!")
 
   if (zscore) {
@@ -70,7 +70,7 @@ phosphoproteomics_update <- function(df_pho,
 
     df_pho_zscore <<- cbind(metadata_columns, df_pho_zscore)
     return(df_pho_zscore)
-    write_csv(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_zscore.csv"))
+    write_tsv(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_zscore.tsv"))
 
     message("Done!")
   } else {

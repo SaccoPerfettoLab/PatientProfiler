@@ -4,8 +4,8 @@
 #' It combines footprint based analysis (TFEA and KSEA), with phosphorylation scores (Phosphoscore), generating aggregated results for the patient.
 #'
 #' *Results output*:
-#'    Final results for the patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
-#'    `Activity_patient_{patient_id}.csv`.
+#'    Final results for the patient will be saved as an tsv files inside the 'Activities' directory created by the function with this format:
+#'    `Activity_patient_{patient_id}.tsv`.
 #'    Each file contains these columns:
 #'    - `UNIPROT`: protein Uniprot ID.
 #'    - `gene_name`: name of the gene.
@@ -65,9 +65,9 @@
 #' @examples
 #' tf_params <- list(reg_minsize = 5, collectri = TRUE)
 #' kin_params <- list(exp_sign = TRUE, GO_annotation = FALSE)
-#' extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.csv",
-#'                          trans_file = "Transc_patients/Transc_Patient_CPT000814.csv",
-#'                          phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.csv",
+#' extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.tsv",
+#'                          trans_file = "Transc_patients/Transc_Patient_CPT000814.tsv",
+#'                          phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.tsv",
 #'                          tf_params,
 #'                          kin_params,
 #'                          output_dir = "Activities")
@@ -212,7 +212,7 @@ extract_protein_activity <- function(
   # Save final results
   if (!is.null(toy_activity_df) && nrow(toy_activity_df) > 0) {
     patient_name <- extract_patient_id(basename(prot_file %||% trans_file %||% phospho_file))
-    write_csv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".csv"))
+    write_tsv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".tsv"))
   } else {
     warning("No activity data could be extracted.")
   }

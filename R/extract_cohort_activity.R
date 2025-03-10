@@ -5,8 +5,8 @@
 #' with phosphorylation scores (Phosphoscore), generating aggregated results for each patient.
 #'
 #' *Results output*:
-#'    Final results for each patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
-#'    `Activity_patient_{patient_id}.csv`.
+#'    Final results for each patient will be saved as an tsv files inside the 'Activities' directory created by the function with this format:
+#'    `Activity_patient_{patient_id}.tsv`.
 #'    Each file contains these columns:
 #'    - `UNIPROT`: protein Uniprot ID.
 #'    - `gene_name`: name of the gene.
@@ -89,20 +89,20 @@ extract_cohort_activity <- function(
 
   # Retrieve file lists from specified directories
   prot_files <- if (!is.null(prot_dir)) {
-    list.files(path = prot_dir, pattern = "^Prot_Patient_.*\\.csv$", full.names = TRUE)
+    list.files(path = prot_dir, pattern = "^Prot_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
 
   trans_files <- if (!is.null(trans_dir)) {
-    list.files(path = trans_dir, pattern = "^Transc_Patient_.*\\.csv$", full.names = TRUE)
+    list.files(path = trans_dir, pattern = "^Transc_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
 
   phospho_files <- if (!is.null(phospho_dir)) {
-    list.files(path = phospho_dir, pattern = "^Phospho_Patient_.*\\.csv$", full.names = TRUE)
+    list.files(path = phospho_dir, pattern = "^Phospho_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
 
   extract_patient_id <- function(file_path) {
     basename(file_path) %>%
-      sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_)(.*)\\.csv$", "\\2", .)
+      sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_)(.*)\\.tsv$", "\\2", .)
   }
 
   prot_ids <- sapply(prot_files, extract_patient_id)
@@ -141,7 +141,7 @@ extract_cohort_activity <- function(
       )
 
       old_file_path <- file.path(output_dir, paste0("Activity_patient_", basename(prot_file)))
-      new_file_path <- file.path(output_dir, paste0("Activity_patient_", patient_id, ".csv"))
+      new_file_path <- file.path(output_dir, paste0("Activity_patient_", patient_id, ".tsv"))
 
       if (file.exists(old_file_path)) {
         file.rename(old_file_path, new_file_path)
