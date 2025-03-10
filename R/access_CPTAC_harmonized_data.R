@@ -30,13 +30,13 @@ access_harmonized_CPTAC_data <- function(tumors, data_types) {
     for (data_type in data_types) {
       
       if (data_type == "mut") {
-        mut_file_name <- paste0(tumor, "_mut_matrix.csv")
+        mut_file_name <- paste0(tumor, "_mut_matrix.tsv")
         mut_file_path <- file.path(tumor_dir, mut_file_name)
         
         # Usa httr per fare il download del file
         response <- GET(mut_file_path)
         if (status_code(response) == 200) {
-          mut_data <- read.csv(text = content(response, "text"))
+          mut_data <- read.tsv(text = content(response, "text"))
           
           # Crea una variabile dinamica per il dataframe delle mutazioni
           var_name <- paste0(tumor, "_mut")
@@ -48,15 +48,15 @@ access_harmonized_CPTAC_data <- function(tumors, data_types) {
         
       } else if (data_type %in% c("phospho", "prot", "transc")) {
         # Percorso del file omico (proteomica, fosfoproteomica, trascrittomica)
-        file_name <- paste0(tumor, "_", data_type, "_updated.csv")
+        file_name <- paste0(tumor, "_", data_type, "_updated.tsv")
         file_path <- file.path(tumor_dir, file_name)
         
-        response <- GET(file_path)
+        response <- httr::GET(file_path)
         if (status_code(response) == 200) {
-          temp_file <- tempfile(fileext = ".csv")
+          temp_file <- tempfile(fileext = ".tsv")
           writeBin(content(response, "raw"), temp_file)
           
-          omic_data <- readr::read_csv(temp_file)
+          omic_data <- readr::read_tsv(temp_file)
           
           var_name <- paste0(tumor, "_", data_type)
           assign(var_name, omic_data, envir = .GlobalEnv)
