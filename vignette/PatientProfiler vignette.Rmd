@@ -142,9 +142,9 @@ patients to give you a general vision of
 \###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
-transcriptomics_data <- read_csv("./PatientProfiler_raw_input/Brca_transc.csv") 
-proteomics_data <- read_csv("./PatientProfiler_raw_input/Brca_prot.csv") 
-phosphoproteomics_data <- read_csv("./PatientProfiler_raw_input/Brca_phospho.csv")  
+transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_transc.tsv") 
+proteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_prot.tsv") 
+phosphoproteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_phospho.tsv")  
 
 omics_update(
              df_tr = NULL,   
@@ -237,9 +237,9 @@ format for the next steps.
 
 ```{r chunk4, eval = FALSE}
 
-tr_updated <- read_csv("PatientProfiler_processed_input/Transcriptomics_updated.csv")
-pr_updated <- read_csv("PatientProfiler_processed_input/Proteomics_updated.csv")
-ph_updated <- read_csv("PatientProfiler_processed_input/Phosphoproteomics_updated.csv")
+tr_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv")
+pr_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Proteomics_updated.tsv")
+ph_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
 
 omics_preparation(
               df_tr_updated = tr_updated,           
@@ -251,7 +251,7 @@ omics_preparation(
               )
 ```
 
-:::: {style="display: flex; align-items: center;"}
+::: {style="display: flex; align-items: center;"}
 ::: {style="color: blue"}
 ![Description](../img/info.png){alt="Description" height="2em"
 style="margin-right: 10px;"} [To perform the following steps, the
@@ -260,7 +260,7 @@ SignalingProfiler tool is used: you can check out its tutorial
 and the publication regarding it
 [here](https://www.nature.com/articles/s41540-024-00417-6).]{style="font-size: 1.2em;"}
 :::
-::::
+:::
 
 ## [STEP 2) PROTEIN ACTIVITY INFERENCE]{style="color: #41729F;"}
 
@@ -290,9 +290,9 @@ kin_params <- list(reg_minsize = 5)
 patient_id <- 'CPT000814'
 
 extract_protein_activity(
-                prot_file = paste0("Prot_patients/Prot_Patient_", patient_id, ".csv"),       
-                trans_file = paste0("Transc_patients/Transc_Patient_", patient_id, ".csv"),   
-                phospho_file = paste0("Phospho_patients/Phospho_Patient_", patient_id, ".csv"), 
+                prot_file = paste0("Prot_patients/Prot_Patient_", patient_id, ".tsv"),       
+                trans_file = paste0("Transc_patients/Transc_Patient_", patient_id, ".tsv"),   
+                phospho_file = paste0("Phospho_patients/Phospho_Patient_", patient_id, ".tsv"), 
                 tf_params,
                 kin_params,
                 output_dir = "Activities"
@@ -409,19 +409,19 @@ network_params <- initialize_net_default_params(output_dir)
 patient_id <- 'CPT000814'
 
 # Read mutation file (starting nodes of the model)
-mutations_df <- read_csv('./PatientProfiler_raw_input/Brca_mutations.csv')
+mutations_df <- read_tsv('./PatientProfiler_raw_input/Brca_mutations.tsv')
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
 
 # Read activity file (intermediate nodes of the model)
-activities <- read_csv(paste0('./Activities/Activity_Patient_', patient_id, '.csv'))
+activities <- read_tsv(paste0('./Activities/Activity_Patient_', patient_id, '.tsv'))
 
 # Set the functional traits vector (final nodes of the model)
 desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
 
 # Read omics file
-proteomics <- read_csv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.csv'))
-transcriptomics <- read_csv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.csv'))
-phosphoproteomics <- read_csv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.csv'))
+proteomics <- read_tsv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.tsv'))
+transcriptomics <- read_tsv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.tsv'))
+phosphoproteomics <- read_tsv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.tsv'))
 
 # ProxPath proteins-to-phenotypes pre-processing
 pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, 
@@ -464,7 +464,7 @@ create_cohort_networks(trans_dir = './Transc_patients/',
                       prot_dir = './Prot_patients/',
                       phospho_dir = './Phospho_patients/',
                       act_dir = './Activities/',
-                      mut_file = './PatientProfiler_raw_input/Brca_mutations.csv',
+                      mut_file = './PatientProfiler_raw_input/Brca_mutations.tsv',
                       output_dir = './Networks_output/',
                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
                       pheno_distances_table = TRUE,
@@ -529,7 +529,7 @@ after Step 1 and the communities detected in Step 4.
 ```{r chunk10, eval = FALSE}
 
 extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
-                               transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
+                               transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.tsv", 
                                output_dir = "./vignette",
                                padj_thres = 0.01,
                                diff_thres = 0.5,
