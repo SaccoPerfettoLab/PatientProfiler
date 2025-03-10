@@ -46,6 +46,8 @@
 #'
 #' @export
 
+
+
 omics_update <- function(df_tr = NULL,
                          df_pr = NULL,
                          df_ph = NULL,
@@ -57,29 +59,29 @@ omics_update <- function(df_tr = NULL,
                          zmethod = "column",
                          metric = "median",
                          output_dir = "PatientProfiler_processed_input") {
-
-
+  
+  
   if (!is.null(sw_len) && !sw_len %in% c(7, 15)) {
     stop("sw_len parameter has to be 7, 15 or NULL (if you do not have the phosphoproteomics dataframe")
   }
-
+  
   if (!is.null(df_tr)) {
     message("Transcriptomics update started..")
-
+    
     transcriptomics_updated <<- transcriptomics_update(df_tr,threshold,zscore,zmethod,metric,output_dir)
-
+    
     write_tsv(transcriptomics_updated, paste0(output_dir,"/","Transcriptomics_updated.tsv"))
     message("Transcriptomics update complete!")
   }
-
+  
   if(!is.null(df_pr)){
     message("Proteomics update started..")
     proteomics_updated <<- proteomics_update(df_pr,imp_method,zscore,zmethod,metric, output_dir)
     write_tsv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.tsv"))
-
+    
     message("Proteomics update complete!")
   }
-
+  
   if(!is.null(df_ph)){
     message("Phosphoproteomics update started..")
     phosphoproteomics_updated <<- phosphoproteomics_update(df_pho = df_ph,
@@ -90,12 +92,12 @@ omics_update <- function(df_tr = NULL,
                                                            zmethod,
                                                            metric,
                                                            output_dir)
-
+    
     write_tsv(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.tsv"))
-
+    
     message("Phosphoproteomics update complete!")
   }
-
+  
 }
 
 
