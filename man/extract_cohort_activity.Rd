@@ -34,6 +34,9 @@ extract_cohort_activity(
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
 \item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
 \item \code{prot_df}: supporting proteomic data frame.
+\strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_dir} is specified, since the function
+automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds files in the specified folder, so you don't need to change this
+parameter if you specified the proteomics folder!
 \item \code{custom}: boolean, whether to use custom regulons; default: \code{FALSE}.
 \item \code{custom_path}: path to custom regulons file; default: \code{NULL}.
 }}
@@ -50,6 +53,9 @@ extract_cohort_activity(
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
 \item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
 \item \code{prot_df}: supporting proteomic data frame.
+\strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_dir} is specified, since the function
+automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds files in the specified folder, so you don't need to change this
+parameter if you specified the proteomics folder!
 \item \code{custom}: boolean, whether to use custom annotations; default: \code{FALSE}.
 \item \code{custom_path}: path to the custom annotation file; default: \code{NULL}.
 }}
@@ -79,8 +85,8 @@ with phosphorylation scores (Phosphoscore), generating aggregated results for ea
 }
 \details{
 \emph{Results output}:
-Final results for each patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
-\verb{Activity_patient_\{patient_id\}.csv}.
+Final results for each patient will be saved as an tsv files inside the 'Activities' directory created by the function with this format:
+\verb{Activity_patient_\{patient_id\}.tsv}.
 Each file contains these columns:
 \itemize{
 \item \code{UNIPROT}: protein Uniprot ID.

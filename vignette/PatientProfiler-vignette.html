@@ -12,7 +12,7 @@
 
 <meta name="author" content="PerfettoLab" />
 
-<meta name="date" content="2025-03-10" />
+<meta name="date" content="2025-03-11" />
 
 <title>PatientProfiler Package</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">PatientProfiler Package</h1>
 <h4 class="author">PerfettoLab</h4>
-<h4 class="date">2025-03-10</h4>
+<h4 class="date">2025-03-11</h4>
 
 
 
@@ -592,6 +592,11 @@ function (see the description by typing
 <p>The parameters are managed as a <strong>list of default
 parameters</strong> that you can change as you wish, either inside or
 outside the function call.</p>
+<p>(<strong>Note:</strong> The <code>prot_df</code> parameter in
+tf_params and kin_params will only be used if a <code>prot_file</code>
+is specified, since the function automatically loads proteomics data
+only if <code>correct_proteomics</code> is <code>TRUE</code> and if it
+finds the specified file)</p>
 </div>
 <div id="example-of-usage-2" class="section level3">
 <h3><span style="color: #C38370;">Example of usage:</span></h3>
@@ -631,6 +636,11 @@ at cohort level</em></span></h2>
 of a cohort, this function loops on each omic file for each patient and
 infer protein activity using
 [<em>extract_protein_activity</em>]<em>.</em></p>
+<p>(<strong>Note:</strong> The <code>prot_df</code> parameter in
+tf_params and kin_params will only be used if a <code>prot_dir</code> is
+specified, since the function automatically loads proteomics data only
+if <code>correct_proteomics</code> is <code>TRUE</code> and if it finds
+files in the specified folder)</p>
 <div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>tf_params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">reg_minsize =</span> <span class="dv">5</span>, <span class="at">collectri =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>kin_params <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">exp_sign =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
@@ -643,10 +653,10 @@ infer protein activity using
 <span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>                        <span class="at">output_dir =</span> <span class="st">&quot;Activities&quot;</span></span>
 <span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>                        )</span></code></pre></div>
 <p><strong><em>Results output</em></strong></p>
-<p>The cohort final results will be saved as a set of .xlsx files (1
-file - 1 patient=) inside the <code>output_dir</code> directory
-(default, ‘Activities’). Each patient-specific file
-(<code>Activity_patient_{patient_id}.xlsx</code>) contains these
+<p>The cohort final results will be saved as a set of .tsv files (1 file
+- 1 patient=) inside the <code>output_dir</code> directory (default,
+‘Activities’). Each patient-specific file
+(<code>Activity_patient_{patient_id}.tsv</code>) contains these
 columns:</p>
 <ul>
 <li><p><code>UNIPROT</code>: protein Uniprot ID.</p></li>
@@ -822,7 +832,7 @@ dataset obtained after Step 1 and the communities detected in Step
 <h3><span style="color: #C38370;">Example of usage:</span></h3>
 <div class="sourceCode" id="cb13"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" tabindex="-1"></a></span>
 <span id="cb13-2"><a href="#cb13-2" tabindex="-1"></a>extract_signatures <span class="ot">&lt;-</span> <span class="cf">function</span>(<span class="at">base_path =</span> <span class="st">&quot;./vignette/Communities/output_communities/&quot;</span>,          </span>
-<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                               <span class="at">transcriptomics_file =</span> <span class="st">&quot;./PatientProfiler_processed_input/Transcriptomics_updated.tsv&quot;</span>, </span>
+<span id="cb13-3"><a href="#cb13-3" tabindex="-1"></a>                               <span class="at">transcriptomics_file =</span> <span class="st">&quot;./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv&quot;</span>, </span>
 <span id="cb13-4"><a href="#cb13-4" tabindex="-1"></a>                               <span class="at">output_dir =</span> <span class="st">&quot;./vignette&quot;</span>,</span>
 <span id="cb13-5"><a href="#cb13-5" tabindex="-1"></a>                               <span class="at">padj_thres =</span> <span class="fl">0.01</span>,</span>
 <span id="cb13-6"><a href="#cb13-6" tabindex="-1"></a>                               <span class="at">diff_thres =</span> <span class="fl">0.5</span>,</span>

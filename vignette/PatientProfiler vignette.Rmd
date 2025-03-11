@@ -281,6 +281,11 @@ your console).
 The parameters are managed as a **list of default parameters** that you
 can change as you wish, either inside or outside the function call.
 
+(**Note:** The `prot_df` parameter in tf_params and kin_params will only
+be used if a `prot_file` is specified, since the function automatically
+loads proteomics data only if `correct_proteomics` is `TRUE` and if it
+finds the specified file)
+
 ### [Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk5, eval = FALSE}
@@ -322,6 +327,11 @@ with these columns:
 To perform the protein activity inference step for all the patients of a
 cohort, this function loops on each omic file for each patient and infer
 protein activity using [*extract_protein_activity*]*.*
+
+(**Note:** The `prot_df` parameter in tf_params and kin_params will only
+be used if a `prot_dir` is specified, since the function automatically
+loads proteomics data only if `correct_proteomics` is `TRUE` and if it
+finds files in the specified folder)
 
 ```{r chunk6, eval = FALSE}
 tf_params <- list(reg_minsize = 5, collectri = TRUE)

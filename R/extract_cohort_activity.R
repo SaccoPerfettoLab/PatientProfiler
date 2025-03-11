@@ -31,6 +31,9 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
+#'   **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function 
+#'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds files in the specified folder, so you don't need to change this
+#'      parameter if you specified the proteomics folder!
 #'   - `custom`: boolean, whether to use custom regulons; default: `FALSE`.
 #'   - `custom_path`: path to custom regulons file; default: `NULL`.
 #'
@@ -45,6 +48,9 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
+#'      **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function 
+#'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds files in the specified folder, so you don't need to change this
+#'      parameter if you specified the proteomics folder!
 #'   - `custom`: boolean, whether to use custom annotations; default: `FALSE`.
 #'   - `custom_path`: path to the custom annotation file; default: `NULL`.
 #'
