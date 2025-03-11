@@ -339,9 +339,9 @@ extract_cohort_activity(
 
 ***Results output***
 
-The cohort final results will be saved as a set of .xlsx files (1 file -
+The cohort final results will be saved as a set of .tsv files (1 file -
 1 patient=) inside the `output_dir` directory (default, 'Activities').
-Each patient-specific file (`Activity_patient_{patient_id}.xlsx`)
+Each patient-specific file (`Activity_patient_{patient_id}.tsv`)
 contains these columns:
 
 -   `UNIPROT`: protein Uniprot ID.
