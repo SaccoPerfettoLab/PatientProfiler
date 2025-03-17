@@ -53,7 +53,7 @@ create_cohort_networks <- function(
     act_dir = NULL,
     desired_phenotypes = c(),
     pheno_distances_table = NULL,
-    mut_file = NULL, #csv file with mutations...
+    mut_file = NULL, #tsv file with mutations...
     output_dir = './Networks_output/',
     save_all_files = FALSE,
     PKN_options = list(),
@@ -96,7 +96,7 @@ create_cohort_networks <- function(
 
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
-    readr::read_csv(mut_file)
+    readr::read_tsv(mut_file)
   }else character()
 
   trans_ids <- sapply(trans_files, extract_patient_id)
