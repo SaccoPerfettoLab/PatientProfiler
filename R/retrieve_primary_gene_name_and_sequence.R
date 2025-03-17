@@ -17,6 +17,7 @@
 #' # Example usage:
 #' updated_omic_df <- retrieve_primary_gene_name(omic_df, gn_idx = 2, organism = 'human')
 #' head(updated_omic_df)
+#' @export
 
 retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = NULL, organism = 'human', sequence = TRUE){
 
