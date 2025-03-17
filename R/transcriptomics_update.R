@@ -43,7 +43,7 @@ transcriptomics_update <- function(df_tra,
     group_by(gene_name) %>%
     summarise(across(everything(), mean, na.rm = TRUE))
   
-  write_csv(df_tra_agg, paste0(output_dir,"/","Transcriptomics_clean.tsv"))
+  write_tsv(df_tra_agg, paste0(output_dir,"/","Transcriptomics_clean.tsv"))
   
   if (zscore) {
     
@@ -63,7 +63,7 @@ transcriptomics_update <- function(df_tra,
     
     df_tra_zscore <<- cbind(metadata_columns, df_tra_zscore)
     
-    write_csv(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.tsv"))
+    write_tsv(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.tsv"))
     return(df_tra_zscore)
   } else {
     return(df_tra_agg)
