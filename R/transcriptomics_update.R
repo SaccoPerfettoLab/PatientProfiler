@@ -33,18 +33,26 @@ transcriptomics_update <- function(df_tra,
   
   # df_tra_cod <- retrieve_coding(df_tra)
   
+  colnames(df_tra) <- gsub("[.-]", "", colnames(df_tra))
+  
   df_tra_clean <<- remove_nas(df_tra, threshold)
   
-  write_csv(df_tra_clean, paste0(output_dir,"/","Transcriptomics_clean.csv"))
+  message("Transcriptomics data: removing duplicates")
+  
+  df_tra_agg <<- df_tra_clean %>%
+    dplyr::group_by(gene_name) %>%
+    dplyr::summarise(across(everything(), mean, na.rm = TRUE))
+  
+  write_tsv(df_tra_agg, paste0(output_dir,"/","Transcriptomics_clean.tsv"))
   
   if (zscore) {
     
     message("Transcriptomics data: computing zscore")
     
-    df_tra_numeric <- df_tra_clean %>%
+    df_tra_numeric <- df_tra_agg %>%
       dplyr::select(-gene_name)
     
-    metadata_columns <- df_tra_clean %>%
+    metadata_columns <- df_tra_agg %>%
       dplyr::select(gene_name)
     
     df_tra_matrix <- as.matrix(df_tra_numeric)
@@ -55,11 +63,10 @@ transcriptomics_update <- function(df_tra,
     
     df_tra_zscore <<- cbind(metadata_columns, df_tra_zscore)
     
-    write_csv(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.csv"))
+    write_tsv(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.tsv"))
     return(df_tra_zscore)
   } else {
-    return(df_tra_clean)
+    return(df_tra_agg)
   }
 }
-
 

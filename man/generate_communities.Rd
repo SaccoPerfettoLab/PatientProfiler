@@ -8,8 +8,8 @@ generate_communities(
   dir_path,
   network_dir,
   output_dir,
-  t_lower,
-  t_upper,
+  t_lower = 4,
+  t_upper = 30,
   local = FALSE
 )
 }

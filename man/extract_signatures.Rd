@@ -9,7 +9,7 @@ extract_signatures(
   transcriptomics_file,
   output_dir,
   padj_thres = 0.01,
-  diff_thres = 0.7,
+  diff_thres = 0.5,
   mean_exp_clus_thres = 0,
   max_val = 50
 )
@@ -38,8 +38,8 @@ This function analyzes transcriptomic data by performing ANOVA-Tukey on gene exp
 }
 \examples{
 extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
-transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
-output_dir = "./Anova_result.csv",
+transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.tsv", 
+output_dir = "./Anova_result.tsv",
 padj_thres = 0.01,
 diff_thres = 0.5,
 mean_exp_clus_thres = 0,

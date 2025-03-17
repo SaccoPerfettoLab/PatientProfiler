@@ -34,6 +34,9 @@ extract_protein_activity(
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
 \item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
 \item \code{prot_df}: supporting proteomic data frame.
+\strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_file} is specified, since the function
+automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds the specified file, so you don't need to change this
+parameter if you specified the proteomics file!
 \item \code{custom}: boolean, whether to use custom regulons; default: \code{FALSE}.
 \item \code{custom_path}: path to custom regulons file; default: \code{NULL}.
 }}
@@ -50,6 +53,9 @@ extract_protein_activity(
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
 \item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
 \item \code{prot_df}: supporting proteomic data frame.
+\strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_file} is specified, since the function
+automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds the specified file, so you don't need to change this
+parameter if you specified the proteomics file!
 \item \code{custom}: boolean, whether to use custom annotations; default: \code{FALSE}.
 \item \code{custom_path}: path to the custom annotation file; default: \code{NULL}.
 }}
@@ -78,8 +84,8 @@ It combines footprint based analysis (TFEA and KSEA), with phosphorylation score
 }
 \details{
 \emph{Results output}:
-Final results for the patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
-\verb{Activity_patient_\{patient_id\}.csv}.
+Final results for the patient will be saved as an tsv files inside the 'Activities' directory created by the function with this format:
+\verb{Activity_patient_\{patient_id\}.tsv}.
 Each file contains these columns:
 \itemize{
 \item \code{UNIPROT}: protein Uniprot ID.
@@ -92,9 +98,9 @@ Each file contains these columns:
 \examples{
 tf_params <- list(reg_minsize = 5, collectri = TRUE)
 kin_params <- list(exp_sign = TRUE, GO_annotation = FALSE)
-extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.csv",
-                         trans_file = "Transc_patients/Transc_Patient_CPT000814.csv",
-                         phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.csv",
+extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.tsv",
+                         trans_file = "Transc_patients/Transc_Patient_CPT000814.tsv",
+                         phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.tsv",
                          tf_params,
                          kin_params,
                          output_dir = "Activities")

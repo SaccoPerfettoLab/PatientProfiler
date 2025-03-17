@@ -4,8 +4,8 @@
 #' It combines footprint based analysis (TFEA and KSEA), with phosphorylation scores (Phosphoscore), generating aggregated results for the patient.
 #'
 #' *Results output*:
-#'    Final results for the patient will be saved as an csv files inside the 'Activities' directory created by the function with this format:
-#'    `Activity_patient_{patient_id}.csv`.
+#'    Final results for the patient will be saved as an tsv files inside the 'Activities' directory created by the function with this format:
+#'    `Activity_patient_{patient_id}.tsv`.
 #'    Each file contains these columns:
 #'    - `UNIPROT`: protein Uniprot ID.
 #'    - `gene_name`: name of the gene.
@@ -30,6 +30,9 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
+#'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function 
+#'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds the specified file, so you don't need to change this
+#'      parameter if you specified the proteomics file!  
 #'   - `custom`: boolean, whether to use custom regulons; default: `FALSE`.
 #'   - `custom_path`: path to custom regulons file; default: `NULL`.
 #'
@@ -44,6 +47,9 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
+#'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function 
+#'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds the specified file, so you don't need to change this
+#'      parameter if you specified the proteomics file!   
 #'   - `custom`: boolean, whether to use custom annotations; default: `FALSE`.
 #'   - `custom_path`: path to the custom annotation file; default: `NULL`.
 #'
@@ -65,9 +71,9 @@
 #' @examples
 #' tf_params <- list(reg_minsize = 5, collectri = TRUE)
 #' kin_params <- list(exp_sign = TRUE, GO_annotation = FALSE)
-#' extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.csv",
-#'                          trans_file = "Transc_patients/Transc_Patient_CPT000814.csv",
-#'                          phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.csv",
+#' extract_protein_activity(prot_file = "Prot_patients/Prot_Patient_CPT000814.tsv",
+#'                          trans_file = "Transc_patients/Transc_Patient_CPT000814.tsv",
+#'                          phospho_file = "Phospho_patients/Phospho_Patient_CPT000814.tsv",
 #'                          tf_params,
 #'                          kin_params,
 #'                          output_dir = "Activities")
@@ -97,15 +103,15 @@ extract_protein_activity <- function(
 
   # Load files if they exist
   if (!is.null(prot_file)) {
-    Prot_P <- read_csv(prot_file)
+    Prot_P <- readr::read_tsv(prot_file)
   }
 
   if (!is.null(trans_file)) {
-    Trans_P <- read_csv(trans_file)
+    Trans_P <- readr::read_tsv(trans_file)
   }
 
   if (!is.null(phospho_file)) {
-    Phospho_P <- read_csv(phospho_file)
+    Phospho_P <- readr::read_tsv(phospho_file)
   }
 
   # Initialize activity results
@@ -212,7 +218,7 @@ extract_protein_activity <- function(
   # Save final results
   if (!is.null(toy_activity_df) && nrow(toy_activity_df) > 0) {
     patient_name <- extract_patient_id(basename(prot_file %||% trans_file %||% phospho_file))
-    write_csv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".csv"))
+    write_tsv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".tsv"))
   } else {
     warning("No activity data could be extracted.")
   }

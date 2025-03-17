@@ -8,7 +8,7 @@
 #' @param prot_dir string, path to cohort proteomics data folder, default `NULL`.
 #' @param phospho_dir  string, path to cohort proteomics data folder, default `NULL`.
 #' @param act_dir  string, path to cohort proteomics data folder, default `NULL`.
-#' @param mut_file  string, path to cohort mutations .csv file, default `NULL`.
+#' @param mut_file  string, path to cohort mutations .tsv file, default `NULL`.
 #' @param output_dir  string, path to network folder; default `'./Networks_output/'`.
 #'
 #' @param desired_phenotypes SIGNOR phenotypes vector to infer the activity and include in the model; default:  `NULL`.
@@ -36,7 +36,7 @@
 #'                       prot_dir = './Prot_test/',
 #'                       phospho_dir = './Phos_test/',
 #'                       act_dir = './Act_test/',
-#'                       mut_file = 'mutations.csv',
+#'                       mut_file = 'mutations.tsv',
 #'                       output_dir = './Networks_output/',
 #'                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
 #'                       pheno_distances_table = TRUE,
@@ -70,26 +70,33 @@ create_cohort_networks <- function(
 
   # Retrieve omics file lists from specified directories
   prot_files <- if (!is.null(prot_dir)) {
-    list.files(path = prot_dir, pattern = "^Prot_Patient_.*\\.csv$", full.names = TRUE)
+    list.files(path = prot_dir, pattern = "^Prot_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
 
   phospho_files <- if (!is.null(phospho_dir)) {
-    list.files(path = phospho_dir, pattern = "^Phospho_Patient_.*\\.csv$", full.names = TRUE)
+    list.files(path = phospho_dir, pattern = "^Phospho_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
 
   trans_files <- if (!is.null(trans_dir)) {
-    list.files(path = trans_dir, pattern = "^Transc_Patient_.*\\.csv$", full.names = TRUE)
+    list.files(path = trans_dir, pattern = "^Transc_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
+
 
   # Retrieve activities file lists from specified directories
   act_files <- if (!is.null(act_dir)) {
-    list.files(path = act_dir, pattern = "^Activity_Patient_.*\\.csv$", full.names = TRUE)
+    
+    constraint_files <- list.files(path = act_dir, pattern = "^Activity_constraints_Patient_.*\\.tsv$", full.names = TRUE)
+    
+    if (length(constraint_files) > 0) {
+      constraint_files 
+    } else {
+      list.files(path = act_dir, pattern = "^Activity_Patient_.*\\.tsv$", full.names = TRUE) 
+    }
   } else character()
-
-
+  
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
-    read_csv(mut_file)
+    readr::read_tsv(mut_file)
   }else character()
 
   trans_ids <- sapply(trans_files, extract_patient_id)
@@ -130,26 +137,26 @@ create_cohort_networks <- function(
 
     # Read files
     if(!is.na(trans_file)){
-      Trans_P <- read_csv(trans_file)
+      Trans_P <- readr::read_tsv(trans_file)
     }else{
       Trans_P <- NULL
     }
 
     if(!is.na(prot_file)){
-      Prot_P <- read_csv(prot_file)
+      Prot_P <- readr::read_tsv(prot_file)
     }else{
       Prot_P <- NULL
     }
 
     if(!is.na(phospho_file)){
-      Phospho_P <- readxl::read_xlsx(phospho_file)
+      Phospho_P <- readr::read_tsv(phospho_file)
     }else{
       Phospho_P <- NULL
     }
 
 
     if (!is.na(act_file)) {
-      act_P <- readxl::read_xlsx(act_file)
+      act_P <- readr::read_tsv(act_file)
     } else {
       act_P <- NULL
     }

@@ -40,8 +40,7 @@ divide the pipeline into 4 main steps:
 
 -   **STEP 5** - Identification of biomarkers
 
-
-![](images/PatientProfiler-visual_selection.png)
+![](images/Figure1-2.svg)
 
 ## [Install PatientProfiler]{style="color: #A45C40;"}
 
@@ -55,13 +54,16 @@ devtools::install_github('https://github.com/SaccoPerfettoLab/PatientProfiler/')
 
 dire come prerequisito di installare python
 
-PatientProfiler contains some functions executing Python source code To correctly set up the Python PatientProfiler environment please execute the following code line the first time you use PatientProfiler:
+PatientProfiler contains some functions executing Python source code To
+correctly set up the Python PatientProfiler environment please execute
+the following code line the first time you use PatientProfiler:
 
 ```{r eval = FALSE}
 install_pp_py()
 ```
 
 ## [Load necessary libraries]{style="color: #A45C40;"}
+
 ```{r}
 library(PatientProfiler)
 library(SignalingProfiler)
@@ -101,7 +103,6 @@ The input has to have specific columns, as described here:
 
     -   patients
 
-
 ## [STEP 1) RAW DATA HARMONIZATION]{style="color: #41729F;"}
 
 ::: {style="display: flex; align-items: center; color: red"}
@@ -138,7 +139,7 @@ This step for big dataframes requires many hours of working mainly due
 the imputation. For this tutorial we are using a smaller amount of
 patients to give you a general vision of
 
-###[Example of usage:]{style="color: #C38370;"}
+\###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
 transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_transc.tsv") 
@@ -152,7 +153,7 @@ omics_update(
              threshold = 80,
              sw_len = 7,  
              pep_col_name = "Peptide",
-             imp_method = "pmm",   
+             imp_method = "norm",   
              zscore = TRUE,   
              zmethod = "column",   
              metric = "median",
@@ -236,9 +237,9 @@ format for the next steps.
 
 ```{r chunk4, eval = FALSE}
 
-tr_updated <- read_tsv("PatientProfiler_processed_input/Transcriptomics_updated.tsv")
-pr_updated <- read_tsv("PatientProfiler_processed_input/Proteomics_updated.tsv")
-ph_updated <- read_tsv("PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
+tr_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv")
+pr_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Proteomics_updated.tsv")
+ph_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
 
 omics_preparation(
               df_tr_updated = tr_updated,           
@@ -280,6 +281,11 @@ your console).
 The parameters are managed as a **list of default parameters** that you
 can change as you wish, either inside or outside the function call.
 
+(**Note:** The `prot_df` parameter in tf_params and kin_params will only
+be used if a `prot_file` is specified, since the function automatically
+loads proteomics data only if `correct_proteomics` is `TRUE` and if it
+finds the specified file)
+
 ### [Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk5, eval = FALSE}
@@ -289,9 +295,9 @@ kin_params <- list(reg_minsize = 5)
 patient_id <- 'CPT000814'
 
 extract_protein_activity(
-                prot_file = paste0("Prot_patients/Prot_Patient_", patient_id, ".csv"),       
-                trans_file = paste0("Transc_patients/Transc_Patient_", patient_id, ".csv"),   
-                phospho_file = paste0("Phospho_patients/Phospho_Patient_", patient_id, ".csv"), 
+                prot_file = paste0("Prot_patients/Prot_Patient_", patient_id, ".tsv"),       
+                trans_file = paste0("Transc_patients/Transc_Patient_", patient_id, ".tsv"),   
+                phospho_file = paste0("Phospho_patients/Phospho_Patient_", patient_id, ".tsv"), 
                 tf_params,
                 kin_params,
                 output_dir = "Activities"
@@ -322,6 +328,11 @@ To perform the protein activity inference step for all the patients of a
 cohort, this function loops on each omic file for each patient and infer
 protein activity using [*extract_protein_activity*]*.*
 
+(**Note:** The `prot_df` parameter in tf_params and kin_params will only
+be used if a `prot_dir` is specified, since the function automatically
+loads proteomics data only if `correct_proteomics` is `TRUE` and if it
+finds files in the specified folder)
+
 ```{r chunk6, eval = FALSE}
 tf_params <- list(reg_minsize = 5, collectri = TRUE)
 kin_params <- list(exp_sign = TRUE)
@@ -338,9 +349,9 @@ extract_cohort_activity(
 
 ***Results output***
 
-The cohort final results will be saved as a set of .xlsx files (1 file -
+The cohort final results will be saved as a set of .tsv files (1 file -
 1 patient=) inside the `output_dir` directory (default, 'Activities').
-Each patient-specific file (`Activity_patient_{patient_id}.xlsx`)
+Each patient-specific file (`Activity_patient_{patient_id}.tsv`)
 contains these columns:
 
 -   `UNIPROT`: protein Uniprot ID.
@@ -408,19 +419,19 @@ network_params <- initialize_net_default_params(output_dir)
 patient_id <- 'CPT000814'
 
 # Read mutation file (starting nodes of the model)
-mutations_df <- read_csv('./PatientProfiler_raw_input/Brca_mutations.csv')
+mutations_df <- read_tsv('./PatientProfiler_raw_input/Brca_mutations.tsv')
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
 
 # Read activity file (intermediate nodes of the model)
-activities <- read_csv(paste0('./Activities/Activity_Patient_', patient_id, '.csv'))
+activities <- read_tsv(paste0('./Activities/Activity_Patient_', patient_id, '.tsv'))
 
 # Set the functional traits vector (final nodes of the model)
 desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
 
 # Read omics file
-proteomics <- read_csv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.csv'))
-transcriptomics <- read_csv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.csv'))
-phosphoproteomics <- read_csv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.csv'))
+proteomics <- read_tsv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.tsv'))
+transcriptomics <- read_tsv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.tsv'))
+phosphoproteomics <- read_tsv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.tsv'))
 
 # ProxPath proteins-to-phenotypes pre-processing
 pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, 
@@ -463,7 +474,7 @@ create_cohort_networks(trans_dir = './Transc_patients/',
                       prot_dir = './Prot_patients/',
                       phospho_dir = './Phospho_patients/',
                       act_dir = './Activities/',
-                      mut_file = './PatientProfiler_raw_input/Brca_mutations.csv',
+                      mut_file = './PatientProfiler_raw_input/Brca_mutations.tsv',
                       output_dir = './Networks_output/',
                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
                       pheno_distances_table = TRUE,
@@ -485,13 +496,13 @@ create_cohort_networks(trans_dir = './Transc_patients/',
 
 ### [*generate_communities*]{style="color: #274472;"}
 
-In this step, PatientProfiler extracts communities from the patient-specific mechanistic
-models generated in Step 3.
+In this step, PatientProfiler extracts communities from the
+patient-specific mechanistic models generated in Step 3.
 
-Importantly, this step requires a patient stratification file (patients_stratification.tsv), 
-where each row represents a patient and the column indicates the subtype. 
-ou need to place this file in a designated directory (dir_path), which will be deleted after this step.
-
+Importantly, this step requires a patient stratification file
+(patients_stratification.tsv), where each row represents a patient and
+the column indicates the subtype. ou need to place this file in a
+designated directory (dir_path), which will be deleted after this step.
 
 ### [Example of usage:]{style="color: #C38370;"}
 
@@ -507,14 +518,11 @@ generate_communities(dir_path = "vignette/Communities/input_communities",
 
 ***Results output***
 
-The output_dir directory contains a subdirectory for 
-each detected community. Each community directory includes:
+The output_dir directory contains a subdirectory for each detected
+community. Each community directory includes:
 
-A file for edges.
-A file for nodes.
-A file listing the patients belonging to the community.
-
-
+A file for edges. A file for nodes. A file listing the patients
+belonging to the community.
 
 ## STEP 5) SIGNATURES IDENTIFICATIONS {style="color: #41729F"}
 
@@ -522,22 +530,19 @@ A file listing the patients belonging to the community.
 
 ### [*extract_signatures*]{style="color: #274472;"}
 
-Thanks to this function, we can extract signaling-driven 
-transcriptomic signatures.
-To do this, you need the transcriptomics dataset obtained after 
-Step 1 and the communities detected in Step 4.
-
-
+Thanks to this function, we can extract signaling-driven transcriptomic
+signatures. To do this, you need the transcriptomics dataset obtained
+after Step 1 and the communities detected in Step 4.
 
 ### [Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk10, eval = FALSE}
 
 extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
-                               transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.csv", 
+                               transcriptomics_file = "./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv", 
                                output_dir = "./vignette",
                                padj_thres = 0.01,
-                               diff_thres = 0.7,
+                               diff_thres = 0.5,
                                mean_exp_clus_thres = 0,
                                max_val = 50)
   
@@ -546,7 +551,5 @@ extract_signatures <- function(base_path = "./vignette/Communities/output_commun
 
 ***Results output***
 
-The Signatures directory containing a dataframe 
-for each signature with the genes list.
-
-
+The Signatures directory containing a dataframe for each signature with
+the genes list.

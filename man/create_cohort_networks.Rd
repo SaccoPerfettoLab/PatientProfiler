@@ -32,7 +32,7 @@ create_cohort_networks(
 
 \item{pheno_distances_table}{character, any character except NULL to internally compute it; default:  \code{NULL}.}
 
-\item{mut_file}{string, path to cohort mutations .csv file, default \code{NULL}.}
+\item{mut_file}{string, path to cohort mutations .tsv file, default \code{NULL}.}
 
 \item{output_dir}{string, path to network folder; default \code{'./Networks_output/'}.}
 
@@ -68,7 +68,7 @@ create_cohort_networks(trans_dir = './Trans_test/',
                       prot_dir = './Prot_test/',
                       phospho_dir = './Phos_test/',
                       act_dir = './Act_test/',
-                      mut_file = 'mutations.csv',
+                      mut_file = 'mutations.tsv',
                       output_dir = './Networks_output/',
                       desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
                       pheno_distances_table = TRUE,
