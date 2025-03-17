@@ -40,8 +40,8 @@ transcriptomics_update <- function(df_tra,
   message("Transcriptomics data: removing duplicates")
   
   df_tra_agg <<- df_tra_clean %>%
-    group_by(gene_name) %>%
-    summarise(across(everything(), mean, na.rm = TRUE))
+    dplyr::group_by(gene_name) %>%
+    dplyr::summarise(across(everything(), mean, na.rm = TRUE))
   
   write_tsv(df_tra_agg, paste0(output_dir,"/","Transcriptomics_clean.tsv"))
   
