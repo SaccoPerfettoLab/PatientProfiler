@@ -41,11 +41,11 @@
 #'        - `create_pheno_network`: whether connect model proteins to phenotypes; default `TRUE`.
 #'
 #' - `$format_options`: parameters list for manipulation of proteins-to-phenotypes models of 3 elements:
-#'  - `optimize_on_phenotypes`: Boolean, whether keep only proteins-to-phenotypes edges coherent with the inferred phenotypes activity; default, `FALSE`.
-#'  - `circuits_params`: a list of parameters for functional circuits creation:
-#'       - `k`: max path length between proteins an phenotypes in the model; if `circuits_params$k=-1` no circuits will be created;
-#'       - `start_to_top`: Boolean, whether starting from phenotypes looking for upstream regulators or from sources; default, `TRUE`.
-#'  - `vis_cytoscape`: Boolean, whether using *RCy3* package to visualize networks using SignalingProfiler style (if TRUE, ensure to have Cytoscape open); default, `FALSE`.
+#'        - `optimize_on_phenotypes`: Boolean, whether keep only proteins-to-phenotypes edges coherent with the inferred phenotypes activity; default, `FALSE`.
+#'        - `circuits_params`: a list of parameters for functional circuits creation:
+#'            - `k`: max path length between proteins an phenotypes in the model; if `circuits_params$k=-1` no circuits will be created;
+#'            - `start_to_top`: Boolean, whether starting from phenotypes looking for upstream regulators or from sources; default, `TRUE`.
+#'        - `vis_cytoscape`: Boolean, whether using *RCy3* package to visualize networks using SignalingProfiler style (if TRUE, ensure to have Cytoscape open); default, `FALSE`.
 #'
 #' @export
 #'
@@ -128,13 +128,13 @@ initialize_net_default_params <- function(output_dir) {
 #'
 #' patient_id <- 'CPT000814'
 #'
-#' mutations_df <- readr::read_tsv('./mutations.tsv')
+#' mutations_df <- readxl::read_xlsx('./mutations.xlsx')
 #' sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
-#' activities <- readr::read_tsv(paste0('./Activity_Patient_', patient_id))
+#' activities <- readxl::read_xlsx(paste0('./Activity_Patient_', patient_id))
 #'
-#' proteomics <- readr::read_tsv(paste0('./Prot_Patient_', patient_id))
-#' transcriptomics <- readr::read_tsv(paste0('./Trans_Patient_', patient_id))
-#' phosphoproteomics <- readr::read_tsv(paste0('./Phospho_Patient_', patient_id))
+#' proteomics <- readxl::read_xlsx(paste0('./Prot_Patient_', patient_id))
+#' transcriptomics <- readxl::read_xlsx(paste0('./Trans_Patient_', patient_id))
+#' phosphoproteomics <- readxl::read_xlsx(paste0('./Phospho_Patient_', patient_id))
 #'
 #' output_dir <- './Networks_output/'
 #' desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')

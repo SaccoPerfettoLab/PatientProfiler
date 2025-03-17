@@ -56,7 +56,7 @@ infer_and_link_phenotypes <- function(carnival_output,
     pheno_distances_table <- SignalingProfiler::phenoscore_distances_table
   }
 
-  phenoscore_output <- phenoscore_computation(proteins_df = carnival_output$nodes_df,
+  phenoscore_output <- SignalingProfiler::phenoscore_computation(proteins_df = carnival_output$nodes_df,
                                               desired_phenotypes = desired_phenotypes,
                                               pheno_distances_table = pheno_distances_table,
                                               sp_graph = carnival_output$igraph_network,
@@ -77,7 +77,9 @@ infer_and_link_phenotypes <- function(carnival_output,
   if( network_params$phenoscore_options$phenoscore_params$create_pheno_network){
     igraphToSif(phenoscore_output$sp_object_phenotypes$igraph_network, #to check
                 paste0(network_params$phenoscore_options$pheno_path, '_network.sif'), "sign")
-    saveRDS(phenoscore_output$sp_object_phenotypes,
+
+    pp_output <- list(sp_object_phenotypes = phenoscore_output$sp_object_phenotypes)
+    saveRDS(pp_output,
             paste0(network_params$phenoscore_options$pheno_path, '_network.RDS'))
   }
 

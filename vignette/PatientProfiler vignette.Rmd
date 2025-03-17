@@ -306,7 +306,7 @@ extract_protein_activity(
 
 ***Results output***
 
-For each patient an .xlsx file (`Activity_patient_{patient_id}.xlsx`)
+For each patient an .xlsx file (`Activity_patient_{patient_id}.tsv`)
 will be saved inside the `output_dir` directory (default, 'Activities'),
 with these columns:
 
@@ -419,19 +419,19 @@ network_params <- initialize_net_default_params(output_dir)
 patient_id <- 'CPT000814'
 
 # Read mutation file (starting nodes of the model)
-mutations_df <- read_tsv('./PatientProfiler_raw_input/Brca_mutations.tsv')
+mutations_df <- read_tsv('./PatientProfiler_raw_input/Brca_mutations.tsv', show_col_types = F)
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
 
 # Read activity file (intermediate nodes of the model)
-activities <- read_tsv(paste0('./Activities/Activity_Patient_', patient_id, '.tsv'))
+activities <- read_tsv(paste0('./Activities/Activity_Patient_', patient_id, '.tsv'), show_col_types = F)
 
 # Set the functional traits vector (final nodes of the model)
 desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
 
 # Read omics file
-proteomics <- read_tsv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.tsv'))
-transcriptomics <- read_tsv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.tsv'))
-phosphoproteomics <- read_tsv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.tsv'))
+proteomics <- read_tsv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.tsv'), , show_col_types = F)
+transcriptomics <- read_tsv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.tsv'), show_col_types = F)
+phosphoproteomics <- read_tsv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.tsv'),show_col_types = F)
 
 # ProxPath proteins-to-phenotypes pre-processing
 pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, 

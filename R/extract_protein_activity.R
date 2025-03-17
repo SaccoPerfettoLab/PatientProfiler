@@ -30,9 +30,9 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
-#'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function 
+#'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds the specified file, so you don't need to change this
-#'      parameter if you specified the proteomics file!  
+#'      parameter if you specified the proteomics file!
 #'   - `custom`: boolean, whether to use custom regulons; default: `FALSE`.
 #'   - `custom_path`: path to custom regulons file; default: `NULL`.
 #'
@@ -47,9 +47,9 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
-#'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function 
+#'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds the specified file, so you don't need to change this
-#'      parameter if you specified the proteomics file!   
+#'      parameter if you specified the proteomics file!
 #'   - `custom`: boolean, whether to use custom annotations; default: `FALSE`.
 #'   - `custom_path`: path to the custom annotation file; default: `NULL`.
 #'
@@ -66,7 +66,7 @@
 #'
 #' @param  output_dir a string indicating the output directory that contains results files
 #'
-#' @return No return value. The final results are saved in Excel files in the output directory.
+#' @return No return value. The final results are saved in .tsv files in the output directory.
 #'
 #' @examples
 #' tf_params <- list(reg_minsize = 5, collectri = TRUE)
@@ -103,15 +103,15 @@ extract_protein_activity <- function(
 
   # Load files if they exist
   if (!is.null(prot_file)) {
-    Prot_P <- readr::read_tsv(prot_file)
+    Prot_P <- readr::read_tsv(prot_file,show_col_types = F)
   }
 
   if (!is.null(trans_file)) {
-    Trans_P <- readr::read_tsv(trans_file)
+    Trans_P <- readr::read_tsv(trans_file,show_col_types = F)
   }
 
   if (!is.null(phospho_file)) {
-    Phospho_P <- readr::read_tsv(phospho_file)
+    Phospho_P <- readr::read_tsv(phospho_file,show_col_types = F)
   }
 
   # Initialize activity results
@@ -218,7 +218,7 @@ extract_protein_activity <- function(
   # Save final results
   if (!is.null(toy_activity_df) && nrow(toy_activity_df) > 0) {
     patient_name <- extract_patient_id(basename(prot_file %||% trans_file %||% phospho_file))
-    write_tsv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".tsv"))
+    readr::write_tsv(toy_activity_df, paste0(output_dir, "/Activity_Patient_", patient_name, ".tsv"))
   } else {
     warning("No activity data could be extracted.")
   }

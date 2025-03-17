@@ -84,19 +84,19 @@ create_cohort_networks <- function(
 
   # Retrieve activities file lists from specified directories
   act_files <- if (!is.null(act_dir)) {
-    
+
     constraint_files <- list.files(path = act_dir, pattern = "^Activity_constraints_Patient_.*\\.tsv$", full.names = TRUE)
-    
+
     if (length(constraint_files) > 0) {
-      constraint_files 
+      constraint_files
     } else {
-      list.files(path = act_dir, pattern = "^Activity_Patient_.*\\.tsv$", full.names = TRUE) 
+      list.files(path = act_dir, pattern = "^Activity_Patient_.*\\.tsv$", full.names = TRUE)
     }
   } else character()
-  
+
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
-    readr::read_tsv(mut_file)
+    readr::read_csv(mut_file)
   }else character()
 
   trans_ids <- sapply(trans_files, extract_patient_id)

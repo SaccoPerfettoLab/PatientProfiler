@@ -31,7 +31,7 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
-#'   **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function 
+#'   **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds files in the specified folder, so you don't need to change this
 #'      parameter if you specified the proteomics folder!
 #'   - `custom`: boolean, whether to use custom regulons; default: `FALSE`.
@@ -48,7 +48,7 @@
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
 #'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
 #'   - `prot_df`: supporting proteomic data frame.
-#'      **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function 
+#'      **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds files in the specified folder, so you don't need to change this
 #'      parameter if you specified the proteomics folder!
 #'   - `custom`: boolean, whether to use custom annotations; default: `FALSE`.
@@ -67,7 +67,7 @@
 #'
 #' @param  output_dir a string indicating the output directory that contains results files
 #'
-#' @return No return value. The final results are saved in Excel files in the output directory.
+#' @return No return value. The final results are saved in .tsv files in the output directory.
 #'
 #' @examples
 #' tf_params <- list(reg_minsize = 5, collectri = TRUE)
@@ -89,6 +89,7 @@ extract_cohort_activity <- function(
     phosphoscore_noseqwin_params = list(),
     output_dir = "Activities"
 ) {
+
   if (is.null(prot_dir) && is.null(trans_dir) && is.null(phospho_dir)) {
     stop("At least one of 'prot_dir', 'trans_dir', or 'phospho_dir' must be provided.")
   }
@@ -105,11 +106,6 @@ extract_cohort_activity <- function(
   phospho_files <- if (!is.null(phospho_dir)) {
     list.files(path = phospho_dir, pattern = "^Phospho_Patient_.*\\.tsv$", full.names = TRUE)
   } else character()
-
-  extract_patient_id <- function(file_path) {
-    basename(file_path) %>%
-      sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_)(.*)\\.tsv$", "\\2", .)
-  }
 
   prot_ids <- sapply(prot_files, extract_patient_id)
   trans_ids <- sapply(trans_files, extract_patient_id)
