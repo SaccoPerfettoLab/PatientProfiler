@@ -64,7 +64,7 @@ install_pp_py()
 
 ## [Load necessary libraries]{style="color: #A45C40;"}
 
-```{r}
+```{r eval=FALSE}
 library(PatientProfiler)
 library(SignalingProfiler)
 library(tidyverse)
