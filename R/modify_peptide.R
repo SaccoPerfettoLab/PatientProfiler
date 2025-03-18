@@ -21,7 +21,12 @@
 
 modify_peptide <- function(phospho_df, mult_col, peptide_col, site_col) {
   
-  phospho_df[[peptide_col]] <- str_extract(phospho_df[[peptide_col]], "(?<=\\.).+?(?=\\.)")
+  
+  phospho_df[[peptide_col]] <- ifelse(
+    str_detect(phospho_df[[peptide_col]], "^.+\\..+\\..+$"),  # Controlla se ci sono due punti
+    str_extract(phospho_df[[peptide_col]], "(?<=\\.).+?(?=\\.)"),  # Estrai la parte centrale
+    phospho_df[[peptide_col]]  # Altrimenti lascia il valore originale
+  )
   
   for (i in 1:nrow(phospho_df)) {
 
