@@ -34,7 +34,7 @@ generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4,
   }
   
   # Take as inputs patient-specific mechanistic models
-  file_list <- list.files(network_dir, pattern = "Pheno_(.*)_network\\.RDS", full.names = TRUE) 
+  file_list <- list.files(network_dir, pattern = "Pheno_(.*)\\.RDS", full.names = TRUE) 
   
   # Nodes and Edges creation
   temp_nodes_dir <- file.path(dir_path, "nodes") 
@@ -44,7 +44,7 @@ generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4,
   
   for (file in file_list) {
     file_name <- basename(file)
-    pat_name <- sub("Pheno_(.*)_network\\.RDS", "\\1", file_name)
+    pat_name <- sub("Pheno_(.*)\\.RDS", "\\1", file_name)
     
     opt1 <- readRDS(file)
     
