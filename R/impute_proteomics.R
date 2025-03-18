@@ -17,8 +17,8 @@
 
 impute_proteomics <- function(df, start_column = 1, imputation_method = NULL) {
 
-  df[df == Inf | df == -Inf] <- NA
-
+  df[df == Inf | df == -Inf | is.nan(df)] <- NA
+  
   column_names <- names(df)[start_column:ncol(df)]
   cleaned_column_names <- lapply(column_names, function(x) gsub("[^A-Za-z0-9]", "", as.character(x)))
   names(df)[start_column:ncol(df)] <- cleaned_column_names
