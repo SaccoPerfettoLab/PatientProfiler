@@ -501,7 +501,7 @@ patient-specific mechanistic models generated in Step 3.
 
 Importantly, this step requires a patient stratification file
 (patients_stratification.tsv), where each row represents a patient and
-the column indicates the subtype. ou need to place this file in a
+the column indicates the subtype. You need to place this file in a
 designated directory (dir_path), which will be deleted after this step.
 
 ### [Example of usage:]{style="color: #C38370;"}
