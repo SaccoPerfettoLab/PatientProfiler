@@ -52,7 +52,8 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
   uniprot_ids <- uniprot_ids_df$UNIPROT
 
   # Query UNIPROT
-  res <- query_uniprot(id_input = uniprot_ids)
+  message('  Querying UNIPROT API...')
+  res <- SignalingProfiler::query_uniprot(id_input = uniprot_ids)
 
   # Get a subset of UNIPROT and Primary gene_name and Sequence
   res_sub <- res %>%
