@@ -20,7 +20,7 @@
 #' # Example usage:
 #' updated_phospho_df <- update_phospho(phospho_data, site_col = 3, gn_idx = 2, seq_len_i = 7, peptide_col_name = "Peptide")
 #' head(updated_phospho_df)
-#'
+
 
 
 phosphoproteomics_update <- function(df_pho,
@@ -39,12 +39,12 @@ phosphoproteomics_update <- function(df_pho,
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
 
-  write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv"))
+  readr::write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv"))
   message("Done!")
 
   message("Phosphoproteomics data: missing values imputation")
   df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = impute_method)
-  write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
+  readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
   message("Done!")
 
   if (zscore) {
@@ -66,11 +66,11 @@ phosphoproteomics_update <- function(df_pho,
 
     df_pho_matrix <- as.matrix(df_pho_numeric)
     df_pho_zscore <<- compute_zscore(df_pho_matrix, zmethod, metric)
-    df_pho_zscore <<- mutate_all(as.data.frame(df_pho_zscore), as.numeric)
+    df_pho_zscore <<- dplyr::mutate_all(as.data.frame(df_pho_zscore), as.numeric)
 
     df_pho_zscore <<- cbind(metadata_columns, df_pho_zscore)
     return(df_pho_zscore)
-    write_tsv(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_zscore.tsv"))
+    readr::write_tsv(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_zscore.tsv"))
 
     message("Done!")
   } else {
