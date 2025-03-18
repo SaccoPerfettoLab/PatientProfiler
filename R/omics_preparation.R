@@ -46,12 +46,12 @@ omics_preparation <- function(
       df_tr_updated_2 = cbind(gene_ID = df_tr_updated[, 1], df_tr_updated_1)
       colnames(df_tr_updated_2) = c("gene_ID", "gene_name", "difference")
       df_tr_updated_3 = df_tr_updated_2 %>%
-        mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA))
+        dplyr::mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA))
       df_tr_updated_4 = df_tr_updated_3 %>%
-        mutate(logpval = 2 * pnorm(as.numeric(difference), lower.tail = FALSE))
+        dplyr::mutate(logpval = 2 * pnorm(as.numeric(difference), lower.tail = FALSE))
       df_tr_updated_5 = cbind(tstat = df_tr_updated_4[, 3], df_tr_updated_4)
       df_tr_updated_5 = df_tr_updated_5 %>% relocate(gene_ID, gene_name, difference, tstat, logpval, significant)
-      write_tsv(df_tr_updated_5, paste0(transc_dir_name, "/Transc_Patient_", as.character(colnames(df_tr_updated)[c]), ".tsv"))
+      readr::write_tsv(df_tr_updated_5, paste0(transc_dir_name, "/Transc_Patient_", as.character(colnames(df_tr_updated)[c]), ".tsv"))
     }
     message("Done!")
   }
@@ -64,16 +64,16 @@ omics_preparation <- function(
     }
 
     df_pr_updated <- df_pr_updated %>%
-      select(UNIPROT, everything())
+      dplyr::select(UNIPROT, everything())
 
     for (i in 3:length(df_pr_updated)) {
       pt1 = df_pr_updated[, c(1:2)]
       patients = cbind(pt1, df_pr_updated[, i])
       colnames(patients) = c("UNIPROT", "gene_name", "difference")
       patients = patients %>%
-        mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA)) %>%
-        mutate(logpval = 2 * pnorm(as.numeric(difference), lower.tail = FALSE))
-      write_tsv(patients, paste0(prot_dir_name, "/Prot_Patient_", as.character(colnames(df_pr_updated)[i]), ".tsv"))
+        dplyr::mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA)) %>%
+        dplyr::mutate(logpval = 2 * pnorm(as.numeric(difference), lower.tail = FALSE))
+      readr::write_tsv(patients, paste0(prot_dir_name, "/Prot_Patient_", as.character(colnames(df_pr_updated)[i]), ".tsv"))
     }
     message("Done!")
   }
@@ -95,10 +95,10 @@ omics_preparation <- function(
       patients = cbind(pt1, df_ph_updated[, i])
       colnames(patients)[1:6] = c("UNIPROT", "aminoacid", "position", "gene_name", "sequence_window", "difference")
       patients = patients %>%
-        mutate(logpval = 2 * pnorm(difference, lower.tail = FALSE))
+        dplyr::mutate(logpval = 2 * pnorm(difference, lower.tail = FALSE))
       patients = patients %>%
-        mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA))
-      write_tsv(patients, paste0(phospho_dir_name, "/Phospho_Patient_", as.character(colnames(df_ph_updated)[i]), ".tsv"))
+        dplyr::mutate(significant = ifelse(difference >= 1.96 | difference <= -1.96, "+", NA))
+      readr::write_tsv(patients, paste0(phospho_dir_name, "/Phospho_Patient_", as.character(colnames(df_ph_updated)[i]), ".tsv"))
     }
     message("Done!")
   }
