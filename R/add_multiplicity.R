@@ -18,7 +18,7 @@ add_multiplicity <- function(df, peptide_col) {
 
   pattern <- ifelse(grepl("[*]", df[[peptide_col]]), "[*]", "[a-z]")
 
-  df$Multiplicity <- str_count(df[[peptide_col]], pattern)
+  df$Multiplicity <- stringr::str_count(df[[peptide_col]], pattern)
 
   return(df)
 }
