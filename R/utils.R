@@ -77,5 +77,5 @@ igraphToSif <- function(inGraph, outfile="output.sif", edgeLabel="label") {
 #'
 extract_patient_id <- function(file_path) {
   basename(file_path) %>%
-    sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_)(.*)\\.tsv$", "\\2", .)
+    sub("^(Prot_Patient_|Transc_Patient_|Phospho_Patient_|Activity_Patient_|Activity_constraints_Patient_)(.*)\\.tsv$", "\\2", .)
 }
