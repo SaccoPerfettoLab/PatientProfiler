@@ -63,7 +63,7 @@ update_position_aa <- function(phospho_df, sw_col, sequence_col, peptide_col) {
   }
 
   # Ricolloca le colonne 'position' e 'aminoacid' all'inizio del dataframe
-  phospho_df <- phospho_df %>% relocate(position, aminoacid)
+  phospho_df <- phospho_df %>% dplyr::relocate(position, aminoacid)
 
   return(phospho_df)
 }
