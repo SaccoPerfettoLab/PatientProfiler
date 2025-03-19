@@ -37,10 +37,11 @@ omics_preparation <- function(
   if (!is.null(df_tr_updated)) {
     message("Transcriptomic data patients preparation...")
 
-    if (!dir.exists(transc_dir_name)) {
-      dir.create(transc_dir_name)
+    if (dir.exists(transc_dir_name)) {
+      unlink(transc_dir_name, recursive = TRUE)  
     }
-
+    dir.create(transc_dir_name)  
+    
     for (c in 2:ncol(df_tr_updated)) {
       df_tr_updated_1 = df_tr_updated[, c(1, c)]
       df_tr_updated_2 = cbind(gene_ID = df_tr_updated[, 1], df_tr_updated_1)
@@ -59,10 +60,11 @@ omics_preparation <- function(
   if (!is.null(df_pr_updated)) {
     message("Proteomic data patients preparation...")
 
-    if (!dir.exists(prot_dir_name)) {
-      dir.create(prot_dir_name)
+    if (dir.exists(prot_dir_name)) {
+      unlink(prot_dir_name, recursive = TRUE)
     }
-
+    dir.create(prot_dir_name)  
+    
     df_pr_updated <- df_pr_updated %>%
       dplyr::select(UNIPROT, everything())
 
@@ -81,8 +83,14 @@ omics_preparation <- function(
   if (!is.null(df_ph_updated)) {
     message("Phosphoproteomics data patients preparation...")
 
-    if (!dir.exists(phospho_dir_name)) {
-      dir.create(phospho_dir_name)
+    if (dir.exists(phospho_dir_name)) {
+      unlink(phospho_dir_name, recursive = TRUE)  
+    }
+    dir.create(phospho_dir_name)  
+    
+    
+    if (!"sequence_window" %in% names(df_ph_updated)) {
+      df_ph_updated$sequence_window <- NA
     }
 
     column_order <- c("UNIPROT", "aminoacid", "position", "gene_name", "sequence_window")
