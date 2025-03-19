@@ -2,6 +2,7 @@
 
 export("%>%")
 export(access_harmonized_CPTAC_data)
+export(compute_zscore)
 export(create_cohort_networks)
 export(create_network)
 export(extract_cohort_activity)

@@ -17,6 +17,8 @@
 #' zscores_row <- compute_zscore(omic_data, by = "row", metric = "median")
 #'
 #' zscores_col <- compute_zscore(omic_data, by = "column", metric = "mean")
+#'
+#' @export
 
 
 

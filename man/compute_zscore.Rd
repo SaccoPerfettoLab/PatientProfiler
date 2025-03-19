@@ -28,4 +28,5 @@ colnames(omic_data) <- paste0("Sample", 1:5)
 zscores_row <- compute_zscore(omic_data, by = "row", metric = "median")
 
 zscores_col <- compute_zscore(omic_data, by = "column", metric = "mean")
+
 }
