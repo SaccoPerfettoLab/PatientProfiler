@@ -28,7 +28,7 @@
 #'   - `collectri`: boolean, indicates whether to collect regulator-target relationships; default: `FALSE`.
 #'   - `hypergeom_corr`: boolean, whether to correct results for hypergeometry; default: `TRUE`.
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
-#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
+#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `FALSE`.
 #'   - `prot_df`: supporting proteomic data frame.
 #'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds the specified file, so you don't need to change this
@@ -45,7 +45,7 @@
 #'   - `integrated_regulons`: boolean, whether to consider integrated regulators; default: `TRUE`.
 #'   - `hypergeom_corr`: boolean, whether to correct the results for hypergeometry; default: `TRUE`.
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
-#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
+#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `FALSE`.
 #'   - `prot_df`: supporting proteomic data frame.
 #'   **Note:** The `prot_df` parameter will only be used if a `prot_file` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds the specified file, so you don't need to change this
@@ -127,7 +127,7 @@ extract_protein_activity <- function(
     collectri = FALSE,
     hypergeom_corr = TRUE,
     GO_annotation = TRUE,
-    correct_proteomics = TRUE,
+    correct_proteomics = FALSE,
     prot_df = Prot_P,
     custom = FALSE,
     custom_path = NULL
@@ -144,7 +144,7 @@ extract_protein_activity <- function(
     integrated_regulons = TRUE,
     hypergeom_corr = TRUE,
     GO_annotation = TRUE,
-    correct_proteomics = TRUE,
+    correct_proteomics = FALSE,
     prot_df = Prot_P,
     custom = FALSE,
     custom_path = NULL

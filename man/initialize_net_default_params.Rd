@@ -53,13 +53,11 @@ it returns a list of 5 lists for each internal function:
 }
 }
 \item \verb{$format_options}: parameters list for manipulation of proteins-to-phenotypes models of 3 elements:
-\item \code{optimize_on_phenotypes}: Boolean, whether keep only proteins-to-phenotypes edges coherent with the inferred phenotypes activity; default, \code{FALSE}.
-\item \code{circuits_params}: a list of parameters for functional circuits creation:
-\itemize{
-\item \code{k}: max path length between proteins an phenotypes in the model; if \code{circuits_params$k=-1} no circuits will be created;
-\item \code{start_to_top}: Boolean, whether starting from phenotypes looking for upstream regulators or from sources; default, \code{TRUE}.
-}
-\item \code{vis_cytoscape}: Boolean, whether using \emph{RCy3} package to visualize networks using SignalingProfiler style (if TRUE, ensure to have Cytoscape open); default, \code{FALSE}.
+- \code{optimize_on_phenotypes}: Boolean, whether keep only proteins-to-phenotypes edges coherent with the inferred phenotypes activity; default, \code{FALSE}.
+- \code{circuits_params}: a list of parameters for functional circuits creation:
+- \code{k}: max path length between proteins an phenotypes in the model; if \code{circuits_params$k=-1} no circuits will be created;
+- \code{start_to_top}: Boolean, whether starting from phenotypes looking for upstream regulators or from sources; default, \code{TRUE}.
+- \code{vis_cytoscape}: Boolean, whether using \emph{RCy3} package to visualize networks using SignalingProfiler style (if TRUE, ensure to have Cytoscape open); default, \code{FALSE}.
 }
 }
 \description{

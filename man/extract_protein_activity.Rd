@@ -32,7 +32,7 @@ extract_protein_activity(
 \item \code{collectri}: boolean, indicates whether to collect regulator-target relationships; default: \code{FALSE}.
 \item \code{hypergeom_corr}: boolean, whether to correct results for hypergeometry; default: \code{TRUE}.
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
-\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
+\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{FALSE}.
 \item \code{prot_df}: supporting proteomic data frame.
 \strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_file} is specified, since the function
 automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds the specified file, so you don't need to change this
@@ -51,7 +51,7 @@ parameter if you specified the proteomics file!
 \item \code{integrated_regulons}: boolean, whether to consider integrated regulators; default: \code{TRUE}.
 \item \code{hypergeom_corr}: boolean, whether to correct the results for hypergeometry; default: \code{TRUE}.
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
-\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
+\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{FALSE}.
 \item \code{prot_df}: supporting proteomic data frame.
 \strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_file} is specified, since the function
 automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds the specified file, so you don't need to change this
@@ -76,7 +76,7 @@ The available parameters are the same as those in \code{phosphoscore_params} and
 \item{output_dir}{a string indicating the output directory that contains results files}
 }
 \value{
-No return value. The final results are saved in Excel files in the output directory.
+No return value. The final results are saved in .tsv files in the output directory.
 }
 \description{
 This wrapper to SignalingProfiler preotein activity inference, extracts and analyzes the protein activity for a specific patient starting from omic data: transcriptomics, proteomics and phosphoproteomics.

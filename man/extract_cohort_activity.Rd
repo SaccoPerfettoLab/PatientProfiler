@@ -76,7 +76,7 @@ The available parameters are the same as those in \code{phosphoscore_params} and
 \item{output_dir}{a string indicating the output directory that contains results files}
 }
 \value{
-No return value. The final results are saved in Excel files in the output directory.
+No return value. The final results are saved in .tsv files in the output directory.
 }
 \description{
 This function loop over each patient of the cohort and extracts and analyzes the protein activity for each patient (using \emph{extract_protein_activitiìy}

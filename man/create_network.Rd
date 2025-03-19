@@ -98,13 +98,13 @@ Final results for each patient will be saved as  \emph{RDS} and/or \emph{sif} fi
 
 patient_id <- 'CPT000814'
 
-mutations_df <- readr::read_tsv('./mutations.tsv')
+mutations_df <- readxl::read_xlsx('./mutations.xlsx')
 sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
-activities <- readr::read_tsv(paste0('./Activity_Patient_', patient_id))
+activities <- readxl::read_xlsx(paste0('./Activity_Patient_', patient_id))
 
-proteomics <- readr::read_tsv(paste0('./Prot_Patient_', patient_id))
-transcriptomics <- readr::read_tsv(paste0('./Trans_Patient_', patient_id))
-phosphoproteomics <- readr::read_tsv(paste0('./Phospho_Patient_', patient_id))
+proteomics <- readxl::read_xlsx(paste0('./Prot_Patient_', patient_id))
+transcriptomics <- readxl::read_xlsx(paste0('./Trans_Patient_', patient_id))
+phosphoproteomics <- readxl::read_xlsx(paste0('./Phospho_Patient_', patient_id))
 
 output_dir <- './Networks_output/'
 desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
