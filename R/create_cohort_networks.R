@@ -82,36 +82,40 @@ create_cohort_networks <- function(
   } else character()
 
 
-  # Retrieve activities file lists from specified directories
-  act_files <- if (!is.null(act_dir)) {
-
-    constraint_files <- list.files(path = act_dir, pattern = "^Activity_constraints_Patient_.*\\.tsv$", full.names = TRUE)
-
-    if (length(constraint_files) > 0) {
-      constraint_files
-    } else {
-      list.files(path = act_dir, pattern = "^Activity_Patient_.*\\.tsv$", full.names = TRUE)
-    }
-  } else character()
+  trans_ids <- sapply(trans_files, extract_patient_id)
+  prot_ids <- sapply(prot_files, extract_patient_id)
+  phospho_ids <- sapply(phospho_files, extract_patient_id)
 
   # Read mutations file
   sources_df <- if(!is.null(mut_file)){
     readr::read_tsv(mut_file)
   }else character()
-
-  trans_ids <- sapply(trans_files, extract_patient_id)
-  prot_ids <- sapply(prot_files, extract_patient_id)
-  phospho_ids <- sapply(phospho_files, extract_patient_id)
+  
+  # Retrieve activity files ensuring the correct selection logic
+  patient_ids <- unique(c(trans_ids, prot_ids, phospho_ids))
+  act_files <- c()
+  
+  if (!is.null(act_dir)) {
+    for (patient_id in patient_ids) {
+      constraint_file <- file.path(act_dir, paste0("Activity_constraints_Patient_", patient_id, ".tsv"))
+      normal_file <- file.path(act_dir, paste0("Activity_Patient_", patient_id, ".tsv"))
+      
+      if (file.exists(constraint_file)) {
+        act_files <- c(act_files, constraint_file)  
+      } else if (file.exists(normal_file)) {
+        act_files <- c(act_files, normal_file) 
+      }
+    }
+  }
+  
   act_ids <- sapply(act_files, extract_patient_id)
 
-  all_patient_ids <- unique(c(prot_ids, trans_ids, phospho_ids))
-
   patient_count <- 0
-  total_patients <- length(all_patient_ids)
+  total_patients <- length(patient_ids)
 
   successful_pat <- 0
 
-  for (patient_id in all_patient_ids){
+  for (patient_id in patient_ids){
     patient_count <- patient_count + 1
 
     trans_file <- trans_files[which(trans_ids == patient_id)[1]]
