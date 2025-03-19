@@ -29,7 +29,7 @@
 #'   - `collectri`: boolean, indicates whether to collect regulator-target relationships; default: `FALSE`.
 #'   - `hypergeom_corr`: boolean, whether to correct results for hypergeometry; default: `TRUE`.
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
-#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
+#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `FALSE`.
 #'   - `prot_df`: supporting proteomic data frame.
 #'   **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds files in the specified folder, so you don't need to change this
@@ -46,7 +46,7 @@
 #'   - `integrated_regulons`: boolean, whether to consider integrated regulators; default: `TRUE`.
 #'   - `hypergeom_corr`: boolean, whether to correct the results for hypergeometry; default: `TRUE`.
 #'   - `GO_annotation`: boolean, whether to include GO annotations; default: `TRUE`.
-#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `TRUE`.
+#'   - `correct_proteomics`: boolean, whether to correct with proteomic data; default: `FALSE`.
 #'   - `prot_df`: supporting proteomic data frame.
 #'      **Note:** The `prot_df` parameter will only be used if a `prot_dir` is specified, since the function
 #'      automatically loads proteomics data only if `correct_proteomics` is `TRUE` and if it finds files in the specified folder, so you don't need to change this
@@ -78,10 +78,9 @@
 #'
 #' @export
 
-
 extract_cohort_activity <- function(
     prot_dir = NULL,
-    trans_dir = NULL,
+    trans_dir = "PatientProfiler_test/testing/Transc_patients/",
     phospho_dir = NULL,
     tf_params = list(),
     kin_params = list(),
@@ -89,47 +88,48 @@ extract_cohort_activity <- function(
     phosphoscore_noseqwin_params = list(),
     output_dir = "Activities"
 ) {
-
+  
+  print("Starting analysis")
+  
   if (is.null(prot_dir) && is.null(trans_dir) && is.null(phospho_dir)) {
     stop("At least one of 'prot_dir', 'trans_dir', or 'phospho_dir' must be provided.")
   }
-
-  # Retrieve file lists from specified directories
+  
   prot_files <- if (!is.null(prot_dir)) {
     list.files(path = prot_dir, pattern = "^Prot_Patient_.*\\.tsv$", full.names = TRUE)
-  } else character()
-
+  } else NULL
+  
   trans_files <- if (!is.null(trans_dir)) {
     list.files(path = trans_dir, pattern = "^Transc_Patient_.*\\.tsv$", full.names = TRUE)
-  } else character()
-
+  } else NULL
+  
   phospho_files <- if (!is.null(phospho_dir)) {
     list.files(path = phospho_dir, pattern = "^Phospho_Patient_.*\\.tsv$", full.names = TRUE)
-  } else character()
-
-  prot_ids <- sapply(prot_files, extract_patient_id)
-  trans_ids <- sapply(trans_files, extract_patient_id)
-  phospho_ids <- sapply(phospho_files, extract_patient_id)
-
+  } else NULL
+  
+  prot_ids <- if (!is.null(prot_files)) sapply(prot_files, extract_patient_id) else NULL
+  trans_ids <- if (!is.null(trans_files)) sapply(trans_files, extract_patient_id) else NULL
+  phospho_ids <- if (!is.null(phospho_files)) sapply(phospho_files, extract_patient_id) else NULL
+  
   all_patient_ids <- unique(c(prot_ids, trans_ids, phospho_ids))
-
+  
   patient_count <- 0
   total_patients <- length(all_patient_ids)
-
+  
   for (patient_id in all_patient_ids) {
     patient_count <- patient_count + 1
-
-    prot_file <- prot_files[which(prot_ids == patient_id)[1]]
-    trans_file <- trans_files[which(trans_ids == patient_id)[1]]
-    phospho_file <- phospho_files[which(phospho_ids == patient_id)[1]]
-
+    
+    prot_file <- if (!is.null(prot_files)) prot_files[which(prot_ids == patient_id)[1]] else NULL
+    trans_file <- if (!is.null(trans_files)) trans_files[which(trans_ids == patient_id)[1]] else NULL
+    phospho_file <- if (!is.null(phospho_files)) phospho_files[which(phospho_ids == patient_id)[1]] else NULL
+    
     message(paste("Processing patient", patient_count, "of", total_patients, ":", patient_id))
-
-    if (is.na(prot_file) && is.na(trans_file) && is.na(phospho_file)) {
+    
+    if (is.null(prot_file) && is.null(trans_file) && is.null(phospho_file)) {
       message(paste("Skipping patient", patient_id, "- no omics data available."))
       next
     }
-
+    
     tryCatch({
       extract_protein_activity(
         prot_file = prot_file,
@@ -141,15 +141,8 @@ extract_cohort_activity <- function(
         phosphoscore_noseqwin_params = phosphoscore_noseqwin_params,
         output_dir = output_dir
       )
-
-      old_file_path <- file.path(output_dir, paste0("Activity_patient_", basename(prot_file)))
-      new_file_path <- file.path(output_dir, paste0("Activity_patient_", patient_id, ".tsv"))
-
-      if (file.exists(old_file_path)) {
-        file.rename(old_file_path, new_file_path)
-        message(paste("File renamed to", new_file_path))
-      }
-
+      
+      
       message(paste("Successfully processed patient", patient_id, "-", patient_count, "of", total_patients))
     }, error = function(e) {
       message(paste("Error processing patient", patient_id, "-", patient_count, "of", total_patients, ":", e$message))

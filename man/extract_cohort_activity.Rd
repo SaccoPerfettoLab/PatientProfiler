@@ -6,7 +6,7 @@
 \usage{
 extract_cohort_activity(
   prot_dir = NULL,
-  trans_dir = NULL,
+  trans_dir = "PatientProfiler_test/testing/Transc_patients/",
   phospho_dir = NULL,
   tf_params = list(),
   kin_params = list(),
@@ -32,7 +32,7 @@ extract_cohort_activity(
 \item \code{collectri}: boolean, indicates whether to collect regulator-target relationships; default: \code{FALSE}.
 \item \code{hypergeom_corr}: boolean, whether to correct results for hypergeometry; default: \code{TRUE}.
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
-\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
+\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{FALSE}.
 \item \code{prot_df}: supporting proteomic data frame.
 \strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_dir} is specified, since the function
 automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds files in the specified folder, so you don't need to change this
@@ -51,7 +51,7 @@ parameter if you specified the proteomics folder!
 \item \code{integrated_regulons}: boolean, whether to consider integrated regulators; default: \code{TRUE}.
 \item \code{hypergeom_corr}: boolean, whether to correct the results for hypergeometry; default: \code{TRUE}.
 \item \code{GO_annotation}: boolean, whether to include GO annotations; default: \code{TRUE}.
-\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{TRUE}.
+\item \code{correct_proteomics}: boolean, whether to correct with proteomic data; default: \code{FALSE}.
 \item \code{prot_df}: supporting proteomic data frame.
 \strong{Note:} The \code{prot_df} parameter will only be used if a \code{prot_dir} is specified, since the function
 automatically loads proteomics data only if \code{correct_proteomics} is \code{TRUE} and if it finds files in the specified folder, so you don't need to change this
