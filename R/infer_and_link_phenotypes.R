@@ -76,11 +76,11 @@ infer_and_link_phenotypes <- function(carnival_output,
 
   if( network_params$phenoscore_options$phenoscore_params$create_pheno_network){
     igraphToSif(phenoscore_output$sp_object_phenotypes$igraph_network, #to check
-                paste0(network_params$phenoscore_options$pheno_path, '_network.sif'), "sign")
+                paste0(network_params$phenoscore_options$pheno_path, '.sif'), "sign")
 
     pp_output <- list(sp_object_phenotypes = phenoscore_output$sp_object_phenotypes)
     saveRDS(pp_output,
-            paste0(network_params$phenoscore_options$pheno_path, '_network.RDS'))
+            paste0(network_params$phenoscore_options$pheno_path, '.RDS'))
   }
 
   if(save_all_files){
