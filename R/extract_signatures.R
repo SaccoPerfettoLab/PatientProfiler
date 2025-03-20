@@ -51,7 +51,7 @@ extract_signatures <- function(base_path,
     patients_file <- file.path(community_folder, "patients.txt") 
     
     if (file.exists(patients_file)) {
-      community_data <- read_tsv(patients_file, header = TRUE, stringsAsFactors = FALSE)
+      community_data <- read.table(patients_file, header = TRUE, stringsAsFactors = FALSE)
       colnames(community_data)[1] <- "Patient_ID"  
       community_data$community <- community_id  
       stratification_table <- rbind(stratification_table, community_data)
@@ -60,7 +60,7 @@ extract_signatures <- function(base_path,
     }
   }
   
-  Transcriptomics_patients <- readr::read_csv(transcriptomics_file) %>%
+  Transcriptomics_patients <- readr::read_tsv(transcriptomics_file) %>%
     pivot_longer(cols = -1, names_to = "Patient_ID", values_to = "value")
   Transcriptomics_patients <- left_join(Transcriptomics_patients, stratification_table, by = 'Patient_ID')
   
