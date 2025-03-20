@@ -51,7 +51,7 @@ extract_signatures <- function(base_path,
     patients_file <- file.path(community_folder, "patients.txt") 
     
     if (file.exists(patients_file)) {
-      community_data <- read.tsv(patients_file, header = TRUE, stringsAsFactors = FALSE)
+      community_data <- read_tsv(patients_file, header = TRUE, stringsAsFactors = FALSE)
       colnames(community_data)[1] <- "Patient_ID"  
       community_data$community <- community_id  
       stratification_table <- rbind(stratification_table, community_data)
