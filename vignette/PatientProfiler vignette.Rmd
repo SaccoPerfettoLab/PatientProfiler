@@ -538,7 +538,7 @@ after Step 1 and the communities detected in Step 4.
 
 ```{r chunk10, eval = FALSE}
 
-extract_signatures <- function(base_path = "./vignette/Communities/output_communities/",          
+extract_signatures(base_path = "./vignette/Communities/output_communities/",          
                                transcriptomics_file = "./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv", 
                                output_dir = "./vignette",
                                padj_thres = 0.01,
