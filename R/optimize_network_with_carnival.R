@@ -38,6 +38,8 @@
 #'    - `is_significant`:  if `phosphoproteomics` is provided, when TRUE the mapped phosphosite modulation is coherent with interaction sign and significant
 #'    - `FC`: if `phosphoproteomics` is provided, reports the phosphosite's modulation in experimental data
 #'
+#' @export
+#'
 #' @examples
 #' network_params <- initialize_net_default_params('./Network_output/')
 #' network_params$carnival_options <- list(solver = 'cplex', carnival_type = 'inverse')

@@ -25,6 +25,8 @@
 #'      - `nodes_df`: dataframe of the nodes in the proteins-to-phenotypes network; attributes are described in *optimize_network_with_carnival* documentation
 #'      - `edges_df`: dataframe of the edges in the proteins-to-phenotypes network; attributes are described in *optimize_network_with_carnival* documentation
 #'
+#' @export
+#'
 #' @examples
 #' network_params <- initialize_net_default_params('./Network_output/')
 #' network_params$carnival_options <- list(solver = 'cplex', carnival_type = 'inverse')

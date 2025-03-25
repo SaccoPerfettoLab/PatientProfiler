@@ -24,6 +24,8 @@
 #'  - `patient_opt_pheno_network`: a list of four elements with same structure as *infer_and_link_phenotypes* output;  if `format_options$optimize_on_phenotypes = TRUE`, `sp_object_phenotypes` is optimized on phenotypes activity;
 #'  - `circuit`: igraph object representing the functional circuit of `k` length from sources to targets
 #'
+#' @export
+#'
 #' @examples
 #'
 #' output_dir <- './Networks_output/'

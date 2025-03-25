@@ -20,7 +20,7 @@
 #' @examples
 #' omics_list <- list(transcriptomics, proteomics)
 #' PKN_params = list(preprocess = TRUE, direct = TRUE, organism = 'human')
-
+#' @export
 
 get_PKN <- function(PKN_params = list(),
                     omics_list = NULL){

@@ -24,6 +24,7 @@
 #' omics_list <- list(transcriptomics, proteomics)
 #' PKN = get_PKN(omics_list = omics_list)
 #' create_naive_network(PKN, sources, activities, naive_network_parameters = list(layers = 2, max_length = c(1,4)))
+#' @export
 
 
 create_naive_network <- function(PKN,
