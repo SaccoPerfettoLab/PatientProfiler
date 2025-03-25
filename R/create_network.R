@@ -176,36 +176,6 @@ create_network <- function(patient_id,
                            format_options = list())
 {
 
-  patient_id <- 'Patient9'
-  # Read mutation file (starting nodes of the model)
-  mutations_df <- read_tsv('../../AML/AML_mutations.tsv', show_col_types = F)
-  colnames(mutations_df)[1] <- 'Patient_ID'
-  sources <- mutations_df[mutations_df$Patient_ID == patient_id, ]
-
-  # Read activity file (intermediate nodes of the model)
-  activities <- read_tsv(paste0('../../AML/Activities/Activity_Patient_', patient_id, '.tsv'), show_col_types = F)
-
-  # Set the functional traits vector (final nodes of the model)
-  desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
-
-  # Read omics file
-  proteomics <- read_tsv(paste0('../../AML/Prot_patients/Prot_Patient_', patient_id, '.tsv'), , show_col_types = F)
-  transcriptomics <- read_tsv(paste0('../../AML/Transc_patients/Transc_Patient_', patient_id, '.tsv'), show_col_types = F)
-  phosphoproteomics <- read_tsv(paste0('../../AML/Phospho_patients/Phospho_Patient_', patient_id, '.tsv'),show_col_types = F)
-
-  # ProxPath proteins-to-phenotypes pre-processing
-  pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics,
-                                                  phosphoproteomics = phosphoproteomics)
-
-  carnival_options <- list(carnival_params = list(timelimit = 10))
-  PKN_options = list(direct = FALSE)
-  naive_options = list(layers = 2, max_length = c(1,4))
-  carnival_options = list(carnival_type = 'vanilla_one_shot', carnival_options = carnival_options)
-  phenoscore_options = list() # keep default params
-  format_options = list(optimize_on_phenotypes = FALSE,
-                        circuits_params = list(k = -1),
-                        vis_cytoscape = FALSE)
-
   # Set output directory
   if(!dir.exists(output_dir)){
     dir.create(output_dir)
@@ -242,6 +212,9 @@ create_network <- function(patient_id,
                                                     phosphoproteomics = phosphoproteomics,
                                                     save_all_files = save_all_files,
                                                     network_params = network_params)
+  if(is.null(carnival_output)){
+    stop('Try giving CARNIVAL more time for finding the solution!')
+  }
   message('CARNIVAL optimization done!')
 
   # PhenoScore analysis
@@ -249,7 +222,7 @@ create_network <- function(patient_id,
   network_params$phenoscore_options$pheno_path <- paste0(network_params$phenoscore_options$pheno_path, patient_id)
   phenoscore_output <- infer_and_link_phenotypes(carnival_output = carnival_output,
                                                 desired_phenotypes = desired_phenotypes,
-                                                proteomics = proteomics,
+                                                proteosmics = proteomics,
                                                 phosphoproteomics = phosphoproteomics,
                                                 save_all_files = save_all_files,
                                                 network_params = network_params)

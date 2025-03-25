@@ -86,6 +86,11 @@ optimize_network_with_carnival <- function(sources,
       receptors_df <- NULL
     }else{
       receptors_df <- carnival_input %>% dplyr::filter(mf == 'rec')
+
+      if(length(setdiff(receptors_df$gene_name,
+                        unique(c(naive_table$source, naive_table$target))))==nrow(receptors_df)){
+        stop('No mutations connected to inferred proteins; \nSuggestion: Try expanding the PKN (indirect=T) or increasing layers number')
+      }
     }
 
     carnival_output <- SignalingProfiler::run_carnival_and_create_graph(source_df = receptors_df,
@@ -231,6 +236,10 @@ optimize_network_with_carnival <- function(sources,
 
   }else{
     stop('Please check CARNIVAL_type: allowed CARNIVAL types are \'vanilla_one_shot\', \'vanilla_two_shots\', \'vanilla_three_shots\', \'inverse\\')
+  }
+
+  if(is.null(carnival_output)){
+    return(carnival_output)
   }
 
   # Map phosphoproteomics on CARNIVAL output if available
