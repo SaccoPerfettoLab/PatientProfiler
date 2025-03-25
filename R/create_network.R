@@ -222,7 +222,7 @@ create_network <- function(patient_id,
   network_params$phenoscore_options$pheno_path <- paste0(network_params$phenoscore_options$pheno_path, patient_id)
   phenoscore_output <- infer_and_link_phenotypes(carnival_output = carnival_output,
                                                 desired_phenotypes = desired_phenotypes,
-                                                proteosmics = proteomics,
+                                                proteomics = proteomics,
                                                 phosphoproteomics = phosphoproteomics,
                                                 save_all_files = save_all_files,
                                                 network_params = network_params)
