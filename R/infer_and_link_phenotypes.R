@@ -53,7 +53,7 @@ infer_and_link_phenotypes <- function(carnival_output,
 
   if(is.null(pheno_distances_table)){
     message('Using SignalingProfiler built-in distance table')
-    pheno_distances_table <- SignalingProfiler::phenoscore_distances_table
+    pheno_distances_table <- get(data('phenoscore_distances_table', package = 'SignalingProfiler'))
   }
 
   phenoscore_output <- SignalingProfiler::phenoscore_computation(proteins_df = carnival_output$nodes_df,
@@ -119,7 +119,7 @@ proxpath_preprocessing <- function(proteomics, phosphoproteomics){
     pheno_distances_table <- SignalingProfiler::phenoscore_network_preprocessing(proteomics = phosphoproteomics,
                                                               phospho = phosphoproteomics)
   }else{
-    pheno_distances_table = SignalingProfiler::phenoscore_distances_table
+    pheno_distances_table = get(data("phenoscore_distances_table", package = 'SignalingProfiler'))
   }
 
   return(pheno_distances_table)

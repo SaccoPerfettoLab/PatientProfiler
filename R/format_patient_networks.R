@@ -51,7 +51,7 @@ format_patient_network <- function(patient_id,
                                    network_params){
 
   if(is.null(desired_phenotypes)){
-    desired_phenotypes <- SignalingProfiler::all_phenotypes
+    desired_phenotypes <- get(data('proxpath_phenotypes', package = 'SignalingProfiler'))$phenotype
   }
 
   # Get default parameters
