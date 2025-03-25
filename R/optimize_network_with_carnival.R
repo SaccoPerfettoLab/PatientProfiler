@@ -233,18 +233,14 @@ optimize_network_with_carnival <- function(sources,
 
   # Map phosphoproteomics on CARNIVAL output if available
   if(!is.null(phosphoproteomics)){
-
-    if('sequence_window' %in% colnames(phosphoproteomics)){
-      carnival_output <- SignalingProfiler::expand_and_map_edges(optimized_object = carnival_output,
-                                                                 organism = 'human',
-                                                                 phospho_df = phosphoproteomics,
-                                                                 files = save_all_files,
-                                                                 direct = network_params$PKN_options$direct,
-                                                                 with_atlas = network_params$PKN_options$with_atlas,
-                                                                 path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
-                                                                 path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
-    }
+    carnival_output <- SignalingProfiler::expand_and_map_edges(optimized_object = carnival_output,
+                                                               organism = 'human',
+                                                               phospho_df = phosphoproteomics,
+                                                               files = save_all_files,
+                                                               direct = network_params$PKN_options$direct,
+                                                               with_atlas = network_params$PKN_options$with_atlas,
+                                                               path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
+                                                               path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
   }
-
   return(carnival_output)
 }
