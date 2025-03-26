@@ -82,9 +82,6 @@ update_phospho <- function(df, site_col, gn_idx, seq_len_i=7, peptide_col_name =
     df9 <- df9 %>%
       dplyr::relocate(UNIPROT, aminoacid, position) %>%
       dplyr::select(-Sequence, -Site)
-
-    df9 <- df9[, -ncol(df9)]
-
   }
 
   return(df9)
