@@ -34,8 +34,8 @@ access_harmonized_CPTAC_data <- function(tumors, data_types) {
         mut_file_path <- file.path(tumor_dir, mut_file_name)
         
         response <- httr::GET(mut_file_path)
-        if (status_code(response) == 200) {
-          mut_data <- read.tsv(text = content(response, "text"))
+        if (httr::status_code(response) == 200) {
+          mut_data <- dplyr::read_tsv(text = content(response, "text"))
           
           var_name <- paste0(tumor, "_mut")
           assign(var_name, mut_data, envir = .GlobalEnv)
@@ -49,7 +49,7 @@ access_harmonized_CPTAC_data <- function(tumors, data_types) {
         file_path <- file.path(tumor_dir, file_name)
         
         response <- httr::GET(file_path)
-        if (status_code(response) == 200) {
+        if (httr::status_code(response) == 200) {
           temp_file <- tempfile(fileext = ".tsv")
           writeBin(content(response, "raw"), temp_file)
           
