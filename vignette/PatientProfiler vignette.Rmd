@@ -44,16 +44,20 @@ divide the pipeline into 4 main steps:
 
 ## [Install PatientProfiler]{style="color: #A45C40;"}
 
-To install PatientProfiler execute the following command in R.
+To install PatientProfiler execute the following commands in R. A
+crucial prerequisite for PatientProfiler is
+[SignalingProfiler](<https://github.com/SaccoPerfettoLab/SignalingProfiler>)
+package.
 
 ```{r chunk1, eval=FALSE}
+# Install SignalingProfiler
+devtools::install_github('https://github.com/SaccoPerfettoLab/SignalingProfiler/')
+
+# Install PatientProfiler
 devtools::install_github('https://github.com/SaccoPerfettoLab/PatientProfiler/')
 ```
 
 ## [Set up Python PatientProfiler environment]{style="color: #A45C40;"}
-
-dire come prerequisito di installare python
-
 PatientProfiler contains some functions executing Python source code To
 correctly set up the Python PatientProfiler environment please execute
 the following code line the first time you use PatientProfiler:
@@ -103,7 +107,7 @@ The input has to have specific columns, as described here:
 
     -   patients
 
-## [STEP 1) RAW DATA HARMONIZATION]{style="color: #41729F;"}
+## [STEP 1a) RAW DATA HARMONIZATION]{style="color: #41729F;"}
 
 ::: {style="display: flex; align-items: center; color: red"}
 ![Description](../img/warning.png){alt="Description" height="2em"
@@ -139,7 +143,7 @@ This step for big dataframes requires many hours of working mainly due
 the imputation. For this tutorial we are using a smaller amount of
 patients to give you a general vision of
 
-\###[Example of usage:]{style="color: #C38370;"}
+###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
 transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_transc.tsv") 
@@ -170,53 +174,7 @@ Z-score should be calculated.
 
 After this step, tables are ready for the ***omics_preparation***.
 
-## [ACCESS TO PRE-HARMONIZED CPTAC DATA]{style="color: #41729F;"}
-
-### *access_harmonized_CPTAC_data* {style="color: black"}
-
-If you want to analyze *pre-harmonized data* in the next steps, you can
-start with this function of PatientProfiler.
-
-For this package we created an RDS file containing pre-harmonized data
-from CPTAC database.
-
-The file includes transcritpomics, proteomics and phosphoproteomics data
-for 10 different tumors:
-
--   **Brca** - Breast cancer
-
--   **Ccrcc** - Clear cell renal cell carcinoma
-
--   **Coad** - Colon adenocarcinoma
-
--   **Gbm** - Glioblastoma
-
--   **Hnscc** -Head and neck squamous cell cacinoma
-
--   **Lscc** - Lung squamous cell carcinoma
-
--   **Luad** - Lung cancer
-
--   **Ov** - Ovarian cancer
-
--   **Pdac** - Pancreatic ductal adenocarcinoma
-
--   **Ucec** - Uterine corpus endometrial carcinoma
-
-All the data has been harmonized using [omics_update] function.
-
-### [Example of usage:]{style="color: #C38370;"}
-
-If you need to extract **Brca** and **Ov** **phosphoproteomics** and
-**proteomics** data:
-
-```{r chunk3, eval = FALSE}
-access_harmonized_CPTAC_data(tumors = c("Brca", "Ov"), omics = c("phospho", "prot"))
-```
-
-The output is a local variable for each data frame you acceded.
-
-## [INPUT TABLES TO INFER PROTEIN ACTIVITY AND NETWORK CONSTRUCTION]{style="color: #41729F;"}
+## [STEP1b) PatientProfiler INPUT TABLE PREPARATION]{style="color: #41729F;"}
 
 The next steps of PatientProfiler include wrapper functions to our
 in-house developed
@@ -431,7 +389,7 @@ desired_phenotypes <- c('APOPTOSIS', 'PROLIFERATION')
 # Read omics file
 proteomics <- read_tsv(paste0('./Prot_patients/Prot_Patient_', patient_id, '.tsv'), , show_col_types = F)
 transcriptomics <- read_tsv(paste0('./Transc_patients/Transc_Patient_', patient_id, '.tsv'), show_col_types = F)
-phosphoproteomics <- read_tsv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.tsv'),show_col_types = F)
+phosphoproteomics <- read_tsv(paste0('./Phospho_patients/Phospho_Patient_', patient_id, '.tsv'), show_col_types = F)
 
 # ProxPath proteins-to-phenotypes pre-processing
 pheno_distances_table <- proxpath_preprocessing(proteomics = proteomics, 
@@ -481,8 +439,9 @@ create_cohort_networks(trans_dir = './Transc_patients/',
                       save_all_files = FALSE,
                       PKN_options = list(direct = FALSE),
                       naive_options = list(layers = 2, max_length = c(1,4)),
-                      carnival_options = list(solver = 'cplex', carnival_type = 
-                                                'vanilla_one_shot'),
+                      carnival_options = list(solver = 'cplex', 
+                                              carnival_type = 'vanilla_one_shot'),
+                                              carnival_params = list(timelimit = 3600),
                       format_options = list(optimize_on_phenotypes = FALSE,
                                     circuits_params = list(k = -1),
                                     vis_cytoscape = FALSE)
@@ -508,11 +467,9 @@ designated directory (dir_path), which will be deleted after this step.
 
 ```{r chunk9, eval = FALSE}
 
-generate_communities(dir_path = "vignette/Communities/input_communities", 
-                     network_dir = "vignette/Networks_output",
-                     output_dir = "vignette/Communities/output_communities",
-                     local = TRUE)
-
+generate_communities(dir_path = "./Communities/input_communities", 
+                     network_dir = "./Networks_output",
+                     output_dir = "./Communities/output_communities")
 
 ```
 
@@ -538,18 +495,18 @@ after Step 1 and the communities detected in Step 4.
 
 ```{r chunk10, eval = FALSE}
 
-extract_signatures(base_path = "./vignette/Communities/output_communities/",          
-                               transcriptomics_file = "./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv", 
-                               output_dir = "./vignette",
-                               padj_thres = 0.01,
-                               diff_thres = 0.5,
-                               mean_exp_clus_thres = 0,
-                               max_val = 50)
+extract_signatures(base_path = "./Communities/output_communities/",          
+                   transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.tsv",
+                   output_dir = "./",
+                   padj_thres = 0.01,
+                   diff_thres = 0.5,
+                   mean_exp_clus_thres = 0,
+                   max_val = 50)
   
   
 ```
 
 ***Results output***
 
-The Signatures directory containing a dataframe for each signature with
+The Signatures directory contains a dataframe for each signature with
 the genes list.

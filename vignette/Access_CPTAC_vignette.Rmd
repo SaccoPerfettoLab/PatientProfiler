@@ -1,0 +1,90 @@
+---
+title: "Access PatientProfiler CPTAC Data"
+author: "PerfettoLab"
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+PatientProfiler is an R package that allows personalized analysis of an
+entire cohort and specific individuals. The main functions can be used
+sequentially or separately.
+
+If we want to imagine a sequential way to use PatientProfiler, we can
+divide the pipeline into 4 main steps:
+
+-   **STEP 1** - Raw data harmonization / Access to harmonized CPTAC
+    data and Input tables preparation
+
+-   **STEP 2** - Protein activity inference
+
+-   **STEP 3** - Generation of mechanistic models
+
+-   **STEP 4** - Network-based stratification: communities detection
+
+-   **STEP 5** - Identification of biomarkers
+
+![](images/Figure1-2.svg)
+
+In this vignette, we describe how to access pre-harmonized CPTAC data to use them in PatientProfiler pipeline.
+
+## [Load necessary libraries]{style="color: #A45C40;"}
+
+```{r eval=FALSE}
+library(PatientProfiler)
+library(SignalingProfiler)
+library(tidyverse)
+```
+
+## [ACCESS TO PRE-HARMONIZED CPTAC DATA]{style="color: #41729F;"}
+
+### *access_harmonized_CPTAC_data* {style="color: black"}
+
+If you want to use *pre-harmonized data* for running PatientProfiler, you can access them 
+using the following function. You can specify one or a set of tumor types. 
+start with this function of PatientProfiler.
+Our processed database includes transcritpomics, proteomics and phosphoproteomics data
+for 10 different tumors:
+
+-   **Brca** - Breast cancer
+
+-   **Ccrcc** - Clear cell renal cell carcinoma
+
+-   **Coad** - Colon adenocarcinoma
+
+-   **Gbm** - Glioblastoma
+
+-   **Hnscc** -Head and neck squamous cell cacinoma
+
+-   **Lscc** - Lung squamous cell carcinoma
+
+-   **Luad** - Lung cancer
+
+-   **Ov** - Ovarian cancer
+
+-   **Pdac** - Pancreatic ductal adenocarcinoma
+
+-   **Ucec** - Uterine corpus endometrial carcinoma
+
+All the data has been harmonized using [omics_update] function.
+The function returns an RDS file containing CPTAC pre-harmonized data for user-selected tumor types.
+
+### [Example of usage:]{style="color: #C38370;"}
+
+If you need to extract **Brca** and **Ov** **phosphoproteomics** and
+**proteomics** data:
+
+```{r chunk3, eval = FALSE}
+access_harmonized_CPTAC_data(tumors = c("Brca", "Ov"), omics = c("phospho", "prot"))
+```
+
+The output is a local variable for each data frame you acceded.
+
+## [NEXT STEPS IN PatientProfiler]{style="color: #41729F;"}
+You can follow the main vignette to use the CPTAC pre-harmonized data and generate patient-specific networks.
