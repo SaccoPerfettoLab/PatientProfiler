@@ -57,6 +57,14 @@ devtools::install_github('https://github.com/SaccoPerfettoLab/SignalingProfiler/
 devtools::install_github('https://github.com/SaccoPerfettoLab/PatientProfiler/')
 ```
 
+## [Load necessary libraries]{style="color: #A45C40;"}
+
+```{r eval=FALSE}
+library(PatientProfiler)
+library(SignalingProfiler)
+library(tidyverse)
+```
+
 ## [Set up Python PatientProfiler environment]{style="color: #A45C40;"}
 PatientProfiler contains some functions executing Python source code To
 correctly set up the Python PatientProfiler environment please execute
@@ -66,13 +74,6 @@ the following code line the first time you use PatientProfiler:
 install_pp_py()
 ```
 
-## [Load necessary libraries]{style="color: #A45C40;"}
-
-```{r eval=FALSE}
-library(PatientProfiler)
-library(SignalingProfiler)
-library(tidyverse)
-```
 
 ## [PREPARE YOUR DATA]{style="color: #41729F;"}
 
