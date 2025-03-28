@@ -20,6 +20,9 @@ PatientProfiler is dependent on Saez lab algorithm CARNIVAL for performing the s
 
 The first tutorial of PatientProfiler is available [here](https://html-preview.github.io/?url=https://github.com/SaccoPerfettoLab/PatientProfiler/blob/main/vignette/PatientProfiler-vignette.html)
 
+If you haven't data, try PatientProfiler using pre-harmonized multiomic data from CPTAC portal. 
+The tutorial for the usage is [here](https://github.com/SaccoPerfettoLab/PatientProfiler/blob/main/vignette/Access_CPTAC_vignette.html).
+
 ## Citation
 
 If you use PatientProfiler in your research please cite the [preprint](https://www.biorxiv.org/content/10.1101/2025.01.31.635886v1).
