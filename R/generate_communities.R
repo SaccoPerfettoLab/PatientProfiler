@@ -6,7 +6,6 @@
 #' @param output_dir Character. Path to the directory containing the output of this function
 #' @param t_lower Numeric. The lower threshold for filtering edges based on their frequency across patients. Default is 4.
 #' @param t_upper Numeric. The upper threshold for filtering edges based on their frequency across patients.  If not provided, no upper limit is applied, and all edges above `t_lower` will be included.
-#' @param local Boolean. 
 #'
 #'
 #' @return A directory for each community containing nodes table, edges table e patients stratification.
@@ -17,12 +16,9 @@
 #' network_dir = "Networks_output",
 #' output_dir = "output_communities")
 
-generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4, t_upper = 30, local = FALSE) {
-  if (local == TRUE) {
-    path_package <- './inst/'
-  } else {
-    path_package <- paste0(.libPaths(), '/PatientProfiler/')
-  }
+generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4, t_upper = 30) {
+   
+   path_package <- paste0(.libPaths(), '/PatientProfiler/')
   
   # Import the Python script to find communities
   for (path in path_package) {
