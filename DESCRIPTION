@@ -36,5 +36,6 @@ Imports:
     sva,
     org.Mm.eg.db,
     org.Hs.eg.db,
-    AnnotationDbi
+    AnnotationDbi,
+    RCy3
 biocViews:
