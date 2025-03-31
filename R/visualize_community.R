@@ -1,14 +1,3 @@
-#' Title
-#'
-#' @param community_name 
-#'
-#' @return
-#' @export
-#'
-#' @examples
-#' 
-
-
 
 #' Visualize Community Network in Cytoscape
 #'
