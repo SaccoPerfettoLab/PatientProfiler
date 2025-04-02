@@ -59,9 +59,9 @@ generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4,
                                   t_upper = t_upper,
                                   output_dir = output_dir) 
   
-  # Remove the temporary directory
-  unlink(dir_path, recursive = TRUE)
-  
+  # Remove only the temporary directories for nodes and edges
+  unlink(temp_nodes_dir, recursive = TRUE)
+  unlink(temp_edges_dir, recursive = TRUE)
   
   return(communities)
 }
