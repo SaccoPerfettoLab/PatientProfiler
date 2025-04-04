@@ -18,7 +18,7 @@
 from_df_to_list <- function(df_cols){
 
   mut_list <- as.list(setNames(df_cols, names(df_cols)))[-1] #Removing Patient_ID
-  mut_list <- mut_list[ mut_list != 0 ]
+  mut_list <- mut_list[ mut_list != 0 & !(is.na(mut_list) | mut_list == 'NA')]
 
   return(mut_list)
 }
