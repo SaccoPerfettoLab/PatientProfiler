@@ -55,7 +55,7 @@ infer_and_link_phenotypes <- function(carnival_output,
 
   if(is.null(pheno_distances_table)){
     message('Using SignalingProfiler built-in distance table')
-    pheno_distances_table <- get(data('phenoscore_distances_table', package = 'SignalingProfiler'))
+    pheno_distances_table <- SignalingProfiler::access_remote_file(file = 'phenoscore_distances_table.tsv', dir = 'PKN')
   }
 
   phenoscore_output <- SignalingProfiler::phenoscore_computation(proteins_df = carnival_output$nodes_df,
