@@ -185,7 +185,7 @@ create_network <- function(patient_id,
   user_params = list(PKN_options = PKN_options,
                      naive_options = naive_options,
                      carnival_options = carnival_options,
-                     phenoscore_options = phenoscore_options,
+                     phenoscore_options = list(pheno_distances_table, phenoscore_options),
                      format_options = format_options)
 
   # Initialize and modify default parameters
