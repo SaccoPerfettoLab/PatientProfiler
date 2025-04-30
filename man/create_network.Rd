@@ -37,7 +37,7 @@ create_network(
 
 \item{desired_phenotypes}{SIGNOR phenotypes vector to infer the activity and include in the model; default:  \code{NULL}.}
 
-\item{pheno_distances_table}{dataframe of ProxPath protein-to-phenotypes distances; default:  \code{NULL}.}
+\item{pheno_distances_table}{dataframe of ProxPath protein-to-phenotypes distances (output of \emph{proxpath_preprocessing} function); default:  \code{NULL}.}
 
 \item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
 

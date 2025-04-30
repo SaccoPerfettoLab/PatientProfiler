@@ -30,8 +30,9 @@
 #' @examples
 #' network_params <- initialize_net_default_params('./Network_output/')
 #' network_params$carnival_options <- list(solver = 'cplex', carnival_type = 'inverse')
+#' network_params$phenoscore_options <- list(path_length = 3, stat = 'median)
+#'
 #' pheno_distance_table <- proxpath_preprocessing(proteomics, phosphoproteomics)
-#' network_params$phenoscore_options <- list(pheno_distance_table = pheno_distance_table)
 #'
 #' omics_list <- list(transcriptomics, proteomics, phosphoproteomics)
 #' PKN = get_PKN(omics_list = omics_list)
@@ -63,21 +64,21 @@ infer_and_link_phenotypes <- function(carnival_output,
                                               pheno_distances_table = pheno_distances_table,
                                               sp_graph = carnival_output$igraph_network,
                                               # closeness of proteins to phenotypes
-                                              path_length = network_params$phenoscore_options$phenoscore_params$path_length,
-                                              stat = network_params$phenoscore_options$phenoscore_params$stat,
-                                              zscore_threshold = network_params$phenoscore_options$phenoscore_params$zscore_threshold,
+                                              path_length = network_params$phenoscore_options$path_length,
+                                              stat = network_params$phenoscore_options$stat,
+                                              zscore_threshold = network_params$phenoscore_options$zscore_threshold,
                                               # exclude random phenotypes
-                                              n_random = network_params$phenoscore_options$phenoscore_params$nrandom,
-                                              pvalue_threshold =  network_params$phenoscore_options$phenoscore_params$pvalue_threshold,
+                                              n_random = network_params$phenoscore_options$nrandom,
+                                              pvalue_threshold =  network_params$phenoscore_options$pvalue_threshold,
                                               # optimized network  specificity
-                                              remove_cascade =  network_params$phenoscore_options$phenoscore_params$remove_cascade,
-                                              node_idx = network_params$phenoscore_options$phenoscore_params$node_idx,
-                                              use_carnival_activity = network_params$phenoscore_options$phenoscore_params$use_carnival_activity,
-                                              create_pheno_network = network_params$phenoscore_options$phenoscore_params$create_pheno_network
+                                              remove_cascade =  network_params$phenoscore_options$remove_cascade,
+                                              node_idx = network_params$phenoscore_options$node_idx,
+                                              use_carnival_activity = network_params$phenoscore_options$use_carnival_activity,
+                                              create_pheno_network = network_params$phenoscore_options$create_pheno_network
                                               )
 
-  if( network_params$phenoscore_options$phenoscore_params$create_pheno_network){
-    igraphToSif(phenoscore_output$sp_object_phenotypes$igraph_network, #to check
+  if( network_params$phenoscore_options$create_pheno_network){
+    igraphToSif(phenoscore_output$sp_object_phenotypes$igraph_network,
                 paste0(network_params$phenoscore_options$pheno_path, '.sif'), "sign")
 
     pp_output <- list(sp_object_phenotypes = phenoscore_output$sp_object_phenotypes)

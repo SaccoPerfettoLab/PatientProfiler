@@ -9,8 +9,7 @@ generate_communities(
   network_dir,
   output_dir,
   t_lower = 4,
-  t_upper = 30,
-  local = FALSE
+  t_upper = 30
 )
 }
 \arguments{
@@ -23,8 +22,6 @@ generate_communities(
 \item{t_lower}{Numeric. The lower threshold for filtering edges based on their frequency across patients. Default is 4.}
 
 \item{t_upper}{Numeric. The upper threshold for filtering edges based on their frequency across patients.  If not provided, no upper limit is applied, and all edges above \code{t_lower} will be included.}
-
-\item{local}{Boolean.}
 }
 \value{
 A directory for each community containing nodes table, edges table e patients stratification.

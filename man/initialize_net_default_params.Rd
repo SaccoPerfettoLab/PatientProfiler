@@ -35,12 +35,9 @@ it returns a list of 5 lists for each internal function:
 \item \code{opt_path}: path to the folder were optimized networks files are saved; default \code{./Network_output/Opt_}
 \item \code{carnival_params}: a list of CARNIVAL parameters, set in \emph{SignalingProfiler::default_CARNIVAL_options(solver)}
 }
-\item \verb{$phenoscore_options}: parameters list for SignalingProfiler PhenoScore computation of 3 elements:
+\item \verb{$phenoscore_options}: parameters list for SignalingProfiler PhenoScore computation of 10 elements:
 \itemize{
 \item \code{pheno_path}:  path to the folder were optimized networks files are saved; default \code{./Network_output/Pheno_}
-\item \code{pheno_distance_table}: output of \emph{proxpath_preprocessing} function; default \code{NULL}.
-\item \code{phenoscore_params}: list of 9 elements for PhenoScore computation:
-\itemize{
 \item \code{path_length}: max length between proteins and phenotypes; default \code{3}.
 \item \code{stat}: ProxPath z-score statistics for significantly close phenotypes; default \code{mean}.
 \item \code{zscore_threshold}: ProxPath z-score threshold for significantly close phenotypes; default \code{-1.96}.
@@ -50,7 +47,6 @@ it returns a list of 5 lists for each internal function:
 \item \code{node_idx}: whether weighting protein activity contribution to phenotypes' regulation based on number of paths; default  \code{FALSE}.
 \item \code{use_carnival_activity}: whether consider all proteins in the network inferred by carnival (TRUE) or only the experimentally-derived ones (FALSE); default \code{FALSE}.
 \item \code{create_pheno_network}: whether connect model proteins to phenotypes; default \code{TRUE}.
-}
 }
 \item \verb{$format_options}: parameters list for manipulation of proteins-to-phenotypes models of 3 elements:
 - \code{optimize_on_phenotypes}: Boolean, whether keep only proteins-to-phenotypes edges coherent with the inferred phenotypes activity; default, \code{FALSE}.

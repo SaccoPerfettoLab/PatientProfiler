@@ -26,19 +26,17 @@
 #'     - `opt_path`: path to the folder were optimized networks files are saved; default `./Network_output/Opt_`
 #'     - `carnival_params`: a list of CARNIVAL parameters, set in *SignalingProfiler::default_CARNIVAL_options(solver)*
 #'
-#' - `$phenoscore_options`: parameters list for SignalingProfiler PhenoScore computation of 3 elements:
+#' - `$phenoscore_options`: parameters list for SignalingProfiler PhenoScore computation of 10 elements:
 #'    - `pheno_path`:  path to the folder were optimized networks files are saved; default `./Network_output/Pheno_`
-#'    - `pheno_distance_table`: output of *proxpath_preprocessing* function; default `NULL`.
-#'    -  `phenoscore_params`: list of 9 elements for PhenoScore computation:
-#'        - `path_length`: max length between proteins and phenotypes; default `3`.
-#'        - `stat`: ProxPath z-score statistics for significantly close phenotypes; default `mean`.
-#'        - `zscore_threshold`: ProxPath z-score threshold for significantly close phenotypes; default `-1.96`.
-#'        - `nrandom`: ProxPath number of randomization of input proteins length;  default `1000`.
-#'        - `pvalue_threshold`: ProxPath t-test p-value adjusted randomization threshold;  default `0.05`.
-#'        - `remove_cascade`: in linear cascade of proteins regulating a phenotype, consider only the most upstream one in PhenoScore computation; default `TRUE`.
-#'        - `node_idx`: whether weighting protein activity contribution to phenotypes' regulation based on number of paths; default  `FALSE`.
-#'        - `use_carnival_activity`: whether consider all proteins in the network inferred by carnival (TRUE) or only the experimentally-derived ones (FALSE); default `FALSE`.
-#'        - `create_pheno_network`: whether connect model proteins to phenotypes; default `TRUE`.
+#'    - `path_length`: max length between proteins and phenotypes; default `3`.
+#'    - `stat`: ProxPath z-score statistics for significantly close phenotypes; default `mean`.
+#'    - `zscore_threshold`: ProxPath z-score threshold for significantly close phenotypes; default `-1.96`.
+#'    - `nrandom`: ProxPath number of randomization of input proteins length;  default `1000`.
+#'    - `pvalue_threshold`: ProxPath t-test p-value adjusted randomization threshold;  default `0.05`.
+#'    - `remove_cascade`: in linear cascade of proteins regulating a phenotype, consider only the most upstream one in PhenoScore computation; default `TRUE`.
+#'    - `node_idx`: whether weighting protein activity contribution to phenotypes' regulation based on number of paths; default  `FALSE`.
+#'    - `use_carnival_activity`: whether consider all proteins in the network inferred by carnival (TRUE) or only the experimentally-derived ones (FALSE); default `FALSE`.
+#'    - `create_pheno_network`: whether connect model proteins to phenotypes; default `TRUE`.
 #'
 #' - `$format_options`: parameters list for manipulation of proteins-to-phenotypes models of 3 elements:
 #'        - `optimize_on_phenotypes`: Boolean, whether keep only proteins-to-phenotypes edges coherent with the inferred phenotypes activity; default, `FALSE`.
@@ -56,14 +54,12 @@ initialize_net_default_params <- function(output_dir) {
     naive_options = list(layers = 2, max_length = c(1, 4), connect_all = TRUE, naive_path = paste0(output_dir, '/Naive_')),
     carnival_options = list(solver = 'cplex', carnival_type = 'inverse', opt_path = paste0(output_dir, '/Opt_'), carnival_params = list()),
     phenoscore_options = list(
-      pheno_path = paste0(output_dir, '/Pheno_'),
-      pheno_distance_table = NULL,
-      phenoscore_params = list(
-        path_length = 3, stat = 'mean', zscore_threshold = -1.96,
-        nrandom = 1000, pvalue_threshold = 0.05,
-        remove_cascade = TRUE, node_idx = FALSE, use_carnival_activity = FALSE,
-        create_pheno_network = TRUE
-      )
+      pheno_path =  paste0(output_dir, '/Pheno_'),
+      path_length = 3, stat = 'mean', zscore_threshold = -1.96,
+      nrandom = 1000, pvalue_threshold = 0.05,
+      remove_cascade = TRUE, node_idx = FALSE, use_carnival_activity = FALSE,
+      create_pheno_network = TRUE
+      # pheno_distance_table = NULL
     ),
     format_options = list(
       optimize_on_phenotypes = TRUE,
@@ -106,12 +102,12 @@ initialize_net_default_params <- function(output_dir) {
 #' @param activities dataframe of proteins inferred activity to connect to the starting point
 #'
 #' @param desired_phenotypes SIGNOR phenotypes vector to infer the activity and include in the model; default:  `NULL`.
-#'
+#' @param pheno_distances_table dataframe of ProxPath protein-to-phenotypes distances (output of *proxpath_preprocessing* function); default:  `NULL`.
+
 #' @param transcriptomics  dataframe of transcriptomics; default: `NULL`.
 #' @param proteomics dataframe of proteomics; default: `NULL`.
 #' @param phosphoproteomics  dataframe of phosphoproteomics; default: `NULL`.
 
-#' @param pheno_distances_table dataframe of ProxPath protein-to-phenotypes distances; default:  `NULL`.
 #' @param output_dir string, path to network folder; default `'./Networks_output/'`.
 #' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
 
@@ -185,7 +181,7 @@ create_network <- function(patient_id,
   user_params = list(PKN_options = PKN_options,
                      naive_options = naive_options,
                      carnival_options = carnival_options,
-                     phenoscore_options = list(pheno_distances_table, phenoscore_options),
+                     phenoscore_options = phenoscore_options,
                      format_options = format_options)
 
   # Initialize and modify default parameters
@@ -222,6 +218,7 @@ create_network <- function(patient_id,
   network_params$phenoscore_options$pheno_path <- paste0(network_params$phenoscore_options$pheno_path, patient_id)
   phenoscore_output <- infer_and_link_phenotypes(carnival_output = carnival_output,
                                                 desired_phenotypes = desired_phenotypes,
+                                                pheno_distances_table = pheno_distances_table,
                                                 proteomics = proteomics,
                                                 phosphoproteomics = phosphoproteomics,
                                                 save_all_files = save_all_files,
