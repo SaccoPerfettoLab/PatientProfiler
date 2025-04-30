@@ -57,3 +57,22 @@ Wrapper to phenoscore computation algorithm in SignalingProfiler
 }
 }
 }
+\examples{
+network_params <- initialize_net_default_params('./Network_output/')
+network_params$carnival_options <- list(solver = 'cplex', carnival_type = 'inverse')
+network_params$phenoscore_options <- list(path_length = 3, stat = 'median')
+
+pheno_distance_table <- proxpath_preprocessing(proteomics, phosphoproteomics)
+
+omics_list <- list(transcriptomics, proteomics, phosphoproteomics)
+PKN = get_PKN(omics_list = omics_list)
+naive_network = create_naive_network(PKN, sources, activities, naive_network_parameters = list(layers = 2, max_length = c(1,4)))
+carnival_network = optimize_network_with_carnival(sources, activities, phosphoproteomics, network_params = network_params)
+phenoscore_output = infer_and_link_phenotypes(carnival_output = carnival_network,
+                                              desired_phenotypes = c('APOPTOSIS', 'PROLIFERATION'),
+                                              pheno_distance_table = pheno_distance_table,
+                                              proteomics = proteomics,
+                                              phosphoproteomics = phosphoproteomics,
+                                              network_params = network_params)
+
+}

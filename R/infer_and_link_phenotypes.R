@@ -26,11 +26,10 @@
 #'      - `edges_df`: dataframe of the edges in the proteins-to-phenotypes network; attributes are described in *optimize_network_with_carnival* documentation
 #'
 #' @export
-#'
 #' @examples
 #' network_params <- initialize_net_default_params('./Network_output/')
 #' network_params$carnival_options <- list(solver = 'cplex', carnival_type = 'inverse')
-#' network_params$phenoscore_options <- list(path_length = 3, stat = 'median)
+#' network_params$phenoscore_options <- list(path_length = 3, stat = 'median')
 #'
 #' pheno_distance_table <- proxpath_preprocessing(proteomics, phosphoproteomics)
 #'
