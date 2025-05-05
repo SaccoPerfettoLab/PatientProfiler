@@ -14,6 +14,7 @@
 #' @param desired_phenotypes SIGNOR phenotypes vector to infer the activity and include in the model; default:  `NULL`.
 #' @param pheno_distances_table character, any character except NULL to internally compute it; default:  `NULL`.
 #' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
+#' @param cache Boolean, if TRUE it will look for naive network and carnival optimized files in `output_dir` avoiding network rebuilding; default `FALSE`.
 #'
 #' @param PKN_options  check *initialize_net_default_params* documentation, in the `$PKN_options` part.
 #' @param naive_options check *initialize_net_default_params* documentation, in the `$naive_options` part.
@@ -56,6 +57,7 @@ create_cohort_networks <- function(
     mut_file = NULL, #csv file with mutations...
     output_dir = './Networks_output/',
     save_all_files = FALSE,
+    cache = FALSE,
     PKN_options = list(),
     naive_options = list(),
     carnival_options = list(),
@@ -90,24 +92,24 @@ create_cohort_networks <- function(
   sources_df <- if(!is.null(mut_file)){
     readr::read_tsv(mut_file)
   }else character()
-  
+
   # Retrieve activity files ensuring the correct selection logic
   patient_ids <- unique(c(trans_ids, prot_ids, phospho_ids))
   act_files <- c()
-  
+
   if (!is.null(act_dir)) {
     for (patient_id in patient_ids) {
       constraint_file <- file.path(act_dir, paste0("Activity_constraints_Patient_", patient_id, ".tsv"))
       normal_file <- file.path(act_dir, paste0("Activity_Patient_", patient_id, ".tsv"))
-      
+
       if (file.exists(constraint_file)) {
-        act_files <- c(act_files, constraint_file)  
+        act_files <- c(act_files, constraint_file)
       } else if (file.exists(normal_file)) {
-        act_files <- c(act_files, normal_file) 
+        act_files <- c(act_files, normal_file)
       }
     }
   }
-  
+
   act_ids <- sapply(act_files, extract_patient_id)
 
   patient_count <- 0
@@ -188,6 +190,7 @@ create_cohort_networks <- function(
                      desired_phenotypes = desired_phenotypes,
                      pheno_distances_table = pheno_distances_table,
                      output_dir = output_dir,
+                     cache = cache,
                      save_all_files = save_all_files,
                      PKN_options = PKN_options,
                      naive_options = naive_options,

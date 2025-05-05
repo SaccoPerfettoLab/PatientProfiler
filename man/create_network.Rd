@@ -14,6 +14,7 @@ create_network(
   desired_phenotypes = NULL,
   pheno_distances_table = NULL,
   save_all_files = FALSE,
+  cache = cache,
   output_dir = "./Networks_output/",
   PKN_options = list(),
   naive_options = list(),
@@ -40,6 +41,8 @@ create_network(
 \item{pheno_distances_table}{dataframe of ProxPath protein-to-phenotypes distances (output of \emph{proxpath_preprocessing} function); default:  \code{NULL}.}
 
 \item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
+
+\item{cache}{Boolean, if TRUE it will look for naive network and carnival optimized files in \code{output_dir} avoiding network rebuilding; default \code{FALSE}.}
 
 \item{output_dir}{string, path to network folder; default \code{'./Networks_output/'}.}
 

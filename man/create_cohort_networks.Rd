@@ -14,6 +14,7 @@ create_cohort_networks(
   mut_file = NULL,
   output_dir = "./Networks_output/",
   save_all_files = FALSE,
+  cache = FALSE,
   PKN_options = list(),
   naive_options = list(),
   carnival_options = list(),
@@ -37,6 +38,8 @@ create_cohort_networks(
 \item{output_dir}{string, path to network folder; default \code{'./Networks_output/'}.}
 
 \item{save_all_files}{Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default \code{FALSE}.}
+
+\item{cache}{Boolean, if TRUE it will look for naive network and carnival optimized files in \code{output_dir} avoiding network rebuilding; default \code{FALSE}.}
 
 \item{PKN_options}{check \emph{initialize_net_default_params} documentation, in the \verb{$PKN_options} part.}
 

@@ -110,6 +110,7 @@ initialize_net_default_params <- function(output_dir) {
 
 #' @param output_dir string, path to network folder; default `'./Networks_output/'`.
 #' @param save_all_files Boolean, if TRUE it will save 13 files per patient, FALSE, just 4; default `FALSE`.
+#' @param cache Boolean, if TRUE it will look for naive network and carnival optimized files in `output_dir` avoiding network rebuilding; default `FALSE`.
 
 #' @param PKN_options  check *initialize_net_default_params* documentation, in the `$PKN_options` part.
 #' @param naive_options check *initialize_net_default_params* documentation, in the `$naive_options` part.
@@ -164,6 +165,7 @@ create_network <- function(patient_id,
                            desired_phenotypes = NULL,
                            pheno_distances_table = NULL,
                            save_all_files = FALSE,
+                           cache = cache,
                            output_dir = './Networks_output/',
                            PKN_options = list(),
                            naive_options = list(),
@@ -194,24 +196,68 @@ create_network <- function(patient_id,
 
   # Generate Naive Network
   network_params$naive_options$naive_path <- paste0(network_params$naive_options$naive_path, patient_id)
-  naive_network <- create_naive_network(PKN = PKN,
-                                        sources = sources,
-                                        activities = activities,
-                                        naive_network_parameters = network_params$naive_options)
-  message('Naive network building done!')
+  if(cache){
+    if(file.exists(paste0(network_params$naive_options$naive_path, '.RDS'))){
+      naive_network <- readRDS(paste0(network_params$naive_options$naive_path, '.RDS'))
+    }else{
+      naive_network <- create_naive_network(PKN = PKN,
+                                            sources = sources,
+                                            activities = activities,
+                                            naive_network_parameters = network_params$naive_options)
+      message('Naive network building done!')
+    }
+  }else{
+    naive_network <- create_naive_network(PKN = PKN,
+                                          sources = sources,
+                                          activities = activities,
+                                          naive_network_parameters = network_params$naive_options)
+    message('Naive network building done!')
+  }
 
   # Optimize Network with CARNIVAL
   network_params$carnival_options$opt_path <- paste0(network_params$carnival_options$opt_path, patient_id)
-  carnival_output <- optimize_network_with_carnival(sources = sources,
-                                                    activities = activities,
-                                                    naive_network = naive_network,
-                                                    phosphoproteomics = phosphoproteomics,
-                                                    save_all_files = save_all_files,
-                                                    network_params = network_params)
+
+  if(cache){
+    if(file.exists(paste0(network_params$carnival_options$opt_path, '.RDS'))){
+
+      # Read Opt_{patient_id}.RDS
+      carnival_output <- readRDS(paste0( network_params$carnival_options$opt_path, '.RDS'))
+
+      # Validate edges with phosphoproteomics
+      if(!is.null(phosphoproteomics)){
+        carnival_output <- SignalingProfiler::expand_and_map_edges(optimized_object = carnival_output,
+                                                                   organism = 'human',
+                                                                   phospho_df = phosphoproteomics,
+                                                                   files = save_all_files,
+                                                                   direct = network_params$PKN_options$direct,
+                                                                   with_atlas = network_params$PKN_options$with_atlas,
+                                                                   path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
+                                                                   path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
+      }
+
+    }else{
+      carnival_output <- optimize_network_with_carnival(sources = sources,
+                                                        activities = activities,
+                                                        naive_network = naive_network,
+                                                        phosphoproteomics = phosphoproteomics,
+                                                        save_all_files = save_all_files,
+                                                        network_params = network_params)
+      message('CARNIVAL optimization done!')
+    }
+  }else{
+    carnival_output <- optimize_network_with_carnival(sources = sources,
+                                                      activities = activities,
+                                                      naive_network = naive_network,
+                                                      phosphoproteomics = phosphoproteomics,
+                                                      save_all_files = save_all_files,
+                                                      network_params = network_params)
+    message('CARNIVAL optimization done!')
+  }
+
   if(is.null(carnival_output)){
     stop('Try giving CARNIVAL more time for finding the solution!')
   }
-  message('CARNIVAL optimization done!')
+
 
   # PhenoScore analysis
   message('Running phenotypic inference...')
