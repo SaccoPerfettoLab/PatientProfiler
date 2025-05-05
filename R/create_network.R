@@ -197,8 +197,8 @@ create_network <- function(patient_id,
   # Generate Naive Network
   network_params$naive_options$naive_path <- paste0(network_params$naive_options$naive_path, patient_id)
   if(cache){
-    if(file.exists(paste0(network_params$naive_options$naive_path, '.RDS'))){
-      naive_network <- readRDS(paste0(network_params$naive_options$naive_path, '.RDS'))
+    if(file.exists(paste0(network_params$naive_options$naive_path, '.rds'))){
+      naive_network <- readRDS(paste0(network_params$naive_options$naive_path, '.rds'))
     }else{
       naive_network <- create_naive_network(PKN = PKN,
                                             sources = sources,
@@ -218,10 +218,10 @@ create_network <- function(patient_id,
   network_params$carnival_options$opt_path <- paste0(network_params$carnival_options$opt_path, patient_id)
 
   if(cache){
-    if(file.exists(paste0(network_params$carnival_options$opt_path, '.RDS'))){
+    if(file.exists(paste0(network_params$carnival_options$opt_path, '.rds'))){
 
       # Read Opt_{patient_id}.RDS
-      carnival_output <- readRDS(paste0( network_params$carnival_options$opt_path, '.RDS'))
+      carnival_output <- readRDS(paste0( network_params$carnival_options$opt_path, '.rds'))
 
       # Validate edges with phosphoproteomics
       if(!is.null(phosphoproteomics)){
@@ -232,7 +232,7 @@ create_network <- function(patient_id,
                                                                    direct = network_params$PKN_options$direct,
                                                                    with_atlas = network_params$PKN_options$with_atlas,
                                                                    path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
-                                                                   path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
+                                                                   path_rds =  paste0(network_params$carnival_options$opt_path, '_val.rds'))
       }
 
     }else{
