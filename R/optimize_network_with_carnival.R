@@ -103,7 +103,7 @@ optimize_network_with_carnival <- function(sources,
                                                                         direct = network_params$PKN_options$direct,
                                                                         with_atlas = network_params$PKN_options$with_atlas,
                                                                         path_sif = paste0(network_params$carnival_options$opt_path, '.sif'),
-                                                                        path_rds =  paste0(network_params$carnival_options$opt_path, '.RDS'))
+                                                                        path_rds =  paste0(network_params$carnival_options$opt_path, '.rds'))
 
 
     # Two shots CARNIVAL
@@ -154,7 +154,7 @@ optimize_network_with_carnival <- function(sources,
                                                           proteins_df = carnival_input,
                                                           files = TRUE,
                                                           path_sif = paste0(network_params$carnival_options$opt_path, '.sif'),
-                                                          path_rds =  paste0(network_params$carnival_options$opt_path, '.RDS'))
+                                                          path_rds =  paste0(network_params$carnival_options$opt_path, '.rds'))
 
 
     # Three shots CARNIVAL
@@ -232,7 +232,7 @@ optimize_network_with_carnival <- function(sources,
                                                           proteins_df = carnival_input,
                                                           files = TRUE,
                                                           path_sif = paste0(network_params$carnival_options$opt_path, '.sif'),
-                                                          path_rds =  paste0(network_params$carnival_options$opt_path, '.RDS'))
+                                                          path_rds =  paste0(network_params$carnival_options$opt_path, '.rds'))
 
   }else{
     stop('Please check CARNIVAL_type: allowed CARNIVAL types are \'vanilla_one_shot\', \'vanilla_two_shots\', \'vanilla_three_shots\', \'inverse\\')
@@ -251,7 +251,7 @@ optimize_network_with_carnival <- function(sources,
                                                                direct = network_params$PKN_options$direct,
                                                                with_atlas = network_params$PKN_options$with_atlas,
                                                                path_sif = paste0(network_params$carnival_options$opt_path, '_val.sif'),
-                                                               path_rds =  paste0(network_params$carnival_options$opt_path, '_val.RDS'))
+                                                               path_rds =  paste0(network_params$carnival_options$opt_path, '_val.rds'))
   }
   return(carnival_output)
 }

@@ -82,11 +82,11 @@ infer_and_link_phenotypes <- function(carnival_output,
 
     pp_output <- list(sp_object_phenotypes = phenoscore_output$sp_object_phenotypes)
     saveRDS(pp_output,
-            paste0(network_params$phenoscore_options$pheno_path, '.RDS'))
+            paste0(network_params$phenoscore_options$pheno_path, '.rds'))
   }
 
   if(save_all_files){
-    saveRDS(phenoscore_output,  paste0(network_params$phenoscore_options$pheno_path, '_object.RDS'))
+    saveRDS(phenoscore_output,  paste0(network_params$phenoscore_options$pheno_path, '_object.rds'))
   }
 
   return(phenoscore_output)
