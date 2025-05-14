@@ -4,10 +4,15 @@
 \alias{visualize_community}
 \title{Visualize Community Network in Cytoscape}
 \usage{
-visualize_community(community_name)
+visualize_community(
+  community_name,
+  comm_folder = "./Communities/output_communities/"
+)
 }
 \arguments{
 \item{community_name}{A string specifying the community name (e.g., "community_7").}
+
+\item{comm_folder}{(optional) Path to the folder with resulting community from previous step. Default: \code{"./Communities/output_communities/"}.}
 }
 \value{
 None. The function creates a network visualization in Cytoscape.
