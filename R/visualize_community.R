@@ -18,7 +18,7 @@
 
 visualize_community <- function(community_name, comm_folder = "./Communities/output_communities/") {
   # Extract the community number
-  community_number <- str_extract(community_name, "\\d+$")
+  community_number <- stringr::str_extract(community_name, "\\d+$")
 
   # Construct file paths
   path <- paste0(comm_folder, community_name, "/")
@@ -33,10 +33,10 @@ visualize_community <- function(community_name, comm_folder = "./Communities/out
   node$gene_id <- node$gene_name
   node <- node %>%
     dplyr::relocate(gene_id) %>%
-    dplyr::mutate(gene_name = str_remove(gene_name, "_INHIBITED"))
+    dplyr::mutate(gene_name = stringr::str_remove(gene_name, "_INHIBITED"))
 
   # Create the graph
-  graph <- graph_from_data_frame(d = edge, vertices = node, directed = TRUE)
+  graph <- igraph::graph_from_data_frame(d = edge, vertices = node, directed = TRUE)
 
   # Import visualization style
   data_path <- system.file("extdata", "pp_style.xml", package = "PatientProfiler")
