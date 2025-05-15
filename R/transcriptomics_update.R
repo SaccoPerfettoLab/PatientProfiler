@@ -14,7 +14,8 @@
 #' @param metric  string, it indicates the method for centering the data when z-scores are computed.
 #'                It could be "mean" or "median".
 #' @param output_dir a string indicating the updated output folder.
-#'                
+#' @param retrieve_coding Boolean, if TRUE biomaRt is queried to annotate genes and keep only coding ones; default: FALSE
+#'
 #' @return tibble, it contains the filtered and processed transcriptomics data.
 #'
 #' @examples
@@ -29,40 +30,44 @@ transcriptomics_update <- function(df_tra,
                                    zscore = TRUE,
                                    zmethod = "column",
                                    metric = "median",
-                                   output_dir) {
-  
-  # df_tra_cod <- retrieve_coding(df_tra)
-  
+                                   output_dir,
+                                   retrieve_coding = F) {
+
+  if(retrieve_coding){
+    df_tra <- retrieve_coding(df_tra)
+  }
+
+
   colnames(df_tra) <- gsub("[.-]", "", colnames(df_tra))
-  
+
   df_tra_clean <<- remove_nas(df_tra, threshold)
-  
+
   message("Transcriptomics data: removing duplicates")
-  
+
   df_tra_agg <<- df_tra_clean %>%
     dplyr::group_by(gene_name) %>%
     dplyr::summarize(across(everything(), mean, na.rm = TRUE))
-  
+
   readr::write_tsv(df_tra_agg, paste0(output_dir,"/","Transcriptomics_clean.tsv"))
-  
+
   if (zscore) {
-    
+
     message("Transcriptomics data: computing zscore")
-    
+
     df_tra_numeric <- df_tra_agg %>%
       dplyr::select(-gene_name)
-    
+
     metadata_columns <- df_tra_agg %>%
       dplyr::select(gene_name)
-    
+
     df_tra_matrix <- as.matrix(df_tra_numeric)
-    
+
     df_tra_zscore <<- compute_zscore(df_tra_matrix, zmethod, metric)
-    
+
     df_tra_zscore <<- dplyr::mutate_all(as.data.frame(df_tra_zscore), as.numeric)
-    
+
     df_tra_zscore <<- cbind(metadata_columns, df_tra_zscore)
-    
+
     readr::write_tsv(df_tra_zscore, paste0(output_dir,"/","Transcriptomics_zscore.tsv"))
     return(df_tra_zscore)
   } else {
