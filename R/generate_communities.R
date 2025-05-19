@@ -12,14 +12,14 @@
 #' @export
 #'
 #' @examples
-#' generate_communities(dir_path = "input_communities", 
+#' generate_communities(dir_path = "input_communities",
 #' network_dir = "Networks_output",
 #' output_dir = "output_communities")
 
 generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4, t_upper = 30) {
-   
+
    path_package <- paste0(.libPaths(), '/PatientProfiler/')
-  
+
   # Import the Python script to find communities
   for (path in path_package) {
     result <<- tryCatch({
@@ -28,41 +28,41 @@ generate_communities <- function(dir_path, network_dir, output_dir, t_lower = 4,
       message("An error occurred: ", e$message, ' with path ', path)
     })
   }
-  
+
   # Take as inputs patient-specific mechanistic models
-  file_list <- list.files(network_dir, pattern = "Pheno_(.*)\\.RDS", full.names = TRUE) 
-  
+  file_list <- list.files(network_dir, pattern = "Pheno_(.*)\\.rds", full.names = TRUE)
+
   # Nodes and Edges creation
-  temp_nodes_dir <- file.path(dir_path, "nodes") 
+  temp_nodes_dir <- file.path(dir_path, "nodes")
   temp_edges_dir <- file.path(dir_path, "edges")
   dir.create(temp_nodes_dir, recursive = TRUE, showWarnings = FALSE)
   dir.create(temp_edges_dir, recursive = TRUE, showWarnings = FALSE)
-  
+
   for (file in file_list) {
     file_name <- basename(file)
-    pat_name <- sub("Pheno_(.*)\\.RDS", "\\1", file_name)
-    
+    pat_name <- sub("Pheno_(.*)\\.rds", "\\1", file_name)
+
     opt1 <- readRDS(file)
-    
+
     nodes <- opt1$sp_object_phenotypes$nodes_df[, c(1:2,7)]
     nodes_path <- file.path(temp_nodes_dir, paste0("nodes_", pat_name, ".xlsx"))
     writexl::write_xlsx(nodes, nodes_path)
-    
+
     edges <- opt1$sp_object_phenotypes$edges_df[, c(1:4,6)]
     edges_path <- file.path(temp_edges_dir, paste0("edges_", pat_name, ".xlsx"))
     writexl::write_xlsx(edges, edges_path)
   }
-  
+
   # Find communities
   communities <- find_communities(path = dir_path,
-                                  t_lower = t_lower, 
+                                  t_lower = t_lower,
                                   t_upper = t_upper,
-                                  output_dir = output_dir) 
-  
+                                  output_dir = output_dir)
+
   # Remove only the temporary directories for nodes and edges
   unlink(temp_nodes_dir, recursive = TRUE)
   unlink(temp_edges_dir, recursive = TRUE)
-  
+
   return(communities)
 }
 
