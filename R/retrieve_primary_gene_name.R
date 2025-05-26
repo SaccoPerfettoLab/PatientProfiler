@@ -57,9 +57,9 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
 
   # Get a subset of UNIPROT and Primary gene_name and Sequence
   res_sub <- res %>%
-    dplyr::select(UNIPROT = Entry, SYMBOL = `Gene Names (primary)`, Sequence, Reviewed, `Date of last sequence modification`) %>%
+    dplyr::select(UNIPROT = Entry, SYMBOL = `Gene Names (primary)`, Sequence, Reviewed, Date_modified) %>%
     dplyr::filter(!is.na(SYMBOL)) %>%
-    dplyr::arrange(SYMBOL, dplyr::desc(Reviewed), dplyr::desc(`Date of last sequence modification`)) %>%
+    dplyr::arrange(SYMBOL, dplyr::desc(Reviewed), dplyr::desc(Date_modified)) %>%
     dplyr::group_by(SYMBOL) %>%
     dplyr::slice(if (any(Reviewed == "reviewed")) which(Reviewed == "reviewed") else 1) %>%
     dplyr::ungroup()
