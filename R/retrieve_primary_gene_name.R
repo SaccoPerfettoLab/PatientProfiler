@@ -7,7 +7,7 @@
 #'
 #' @param omic_df dataframe containing omics data. It must have a column with gene symbols.
 #' @param gn_idx integer, the column index for gene names in the omics data frame.
-#' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be removed (default is NULL).
+#' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param organism string, it indicates the organism. Options are 'human' (default) or 'mouse'.
 #' @param sequence logical, indicating whether to retain the protein sequence information in the result (default is TRUE).
 #'
@@ -24,11 +24,6 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
   # Rename colnames
   colnames(omic_df)[gn_idx] <- 'gene_name'
   omic_df %>% tidyr::separate_rows(gene_name, sep = ';') -> omic_df
-
-  # If present remove UNIPROT ID column
-  if( !is.null(uniprot_idx) ){
-    omic_df <- omic_df[,-c(uniprot_idx)]
-  }
 
   gene_names <- unlist(unique(omic_df$gene_name))
 
@@ -49,6 +44,19 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
       dplyr::filter(!is.na(UNIPROT))
   }
 
+  # if the user provide an uniprot index column it will be added to the uniprot column of AnnotationDbi to do the query in the next step
+  if (!is.null(uniprot_idx)) {
+    uniprot_col_name <- names(omic_df)[uniprot_idx]
+    user_uniprot_df <- omic_df %>%
+      dplyr::select(SYMBOL = gene_name, UNIPROT = dplyr::all_of(uniprot_col_name)) %>%
+      dplyr::filter(!is.na(UNIPROT), UNIPROT != "", !is.na(SYMBOL), SYMBOL != "") %>%
+      dplyr::distinct()
+    
+    uniprot_ids_df <- dplyr::bind_rows(uniprot_ids_df, user_uniprot_df) %>%
+      dplyr::distinct()
+  }
+  
+  
   uniprot_ids <- uniprot_ids_df$UNIPROT
 
   # Query UNIPROT
@@ -84,7 +92,7 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
 
   # Relocate UNIPROT, old and new gene symbol
   omic_df_update <- omic_df_update %>%
-    #dplyr::relocate(gene_name, gene_name.new, UNIPROT, Sequence) %>%
+    dplyr::relocate(gene_name, gene_name.new, UNIPROT, Sequence) %>%
     tidyr::separate_rows(gene_name)
 
   # Check proteins having multiple primary new gene symbols
