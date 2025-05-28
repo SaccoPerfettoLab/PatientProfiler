@@ -14,6 +14,7 @@
 #' @param threshold numeric, it specifies the threshold percentage of zeros in each row the transcriptomic dataframe. If there are >= threshold percentage of
 #'                  zeros in a row, the row will be removed (default: 80).
 #' @param sw_len integer, the sequence window length. It could be 7 or 15 (default: 7).
+#' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param pep_col_name string, it indicates the name of the peptide sequence column (if it's present) in your phosphoproteomic dataframe (default = "Peptide")
 #' @param imp_method string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 #'                   "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").
@@ -53,6 +54,7 @@ omics_update <- function(df_tr = NULL,
                          df_ph = NULL,
                          threshold = 80,
                          sw_len = 7,
+                         uniprot_idx = NULL,
                          pep_col_name = NULL,
                          imp_method = "pmm",
                          zscore = "TRUE",
@@ -89,6 +91,7 @@ omics_update <- function(df_tr = NULL,
     message("Phosphoproteomics update started..")
     phosphoproteomics_updated <<- phosphoproteomics_update(df_pho = df_ph,
                                                            sw_len = 7,
+                                                           uniprot_idx,
                                                            pep_col_name = pep_col_name,
                                                            imp_method,
                                                            zscore,

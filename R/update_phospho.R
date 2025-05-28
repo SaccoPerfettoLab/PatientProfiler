@@ -9,6 +9,7 @@
 #' @param site_col integer, the column index for phosphorylation site information.
 #' @param gn_idx integer, the column index for gene names in the data frame.
 #' @param seq_len_i integer, the length of the sequence window to be considered around the phosphopeptide.
+#' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param peptide_col_name (optional) a string representing the name of the peptide column in the data frame.
 #'                         If not provided, the function assumes no peptide column exists.
 #'
@@ -22,12 +23,12 @@
 #' head(updated_phospho_df)
 #'
 
-update_phospho <- function(df, site_col, gn_idx, seq_len_i=7, peptide_col_name = NULL) {
+update_phospho <- function(df, site_col, gn_idx, seq_len_i=7, uniprot_idx = NULL, peptide_col_name = NULL) {
 
   # Step 1: Clear invalid sites
   df1 <- remove_invalid_site(df, site_col)
     # Step 2: Retrieve primary gene names
-  df2 <- retrieve_primary_gene_name(df1, gn_idx)
+  df2 <- retrieve_primary_gene_name(df1, gn_idx, uniprot_idx)
 
   # Identify the sequence column
   sequence_col <- which(colnames(df2) == "Sequence")

@@ -8,6 +8,7 @@
 #'
 #' @param df a data frame containing the phosphoproteomics data.
 #' @param seq_len_i an integer specifying the length of the sequence window to be considered around the phosphopeptide.
+#' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param peptide_col_name (Optional) A string representing the name of the peptide column in the data frame.
 #' If not provided, the function assumes no peptide column exists.
 #' @param output_dir a string indicating the updated output folder.
@@ -25,6 +26,7 @@
 
 phosphoproteomics_update <- function(df_pho,
                                      sw_len = 7,
+                                     uniprot_idX = NULL,
                                      pep_col_name = NULL,
                                      impute_method = NULL,
                                      zscore = TRUE,
@@ -33,7 +35,7 @@ phosphoproteomics_update <- function(df_pho,
                                      output_dir){
 
   message("Phosphoproteomics data: updating phosphorylation site informations")
-  df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7,peptide_col_name = pep_col_name)
+  df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7,uniprot_idX,peptide_col_name = pep_col_name)
   message("Done!")
 
   message("Phosphoproteomics data: removing duplicates")
