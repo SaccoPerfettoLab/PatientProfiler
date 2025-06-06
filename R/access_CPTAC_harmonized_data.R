@@ -21,7 +21,7 @@
 
 access_harmonized_CPTAC_data <- function(tumors, data_types) {
   
-  base_url <- "https://perfettolab.bio.uniroma1.it/CPTAC"
+  base_url <- "https://perfettolab.bio.uniroma1.it/PerfettoLabData/PatientProfiler/CPTAC/"
   
   for (tumor in tumors) {
     
