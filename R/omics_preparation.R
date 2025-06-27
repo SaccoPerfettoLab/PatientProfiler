@@ -1,7 +1,7 @@
 #' Omics Data Preparation
 #'
 #' This function prepares transcriptomics, proteomics, and phosphoproteomics data for each patient
-#' by creating separate CSV files for individual patient data. It performs various preprocessing steps,
+#' by creating separate TSV files for individual patient data. It performs various preprocessing steps,
 #' including calculation of significance, log-p-values, and reordering of columns. The output files
 #' are saved in separate directories for each type of omics data.
 #'
