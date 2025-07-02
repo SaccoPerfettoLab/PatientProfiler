@@ -10,8 +10,10 @@ omics_update(
   df_ph = NULL,
   threshold = 80,
   sw_len = 7,
+  uniprot_idx = NULL,
   pep_col_name = NULL,
-  imp_method = "pmm",
+  impute_method = "pmm",
+  m = 5,
   zscore = "TRUE",
   zmethod = "column",
   metric = "median",
@@ -30,10 +32,11 @@ zeros in a row, the row will be removed (default: 80).}
 
 \item{sw_len}{integer, the sequence window length. It could be 7 or 15 (default: 7).}
 
+\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
+
 \item{pep_col_name}{string, it indicates the name of the peptide sequence column (if it's present) in your phosphoproteomic dataframe (default = "Peptide")}
 
-\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
-"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
+\item{m, }{integer, number of multiple imputations. The default is m = 5.}
 
 \item{zscore}{logical, whether to perform Z-score normalization (default: "TRUE").}
 
@@ -42,6 +45,9 @@ zeros in a row, the row will be removed (default: 80).}
 \item{metric}{string, the centering metric for Z-score normalization. Options are "median" (default) or "mean".}
 
 \item{output_dir}{a string indicating the updated output folder.}
+
+\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
+"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
 }
 \value{
 This function updates the following global variables:

@@ -10,7 +10,8 @@ transcriptomics_update(
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
-  output_dir
+  output_dir,
+  retrieve_coding = F
 )
 }
 \arguments{
@@ -29,6 +30,8 @@ or "column" to compute z-scores for each column of the data.}
 It could be "mean" or "median".}
 
 \item{output_dir}{a string indicating the updated output folder.}
+
+\item{retrieve_coding}{Boolean, if TRUE biomaRt is queried to annotate genes and keep only coding ones; default: FALSE}
 }
 \value{
 tibble, it contains the filtered and processed transcriptomics data.

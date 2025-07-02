@@ -7,7 +7,7 @@
 add_multiplicity(df, peptide_col)
 }
 \arguments{
-\item{peptide_col}{integer, the column number of the Peptide}
+\item{peptide_col}{name of the column containing the peptide sequence}
 
 \item{phospho_df}{tibble, the phosphoproteomics dataframe}
 }
@@ -24,5 +24,5 @@ sample_df <- data.frame(
   Value = c(0.1, 0.2, 0.3)
 )
 
-modified_df <- add_multiplicity(sample_df, peptide_col = 2)
+modified_df <- add_multiplicity(sample_df, peptide_col = "Peptide")
 }

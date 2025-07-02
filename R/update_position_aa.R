@@ -2,8 +2,8 @@
 #'
 #' @param phospho_df tibble, the phosphoproteomics dataframe
 #' @param sw_col integer, the number of the sequence window column
-#' @param sequence_col integer, the number of the full Sequence column
-#' @param peptide_col integer, the number of the Peptide column
+#' @param sequence_col name of the column containing the protein sequence
+#' @param peptide_col name of the column containing the peptide sequence
 #'
 #' @return phosphoproteomics dataframe with the additional columns 'position' and 'aminoacid' of each phosphosite
 #'

@@ -2,7 +2,7 @@
 #'
 #' @param phospho_df tibble, the phosphoproteomics dataframe
 #' @param mult_col integer, the number of the Multiplicity column
-#' @param peptide_col integer, the number of the Peptide column
+#' @param peptide_col name of the column containing the peptide sequence
 #'
 #' @return phosphoproteomics dataframe with one Petide for each possible phosphosite
 #'
@@ -15,14 +15,13 @@
 #'   Value = c(0.1, 0.2, 0.3)
 #' )
 #'
-#' expanded_df <- choose_phosphopeptide(sample_df, mult_col = 2, peptide_col = 3)
+#' expanded_df <- choose_phosphopeptide(sample_df, mult_col = 2, peptide_col = "Peptide")
 
 split_peptide <- function(phospho_df, mult_col, peptide_col) {
 
   # Convert column indices to names if they are not already
   mult_col_name <- colnames(phospho_df)[mult_col]
-  peptide_col_name <- colnames(phospho_df)[peptide_col]
-
+  
   # Initialize an empty dataframe to store the results
   result_df <- data.frame()
 
@@ -30,7 +29,7 @@ split_peptide <- function(phospho_df, mult_col, peptide_col) {
   for (i in 1:nrow(phospho_df)) {
     row <- phospho_df[i, ]
     multiplicity <- row[[mult_col_name]]
-    peptide <- as.character(row[[peptide_col_name]])
+    peptide <- as.character(row[[peptide_col]])
 
     # If multiplicity is greater than 1, split the peptide and create new rows where each row has Multiplicity = 1
     if (multiplicity > 1) {
@@ -44,7 +43,7 @@ split_peptide <- function(phospho_df, mult_col, peptide_col) {
         substr(new_peptide, pos, pos) <- toupper(substr(new_peptide, pos, pos))
         new_row <- row
         new_row[[mult_col_name]] <- 1
-        new_row[[peptide_col_name]] <- new_peptide
+        new_row[[peptide_col]] <- new_peptide
         result_df <- rbind(result_df, new_row)
       }
     } else {

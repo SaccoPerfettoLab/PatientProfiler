@@ -30,7 +30,7 @@ A directory for each community containing nodes table, edges table e patients st
 Generate communities from patient-specif mechanistic models
 }
 \examples{
-generate_communities(dir_path = "input_communities", 
+generate_communities(dir_path = "input_communities",
 network_dir = "Networks_output",
 output_dir = "output_communities")
 }

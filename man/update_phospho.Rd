@@ -4,7 +4,14 @@
 \alias{update_phospho}
 \title{update_phospho}
 \usage{
-update_phospho(df, site_col, gn_idx, seq_len_i = 7, peptide_col_name = NULL)
+update_phospho(
+  df,
+  site_col,
+  gn_idx,
+  seq_len_i = 7,
+  uniprot_idx = NULL,
+  peptide_col_name = NULL
+)
 }
 \arguments{
 \item{df}{dataframe (phosphoproteomics data).}
@@ -15,7 +22,9 @@ update_phospho(df, site_col, gn_idx, seq_len_i = 7, peptide_col_name = NULL)
 
 \item{seq_len_i}{integer, the length of the sequence window to be considered around the phosphopeptide.}
 
-\item{peptide_col_name}{(optional) a string representing the name of the peptide column in the data frame.
+\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
+
+\item{peptide_col}{a string representing the name of the peptide column in the data frame.
 If not provided, the function assumes no peptide column exists.}
 }
 \value{

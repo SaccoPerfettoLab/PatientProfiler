@@ -4,16 +4,16 @@
 \alias{add_sequence_window}
 \title{add_sequence_window}
 \usage{
-add_sequence_window(phospho_df, peptide_col_num, seq_len_i, sequence_col_num)
+add_sequence_window(phospho_df = df7, peptide_col, seq_len_i = 7, sequence_col)
 }
 \arguments{
 \item{phospho_df}{tibble, the phosphoproteomics dataframe}
 
+\item{peptide_col}{name of the column containing the peptide sequence}
+
 \item{seq_len_i}{integer, the length of the mers, 7 for 15mers}
 
-\item{peptide_col}{integer, the number of the Peptide column}
-
-\item{sequence_col}{integer, the number of the Sequence column}
+\item{sequence_col}{name of the column containing the protein sequence}
 }
 \value{
 phosphoproteomics dataframe with the phosphosite around the central position of the Peptide
@@ -29,5 +29,5 @@ sample_df <- data.frame(
   Value = c(0.1, 0.2, 0.3)
 )
 
-result_df <- add_sequence_window(sample_df, peptide_col = 2, seq_len_i = 7, sequence_col = 3)
+result_df <- add_sequence_window(sample_df, peptide_col = "Peptide", seq_len_i = 7, sequence_col = "Sequence")
 }

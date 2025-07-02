@@ -1,7 +1,7 @@
 #' remove_multiplicity
 #'
 #' @param phospho_df tibble, the phosphoproteomics dataframe
-#' @param peptide_col integer, number of the Peptide column
+#' @param peptide_col name of the column containing the peptide sequence
 #' @param mult_col integer, the number of the Multiplicity column
 #' @param gn_idx integer, number of the Gene name column
 #'
@@ -16,22 +16,27 @@
 #'   Value = c(0.1, 0.2, 0.3)
 #' )
 #'
-#' cleaned_df <- remove_multiplicity(sample_df, peptide_col = 2, mult_col = 3, gn_idx = 1)
+#' cleaned_df <- remove_multiplicity(sample_df, peptide_col = "Peptide", mult_col = 3, gn_idx = 1)
 
 remove_multiplicity <- function(phospho_df, peptide_col, mult_col, gn_idx) {
 
   # Create a new column as a key combining gene name and peptide sequence
-  phospho_df$Name_Peptides <- as.vector(unlist(paste0(as.character(unlist(phospho_df[, gn_idx])), "_", as.character(unlist(phospho_df[, peptide_col])))))
-
+  phospho_df$Name_Peptides <- paste0(
+    as.character(unlist(phospho_df[, gn_idx])), "_",
+    as.character(phospho_df[[peptide_col]])
+  )
+  
   # Create a vector of unique keys from the combined gene name and peptide sequence
-  keys <- as.vector(unlist(unique(paste0(as.character(unlist(phospho_df[, gn_idx])), "_", as.character(unlist(phospho_df[, peptide_col]))))))
-
+  keys <- as.vector(unlist(unique(paste0(
+    as.character(unlist(phospho_df[, gn_idx])), "_", 
+    as.character(unlist(phospho_df[, peptide_col]))))))
+  
   # Iterate over each unique key
   for (key in keys) {
 
     # Identify rows corresponding to the current key
-    pos <- which(toupper(as.vector(unlist(paste0(as.character(unlist(phospho_df[, gn_idx])), "_", as.character(unlist(phospho_df[, peptide_col])))))) == toupper(key))
-
+    pos <- which(toupper(phospho_df$Name_Peptides) == toupper(key))
+    
     # If only one row corresponds to the key, continue to the next iteration
     if (length(pos) == 1) {
       next
@@ -41,8 +46,8 @@ remove_multiplicity <- function(phospho_df, peptide_col, mult_col, gn_idx) {
       subset <- phospho_df[pos, ]
 
       # Identify rows to remove based on the minimum multiplicity value
-      pos_to_remove <- pos[which(unlist(subset[, mult_col]) != min(unlist(subset[, mult_col])))]
-
+      pos_to_remove <- pos[which(subset[[mult_col]] != min(subset[[mult_col]], na.rm = TRUE))]
+      
       # Remove the identified rows from the dataframe
       if (length(pos_to_remove) >= 1) {
         phospho_df <- phospho_df[-c(pos_to_remove), ]

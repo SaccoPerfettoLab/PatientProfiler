@@ -17,7 +17,7 @@ retrieve_primary_gene_name(
 
 \item{gn_idx}{integer, the column index for gene names in the omics data frame.}
 
-\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be removed (default is NULL).}
+\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 
 \item{organism}{string, it indicates the organism. Options are 'human' (default) or 'mouse'.}
 

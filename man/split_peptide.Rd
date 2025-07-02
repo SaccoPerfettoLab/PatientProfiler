@@ -11,7 +11,7 @@ split_peptide(phospho_df, mult_col, peptide_col)
 
 \item{mult_col}{integer, the number of the Multiplicity column}
 
-\item{peptide_col}{integer, the number of the Peptide column}
+\item{peptide_col}{name of the column containing the peptide sequence}
 }
 \value{
 phosphoproteomics dataframe with one Petide for each possible phosphosite
@@ -28,5 +28,5 @@ sample_df <- data.frame(
   Value = c(0.1, 0.2, 0.3)
 )
 
-expanded_df <- choose_phosphopeptide(sample_df, mult_col = 2, peptide_col = 3)
+expanded_df <- choose_phosphopeptide(sample_df, mult_col = 2, peptide_col = "Peptide")
 }

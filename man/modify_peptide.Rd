@@ -11,7 +11,7 @@ modify_peptide(phospho_df, mult_col, peptide_col, site_col)
 
 \item{mult_col}{integer, number of the Multiplicity column}
 
-\item{peptide_col}{integer, number of the Peptide column}
+\item{peptide_col}{name of the column containing the peptide sequence}
 
 \item{site_col}{integer, number  of the Site column}
 }

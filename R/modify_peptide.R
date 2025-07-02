@@ -2,7 +2,7 @@
 #'
 #' @param phospho_df dataframe, phosphoproteomics data
 #' @param mult_col integer, number of the Multiplicity column
-#' @param peptide_col integer, number of the Peptide column
+#' @param peptide_col name of the column containing the peptide sequence
 #' @param site_col integer, number  of the Site column
 #'
 #' @return phosphoproteomics dataframe with just the phosphosite's amminoacid in lowercase
@@ -31,7 +31,7 @@ modify_peptide <- function(phospho_df, mult_col, peptide_col, site_col) {
   for (i in 1:nrow(phospho_df)) {
 
     multiplicity <- phospho_df[i, mult_col]
-    peptide <- as.character(phospho_df[i, peptide_col])
+    peptide <- as.character(phospho_df[[peptide_col]][i])
     site <- as.character(phospho_df[i, site_col])
 
     if (nchar(gsub("[^a-z]", "", peptide)) > 1) {
@@ -48,7 +48,7 @@ modify_peptide <- function(phospho_df, mult_col, peptide_col, site_col) {
         }
       })
 
-      phospho_df[i, peptide_col] <- paste(modified_peptide, collapse = "")
+      phospho_df[[peptide_col]][i] <- paste(modified_peptide, collapse = "")
     }
   }
 

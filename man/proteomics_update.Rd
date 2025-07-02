@@ -7,6 +7,7 @@
 proteomics_update(
   df_pro,
   impute_method = NULL,
+  m = 5,
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -15,6 +16,8 @@ proteomics_update(
 }
 \arguments{
 \item{df_pro}{dataframe, containing a column with protein names.}
+
+\item{m, }{integer, number of multiple imputations. The default is m = 5.}
 
 \item{zscore}{boolean, indicates whether to calculate z-scores for the data.
 If TRUE, z-scores are calculated; if FALSE, a data frame will be returned without z-score calculation.}
@@ -26,6 +29,9 @@ or "column" to compute z-scores for each column of the data.}
 It could be "mean" or "median".}
 
 \item{output_dir}{a string indicating the updated output folder.}
+
+\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
+"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
 
 \item{sequence}{A boolean (TRUE or FALSE) indicating whether the dataset includes a column named "sequence".
 If TRUE, the function assumes the "sequence" column is present and may process it accordingly.

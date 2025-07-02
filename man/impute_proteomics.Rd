@@ -4,7 +4,7 @@
 \alias{impute_proteomics}
 \title{impute_proteomics}
 \usage{
-impute_proteomics(df, start_column = 1, imputation_method = NULL)
+impute_proteomics(df, start_column = 1, imputation_method = NULL, m = 5)
 }
 \arguments{
 \item{df}{dataframe with missing data.}
@@ -12,6 +12,8 @@ impute_proteomics(df, start_column = 1, imputation_method = NULL)
 \item{start_column}{integer, the first numeric column to consider for imputation (default: 1).}
 
 \item{imputation_method}{string, the imputation method for \code{mice} (default: "pmm").}
+
+\item{m, }{integer, number of multiple imputations. The default is m = 5.}
 }
 \value{
 The imputed data frame.

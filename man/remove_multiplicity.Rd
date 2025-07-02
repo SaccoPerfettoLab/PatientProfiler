@@ -9,7 +9,7 @@ remove_multiplicity(phospho_df, peptide_col, mult_col, gn_idx)
 \arguments{
 \item{phospho_df}{tibble, the phosphoproteomics dataframe}
 
-\item{peptide_col}{integer, number of the Peptide column}
+\item{peptide_col}{name of the column containing the peptide sequence}
 
 \item{mult_col}{integer, the number of the Multiplicity column}
 
@@ -30,5 +30,5 @@ remove_multiplicity
   Value = c(0.1, 0.2, 0.3)
 )
 
-cleaned_df <- remove_multiplicity(sample_df, peptide_col = 2, mult_col = 3, gn_idx = 1)
+cleaned_df <- remove_multiplicity(sample_df, peptide_col = "Peptide", mult_col = 3, gn_idx = 1)
 }

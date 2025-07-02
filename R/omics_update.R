@@ -18,6 +18,7 @@
 #' @param pep_col_name string, it indicates the name of the peptide sequence column (if it's present) in your phosphoproteomic dataframe (default = "Peptide")
 #' @param imp_method string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 #'                   "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").
+#' @param m, integer, number of multiple imputations. The default is m = 5.
 #' @param zscore logical, whether to perform Z-score normalization (default: "TRUE").
 #' @param zmethod string, specifies whether Z-score normalization is performed by "row" or "column" (default: "column").
 #' @param metric string, the centering metric for Z-score normalization. Options are "median" (default) or "mean".
@@ -56,12 +57,14 @@ omics_update <- function(df_tr = NULL,
                          sw_len = 7,
                          uniprot_idx = NULL,
                          pep_col_name = NULL,
-                         imp_method = "pmm",
+                         impute_method = "pmm",
+                         m = 5,
                          zscore = "TRUE",
                          zmethod = "column",
                          metric = "median",
                          output_dir = "PatientProfiler_processed_input") {
-
+  t0 <- Sys.time()
+  
   if(!dir.exists(output_dir)){
     dir.create(output_dir)
   }
@@ -81,7 +84,7 @@ omics_update <- function(df_tr = NULL,
 
   if(!is.null(df_pr)){
     message("Proteomics update started..")
-    proteomics_updated <<- proteomics_update(df_pr,imp_method,zscore,zmethod,metric, output_dir)
+    proteomics_updated <<- proteomics_update(df_pr,imp_method,m,zscore,zmethod,metric, output_dir)
     readr::write_tsv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.tsv"))
 
     message("Proteomics update complete!")
@@ -94,6 +97,7 @@ omics_update <- function(df_tr = NULL,
                                                            uniprot_idx,
                                                            pep_col_name = pep_col_name,
                                                            imp_method,
+                                                           m,
                                                            zscore,
                                                            zmethod,
                                                            metric,
@@ -103,7 +107,18 @@ omics_update <- function(df_tr = NULL,
 
     message("Phosphoproteomics update complete!")
   }
-
+  
+  t1 <- Sys.time()
+  elapsed_secs <- as.numeric(difftime(t1, t0, units = "secs"))
+  
+  if (elapsed_secs < 60) {
+    elapsed_pretty <- paste0(round(elapsed_secs, 2), " seconds")
+  } else {
+    elapsed_pretty <- paste0(round(elapsed_secs / 60, 2), " minutes")
+  }
+  
+  message(paste0("\n Update completed in ", elapsed_pretty, "."))
+  
 }
 
 

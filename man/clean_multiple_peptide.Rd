@@ -9,7 +9,7 @@ clean_multiple_peptide(phospho_df, peptide_col)
 \arguments{
 \item{phospho_df}{tibble, the phosphoproteomics dataframe}
 
-\item{peptide_col}{integer, the column number of the Peptide}
+\item{peptide_col}{name of the column containing the peptide sequence}
 }
 \value{
 phosphoproteomics dataframe with one Peptide, the longest, for each phosphosite
@@ -24,5 +24,5 @@ sample_phospho_df <- data.frame(
   Value = c(0.1, 0.2, 0.3)
 )
 
-cleaned_df <- clean_multiple_peptide(sample_df, peptide_col = 2)
+cleaned_df <- clean_multiple_peptide(sample_df, peptide_col = "Peptide")
 }

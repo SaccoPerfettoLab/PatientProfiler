@@ -11,9 +11,9 @@ update_position_aa(phospho_df, sw_col, sequence_col, peptide_col)
 
 \item{sw_col}{integer, the number of the sequence window column}
 
-\item{sequence_col}{integer, the number of the full Sequence column}
+\item{sequence_col}{name of the column containing the protein sequence}
 
-\item{peptide_col}{integer, the number of the Peptide column}
+\item{peptide_col}{name of the column containing the peptide sequence}
 }
 \value{
 phosphoproteomics dataframe with the additional columns 'position' and 'aminoacid' of each phosphosite

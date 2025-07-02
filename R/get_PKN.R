@@ -9,7 +9,7 @@
 #'    - `preprocess`: Boolean, whether to remove interactions involving entities not detected in at least one omic data; default `TRUE`.
 #'    - `direct`: Boolean, whether keep only direct interactions; default `TRUE`.
 #'    - `organism`: string, available are 'human' or 'mouse'; default `human`.
-#'    - `with_atlas`: Boolean, whether integre Ser/Thr and Tyr atlas inferred interactions; default `FALSE`.
+#'    - `with_atlas`: Boolean, whether integratins Ser/Thr and Tyr atlas inferred interactions; default `FALSE`.
 #'    - `custom`: Boolean, whether the user wants to provide a custom PKN;  default `FALSE`.
 #'    - `custom_path`: string, path to the custom PKN;  default `FALSE`.
 #'
