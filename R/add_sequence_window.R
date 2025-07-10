@@ -17,7 +17,7 @@
 #'
 #' result_df <- add_sequence_window(sample_df, peptide_col = "Peptide", seq_len_i = 7, sequence_col = "Sequence")
 
-add_sequence_window <- function(phospho_df = df7, peptide_col, seq_len_i = 7, sequence_col) {
+add_sequence_window <- function(phospho_df, peptide_col, seq_len_i = 7, sequence_col = "Sequence" ) {
   
   phospho_df$sequence_window <- NA
   
@@ -43,6 +43,7 @@ add_sequence_window <- function(phospho_df = df7, peptide_col, seq_len_i = 7, se
     phosphorylated_residue_upper <- toupper(phosphorylated_residue)
     
     start_pos <- regexpr(toupper(peptide), sequence)[1]
+  
     if (start_pos == -1) {
       phospho_df$sequence_window[i] <- NA
       next

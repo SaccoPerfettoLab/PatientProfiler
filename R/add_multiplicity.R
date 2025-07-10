@@ -24,5 +24,3 @@ add_multiplicity <- function(df, peptide_col) {
 }
 
 
-df = df3
-

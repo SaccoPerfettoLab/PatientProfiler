@@ -18,47 +18,43 @@
 #'
 #' cleaned_df <- remove_multiplicity(sample_df, peptide_col = "Peptide", mult_col = 3, gn_idx = 1)
 
-remove_multiplicity <- function(phospho_df, peptide_col, mult_col, gn_idx) {
+remove_multiplicity_by_prefix <- function(phospho_df, peptide_col, mult_col, gn_idx) {
 
-  # Create a new column as a key combining gene name and peptide sequence
-  phospho_df$Name_Peptides <- paste0(
-    as.character(unlist(phospho_df[, gn_idx])), "_",
-    as.character(phospho_df[[peptide_col]])
-  )
+  gene_vec <- toupper(trimws(as.character(phospho_df[[gn_idx]])))
+  peptide_vec <- toupper(trimws(as.character(phospho_df[[peptide_col]])))
+  multiplicity_vec <- as.numeric(phospho_df[[mult_col]])
   
-  # Create a vector of unique keys from the combined gene name and peptide sequence
-  keys <- as.vector(unlist(unique(paste0(
-    as.character(unlist(phospho_df[, gn_idx])), "_", 
-    as.character(unlist(phospho_df[, peptide_col]))))))
+  # temporary key
+  phospho_df$Gene <- gene_vec
+  phospho_df$Peptide <- peptide_vec
+  phospho_df$Multiplicity <- multiplicity_vec
   
-  # Iterate over each unique key
-  for (key in keys) {
-
-    # Identify rows corresponding to the current key
-    pos <- which(toupper(phospho_df$Name_Peptides) == toupper(key))
+ 
+  filtered_rows <- c()
+  
+  for (gene in unique(phospho_df$Gene)) {
+    subset <- phospho_df[phospho_df$Gene == gene, ]
     
-    # If only one row corresponds to the key, continue to the next iteration
-    if (length(pos) == 1) {
-      next
-    } else {
-
-      # Create a subset of rows with the same key
-      subset <- phospho_df[pos, ]
-
-      # Identify rows to remove based on the minimum multiplicity value
-      pos_to_remove <- pos[which(subset[[mult_col]] != min(subset[[mult_col]], na.rm = TRUE))]
+    # find variants
+    while (nrow(subset) > 0) {
+      p <- subset$Peptide[1]
+      matches <- grep(paste0("^", p), subset$Peptide)
       
-      # Remove the identified rows from the dataframe
-      if (length(pos_to_remove) >= 1) {
-        phospho_df <- phospho_df[-c(pos_to_remove), ]
-      } else {
-        next
-      }
+      # retain variant with minor multiplicity
+      group <- subset[matches, ]
+      min_m <- min(group$Multiplicity, na.rm = TRUE)
+      keep_row <- group[which(group$Multiplicity == min_m)[1], , drop = FALSE]
+      
+      filtered_rows <- rbind(filtered_rows, keep_row)
+      
+      subset <- subset[-matches, ]
     }
   }
-
-  # Remove the temporary 'Name_Peptides' column
-  phospho_df <- phospho_df[, !colnames(phospho_df) %in% "Name_Peptides"]
-
-  return(phospho_df)
+  
+  # remove temporary columns
+  filtered_rows$Gene <- NULL
+  filtered_rows$Peptide <- NULL
+  filtered_rows$Multiplicity <- NULL
+  
+  return(filtered_rows)
 }
