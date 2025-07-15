@@ -157,9 +157,9 @@ omics_update(
              df_ph = phosphoproteomics_data,  
              threshold = 80,
              sw_len = 7, 
-             m = 5
              pep_col_name = "Peptide",
-             imp_method = "norm",   
+             imp_method = "norm",
+             m = 5,
              zscore = TRUE,   
              zmethod = "column",   
              metric = "median",
