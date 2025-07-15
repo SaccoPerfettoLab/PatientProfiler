@@ -12,7 +12,7 @@
 
 <meta name="author" content="PerfettoLab" />
 
-<meta name="date" content="2025-07-03" />
+<meta name="date" content="2025-07-15" />
 
 <title>PatientProfiler Package</title>
 
@@ -340,7 +340,7 @@ code > span.er { color: #a61717; background-color: #e3d2d2; }
 
 <h1 class="title toc-ignore">PatientProfiler Package</h1>
 <h4 class="author">PerfettoLab</h4>
-<h4 class="date">2025-07-03</h4>
+<h4 class="date">2025-07-15</h4>
 
 
 
@@ -466,14 +466,15 @@ patients to give you a general vision of</p>
 <span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a>             <span class="at">df_pr =</span> <span class="cn">NULL</span>,   </span>
 <span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a>             <span class="at">df_ph =</span> phosphoproteomics_data,  </span>
 <span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a>             <span class="at">threshold =</span> <span class="dv">80</span>,</span>
-<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>             <span class="at">sw_len =</span> <span class="dv">7</span>,  </span>
-<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>             <span class="at">pep_col_name =</span> <span class="st">&quot;Peptide&quot;</span>,</span>
-<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>             <span class="at">imp_method =</span> <span class="st">&quot;norm&quot;</span>,   </span>
-<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>             <span class="at">zscore =</span> <span class="cn">TRUE</span>,   </span>
-<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>             <span class="at">zmethod =</span> <span class="st">&quot;column&quot;</span>,   </span>
-<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>             <span class="at">metric =</span> <span class="st">&quot;median&quot;</span>,</span>
-<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>             <span class="at">output_dir =</span> <span class="st">&#39;PatientProfiler_processed_input&#39;</span></span>
-<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>             )</span></code></pre></div>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a>             <span class="at">sw_len =</span> <span class="dv">7</span>, </span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a>             <span class="at">m =</span> <span class="dv">5</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a>             <span class="at">pep_col_name =</span> <span class="st">&quot;Peptide&quot;</span>,</span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a>             <span class="at">imp_method =</span> <span class="st">&quot;norm&quot;</span>,   </span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a>             <span class="at">zscore =</span> <span class="cn">TRUE</span>,   </span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a>             <span class="at">zmethod =</span> <span class="st">&quot;column&quot;</span>,   </span>
+<span id="cb4-16"><a href="#cb4-16" tabindex="-1"></a>             <span class="at">metric =</span> <span class="st">&quot;median&quot;</span>,</span>
+<span id="cb4-17"><a href="#cb4-17" tabindex="-1"></a>             <span class="at">output_dir =</span> <span class="st">&#39;PatientProfiler_processed_input&#39;</span></span>
+<span id="cb4-18"><a href="#cb4-18" tabindex="-1"></a>             )</span></code></pre></div>
 <p>The result of this step is each selected dataframe manipulated
 according to the chosen parameters. If, for example, the
 phosphoproteomics update was made, it will have the information
