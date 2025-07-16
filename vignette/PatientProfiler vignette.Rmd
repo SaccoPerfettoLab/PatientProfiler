@@ -159,7 +159,6 @@ omics_update(
              sw_len = 7, 
              pep_col_name = "Peptide",
              imp_method = "norm",
-             m = 5,
              zscore = TRUE,   
              zmethod = "column",   
              metric = "median",

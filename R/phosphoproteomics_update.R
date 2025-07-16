@@ -13,7 +13,6 @@
 #' If not provided, the function assumes no peptide column exists.
 #' @param imp_method string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 #'                   "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").
-#' @param m, integer, number of multiple imputations. The default is m = 5.
 #' @param output_dir a string indicating the updated output folder.
 #'
 #' @return A data frame with the processed phosphoproteomics data, including modified peptide sequences,
@@ -32,7 +31,6 @@ phosphoproteomics_update <- function(df_pho,
                                      uniprot_idX = NULL,
                                      pep_col_name = NULL,
                                      impute_method = NULL,
-                                     m = 5,
                                      zscore = TRUE,
                                      zmethod = "column",
                                      metric = "median",
@@ -50,9 +48,9 @@ phosphoproteomics_update <- function(df_pho,
 
   message("Phosphoproteomics data: missing values imputation")
   if ("sequence_window" %in% colnames(df_pho_clean)) {
-    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = impute_method,m)
+    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = impute_method)
   } else {
-    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 5,imputation_method = impute_method,m)
+    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 5,imputation_method = impute_method)
   }
   readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
   message("Done!")

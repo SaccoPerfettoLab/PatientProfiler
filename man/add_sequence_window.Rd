@@ -4,7 +4,12 @@
 \alias{add_sequence_window}
 \title{add_sequence_window}
 \usage{
-add_sequence_window(phospho_df = df7, peptide_col, seq_len_i = 7, sequence_col)
+add_sequence_window(
+  phospho_df,
+  peptide_col,
+  seq_len_i = 7,
+  sequence_col = "Sequence"
+)
 }
 \arguments{
 \item{phospho_df}{tibble, the phosphoproteomics dataframe}

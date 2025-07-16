@@ -9,7 +9,6 @@ extract_signatures(
   transcriptomics_file,
   output_dir,
   padj_thres = 0.01,
-  diff_thres = 0.5,
   mean_exp_clus_thres = 0,
   max_val = 50,
   cache = FALSE
@@ -23,8 +22,6 @@ extract_signatures(
 \item{output_dir}{Character. Path to the directory containing all function's results.}
 
 \item{padj_thres}{Numeric. Adjusted p-value threshold for filtering significant results. Default: \code{0.01}.}
-
-\item{diff_thres}{Numeric. Minimum difference threshold for gene expression filtering. Default: \code{0.7}.}
 
 \item{mean_exp_clus_thres}{Numeric. Minimum mean expression threshold for gene filtering. Default: \code{0}.}
 
@@ -44,7 +41,6 @@ extract_signatures(base_path = "./vignette/Communities/output_communities/",
 transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.tsv",
 output_dir = "./Anova_result.tsv",
 padj_thres = 0.01,
-diff_thres = 0.5,
 mean_exp_clus_thres = 0,
 max_val = 50,
 cache = F)
@@ -53,7 +49,6 @@ extract_signatures(base_path = "./vignette/Communities/output_communities/",
 transcriptomics_file = "./PatientProfiler_processed_input/Transcriptomics_updated.tsv",
 output_dir = "./Anova_result.tsv",
 padj_thres = 0.01,
-diff_thres = 0.2,
 mean_exp_clus_thres = 0,
 max_val = 10,
 cache = T)

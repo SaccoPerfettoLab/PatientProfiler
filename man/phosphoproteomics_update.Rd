@@ -10,7 +10,6 @@ phosphoproteomics_update(
   uniprot_idX = NULL,
   pep_col_name = NULL,
   impute_method = NULL,
-  m = 5,
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -18,8 +17,6 @@ phosphoproteomics_update(
 )
 }
 \arguments{
-\item{m, }{integer, number of multiple imputations. The default is m = 5.}
-
 \item{output_dir}{a string indicating the updated output folder.}
 
 \item{df}{a data frame containing the phosphoproteomics data.}

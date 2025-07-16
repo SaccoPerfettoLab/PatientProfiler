@@ -4,7 +4,6 @@
 #' @param df_pro dataframe, containing a column with protein names.
 #' @param imp_method string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 #'                   "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").
-#' @param m, integer, number of multiple imputations. The default is m = 5.
 #' @param sequence A boolean (TRUE or FALSE) indicating whether the dataset includes a column named "sequence".
 #'                 If TRUE, the function assumes the "sequence" column is present and may process it accordingly.
 #'                 If FALSE, the function proceeds without expecting the "sequence" column.
@@ -25,7 +24,6 @@
 
 proteomics_update <- function(df_pro,
                               impute_method = NULL,
-                              m = 5,
                               zscore = TRUE,
                               zmethod = "column",
                               metric = "median",
@@ -53,7 +51,7 @@ proteomics_update <- function(df_pro,
   
   # Imputazione dei valori mancanti
   message("Proteomics data: missing values imputation")
-  df_pro_imputed <<- impute_proteomics(df_pro_clean, 3, impute_method, m)
+  df_pro_imputed <<- impute_proteomics(df_pro_clean, 3, impute_method)
   readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
   message("Done!")
   

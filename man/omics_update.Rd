@@ -13,7 +13,6 @@ omics_update(
   uniprot_idx = NULL,
   pep_col_name = NULL,
   impute_method = "pmm",
-  m = 5,
   zscore = "TRUE",
   zmethod = "column",
   metric = "median",
@@ -35,8 +34,6 @@ zeros in a row, the row will be removed (default: 80).}
 \item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 
 \item{pep_col_name}{string, it indicates the name of the peptide sequence column (if it's present) in your phosphoproteomic dataframe (default = "Peptide")}
-
-\item{m, }{integer, number of multiple imputations. The default is m = 5.}
 
 \item{zscore}{logical, whether to perform Z-score normalization (default: "TRUE").}
 

@@ -7,7 +7,6 @@
 proteomics_update(
   df_pro,
   impute_method = NULL,
-  m = 5,
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -16,8 +15,6 @@ proteomics_update(
 }
 \arguments{
 \item{df_pro}{dataframe, containing a column with protein names.}
-
-\item{m, }{integer, number of multiple imputations. The default is m = 5.}
 
 \item{zscore}{boolean, indicates whether to calculate z-scores for the data.
 If TRUE, z-scores are calculated; if FALSE, a data frame will be returned without z-score calculation.}
