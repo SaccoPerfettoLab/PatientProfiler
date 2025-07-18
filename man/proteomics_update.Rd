@@ -6,6 +6,7 @@
 \usage{
 proteomics_update(
   df_pro,
+  uniprot_idx = NULL,
   impute_method = NULL,
   zscore = TRUE,
   zmethod = "column",
@@ -15,6 +16,8 @@ proteomics_update(
 }
 \arguments{
 \item{df_pro}{dataframe, containing a column with protein names.}
+
+\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 
 \item{zscore}{boolean, indicates whether to calculate z-scores for the data.
 If TRUE, z-scores are calculated; if FALSE, a data frame will be returned without z-score calculation.}
@@ -41,5 +44,5 @@ tibble, it contains the filtered and processed proteomics data.
 proteomics_update
 }
 \examples{
-prot_updated <- proteomics_update(df, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
+prot_updated <- proteomics_update(df,uniprot_idx = NULL, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
 }

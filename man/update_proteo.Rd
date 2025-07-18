@@ -4,12 +4,14 @@
 \alias{update_proteo}
 \title{update_proteo}
 \usage{
-update_proteo(df, gn_idx, sequence = FALSE)
+update_proteo(df, gn_idx, uniprot_idx, sequence = FALSE)
 }
 \arguments{
 \item{df}{tibble, the dataframe containing proteomics data}
 
 \item{gn_idx}{integer, the number of the gene name column}
+
+\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 
 \item{sequence}{boolean, TRUE or FALSE}
 }
@@ -26,5 +28,5 @@ sample_df <- data.frame(
   Value = c(0.1, 0.2, 0.3)
 )
 
-updated_df <- update_proteo(sample_df, gn_idx = 2, sequence = FALSE)
+updated_df <- update_proteo(sample_df, gn_idx = 2,uniprot_idx = NULL, sequence = FALSE)
 }

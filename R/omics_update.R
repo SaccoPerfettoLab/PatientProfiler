@@ -39,6 +39,8 @@
 #'   df_pr = proteomics_data,
 #'   df_ph = phosphoproteomics_data,
 #'   sw_len = 7,
+#'   uniprot_idx = NULL,
+#'   pep_col_name = NULL,
 #'   imp_method = "pmm",
 #'   zscore = TRUE,
 #'   zmethod = "column",
@@ -82,7 +84,7 @@ omics_update <- function(df_tr = NULL,
 
   if(!is.null(df_pr)){
     message("Proteomics update started..")
-    proteomics_updated <<- proteomics_update(df_pr,imp_method,zscore,zmethod,metric, output_dir)
+    proteomics_updated <<- proteomics_update(df_pr,uniprot_idx,imp_method,zscore,zmethod,metric, output_dir)
     readr::write_tsv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.tsv"))
 
     message("Proteomics update complete!")

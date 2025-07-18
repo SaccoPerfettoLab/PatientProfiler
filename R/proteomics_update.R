@@ -2,6 +2,7 @@
 #'
 #'
 #' @param df_pro dataframe, containing a column with protein names.
+#' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param imp_method string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 #'                   "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").
 #' @param sequence A boolean (TRUE or FALSE) indicating whether the dataset includes a column named "sequence".
@@ -20,9 +21,10 @@
 #'
 #'
 #'@examples
-#'prot_updated <- proteomics_update(df, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
+#'prot_updated <- proteomics_update(df,uniprot_idx = NULL, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
 
 proteomics_update <- function(df_pro,
+                              uniprot_idx = NULL,
                               impute_method = NULL,
                               zscore = TRUE,
                               zmethod = "column",
@@ -40,7 +42,7 @@ proteomics_update <- function(df_pro,
   
   # Update proteomics data (aggiornamenti ulteriori)
   
-  df_pro_update <<- update_proteo(df_pro_agg, 1, sequence = FALSE)
+  df_pro_update <<- update_proteo(df_pro_agg, 1,uniprot_idx, sequence = FALSE)
   message("Done!")
   
   # Rimuovi i duplicati

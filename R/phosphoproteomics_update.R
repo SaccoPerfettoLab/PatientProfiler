@@ -37,7 +37,7 @@ phosphoproteomics_update <- function(df_pho,
                                      output_dir){
 
   message("Phosphoproteomics data: updating phosphorylation site informations")
-  df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7,uniprot_idX,peptide_col_name = pep_col_name)
+  df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7, uniprot_idx, peptide_col_name = pep_col_name)
   message("Done!")
 
   message("Phosphoproteomics data: removing duplicates")

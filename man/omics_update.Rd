@@ -74,6 +74,8 @@ omics_update(
   df_pr = proteomics_data,
   df_ph = phosphoproteomics_data,
   sw_len = 7,
+  uniprot_idx = NULL,
+  pep_col_name = NULL,
   imp_method = "pmm",
   zscore = TRUE,
   zmethod = "column",
