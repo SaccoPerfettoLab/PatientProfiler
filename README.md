@@ -2,7 +2,15 @@
 
 ## Overview
 
-## Installation
+# Prerequisites
+
+IMPORTANT: To use all the PatientProfiler features, you need to install the [SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6) tool.
+
+``` r
+devtools::install_github('https://github.com/SaccoPerfettoLab/SignalingProfiler/')
+```
+
+## Install PatientProfiler
 
 To install PatientProfiler execute the following command in R.
 
