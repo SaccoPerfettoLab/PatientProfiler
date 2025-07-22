@@ -188,25 +188,34 @@ extract_protein_activity <- function(
       phosphoscore_1 <- do.call(SignalingProfiler::phosphoscore_computation_aapos, phosphoscore_noseqwin_params)
     }
 
-    combined_tf <- SignalingProfiler::combine_footprint_and_phosphoscore(
-      footprint_output = tf_activity_foot_1,
-      phosphoscore_df = phosphoscore_1,
-      analysis = 'tfea'
-    )
-
-    combined_kin_phos <- SignalingProfiler::combine_footprint_and_phosphoscore(
-      footprint_output = kin_phos_activity_foot_1,
-      phosphoscore_df = phosphoscore_1,
-      analysis = 'ksea'
-    )
-
+    combined_tf <- if (nrow(tf_activity_foot_1) > 0) {
+      SignalingProfiler::combine_footprint_and_phosphoscore(
+        footprint_output = tf_activity_foot_1,
+        phosphoscore_df = phosphoscore_1,
+        analysis = 'tfea'
+      )
+    } else {
+      data.frame()
+    }
+    
+    combined_kin_phos <- if (nrow(kin_phos_activity_foot_1) > 0) {
+      SignalingProfiler::combine_footprint_and_phosphoscore(
+        footprint_output = kin_phos_activity_foot_1,
+        phosphoscore_df = phosphoscore_1,
+        analysis = 'ksea'
+      )
+    } else {
+      data.frame()
+    }
+    
     toy_other <- phosphoscore_1 %>%
       dplyr::filter(mf == 'other') %>%
       dplyr::rename(final_score = phosphoscore) %>%
       dplyr::mutate(method = ifelse(!all(is.na(Phospho_P$sequence_window)), "PhosphoScore", "PhosphoScore_AAPOS"))
-
+    
     toy_activity_df <- dplyr::bind_rows(combined_tf, combined_kin_phos, toy_other) %>%
       dplyr::select(UNIPROT, gene_name, mf, final_score, method)
+    
   } else {
     # Use VIPER results if phosphoscore is not available
     toy_activity_df <- dplyr::bind_rows(tf_activity_foot_1, kin_phos_activity_foot_1) %>%
