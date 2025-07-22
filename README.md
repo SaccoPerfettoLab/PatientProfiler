@@ -4,7 +4,7 @@
 
 ## Prerequisites
 
-IMPORTANT: PatientProfiler requires [SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6) to be installed first.
+Note: Before installing and using PatientProfiler, you must first install [SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6), as it is not yet available on Bioconductor.
 
 ``` r
 devtools::install_github('https://github.com/SaccoPerfettoLab/SignalingProfiler/')
