@@ -1,7 +1,6 @@
 ---
 title: "Access PatientProfiler CPTAC Data"
 author: "PerfettoLab"
-date: "`r Sys.Date()`"
 output: html_document
 ---
 
@@ -17,16 +16,16 @@ entire cohort and specific individuals. The main functions can be used
 sequentially or separately.
 
 If we want to imagine a sequential way to use PatientProfiler, we can
-divide the pipeline into 4 main steps:
+divide the pipeline into 5 main steps:
 
--   **STEP 1** - Raw data harmonization / Access to harmonized CPTAC
-    data and Input tables preparation
+-   **STEP 1** - Raw data harmonization/Access to harmonized CPTAC
+    data & Input tables preparation
 
 -   **STEP 2** - Protein activity inference
 
 -   **STEP 3** - Generation of mechanistic models
 
--   **STEP 4** - Network-based stratification: communities detection
+-   **STEP 4** - Network-based stratification (communities detection)
 
 -   **STEP 5** - Identification of biomarkers
 

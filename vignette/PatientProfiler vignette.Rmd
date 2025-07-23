@@ -1,7 +1,6 @@
 ---
 title: "PatientProfiler Package"
 author: "PerfettoLab"
-date: "`r Sys.Date()`"
 output: 
   rmarkdown::html_vignette
 vignette: >
@@ -20,23 +19,21 @@ knitr::opts_chunk$set(
 )
 ```
 
-# PatientProfiler
-
 PatientProfiler is an R package that allows personalized analysis of an
 entire cohort and specific individuals. The main functions can be used
 sequentially or separately.
 
 If we want to imagine a sequential way to use PatientProfiler, we can
-divide the pipeline into 4 main steps:
+divide the pipeline into 5 main steps:
 
--   **STEP 1** - Raw data harmonization / Access to harmonized CPTAC
-    data and Input tables preparation
+-   **STEP 1** - Raw data harmonization/Access to harmonized CPTAC
+    data & Input tables preparation
 
 -   **STEP 2** - Protein activity inference
 
 -   **STEP 3** - Generation of mechanistic models
 
--   **STEP 4** - Network-based stratification: communities detection
+-   **STEP 4** - Network-based stratification (communities detection)
 
 -   **STEP 5** - Identification of biomarkers
 
@@ -66,7 +63,7 @@ library(tidyverse)
 ```
 
 ## [Set up Python PatientProfiler environment]{style="color: #A45C40;"}
-PatientProfiler contains some functions executing Python source code To
+PatientProfiler contains some functions executing Python source code. To
 correctly set up the Python PatientProfiler environment please execute
 the following code line the first time you use PatientProfiler:
 
@@ -78,7 +75,7 @@ install_pp_py()
 ## [PREPARE YOUR DATA]{style="color: #41729F;"}
 
 To use this R package, you need to have the right format for your input
-data frames.
+dataframes.
 
 The input has to have specific columns, as described here:
 
@@ -142,13 +139,12 @@ To **harmonize** your raw omics data, you need to:
 
 This step for big dataframes requires many hours of working mainly due
 the imputation. For this tutorial we are using a smaller amount of
-patients to give you a general vision of
+patients to give you a general vision of results. 
 
 ###[Example of usage:]{style="color: #C38370;"}
 
 ```{r chunk2, eval = FALSE}
-transcriptomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_transc.tsv") 
-proteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_prot.tsv") 
+
 phosphoproteomics_data <- read_tsv("./PatientProfiler_raw_input/Brca_phospho.tsv")  
 
 omics_update(
@@ -176,7 +172,7 @@ Z-score should be calculated.
 
 After this step, tables are ready for the ***omics_preparation***.
 
-## [STEP1b) PatientProfiler INPUT TABLE PREPARATION]{style="color: #41729F;"}
+## [STEP 2) PatientProfiler INPUT TABLE PREPARATION]{style="color: #41729F;"}
 
 The next steps of PatientProfiler include wrapper functions to our
 in-house developed
@@ -197,9 +193,9 @@ format for the next steps.
 
 ```{r chunk4, eval = FALSE}
 
-tr_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Transcriptomics_updated.tsv")
-pr_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Proteomics_updated.tsv")
-ph_updated <- read_tsv("./vignette/PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
+tr_updated <- read_tsv("./PatientProfiler_processed_input/Transcriptomics_updated.tsv")
+pr_updated <- read_tsv("./PatientProfiler_processed_input/Proteomics_updated.tsv")
+ph_updated <- read_tsv("./PatientProfiler_processed_input/Phosphoproteomics_updated.tsv")
 
 omics_preparation(
               df_tr_updated = tr_updated,           
@@ -309,8 +305,8 @@ extract_cohort_activity(
 
 ***Results output***
 
-The cohort final results will be saved as a set of .tsv files (1 file -
-1 patient=) inside the `output_dir` directory (default, 'Activities').
+The cohort final results will be saved as a set of .tsv files (1 file =
+1 patient) inside the `output_dir` directory (default, 'Activities').
 Each patient-specific file (`Activity_patient_{patient_id}.tsv`)
 contains these columns:
 
@@ -337,7 +333,7 @@ patients and columns are genes, and each cell is the impact on protein
 function of the mutation.
 
 To this aim, we implemented a wrapper to SignalingProfiler network
-creation step
+creation step.
 
 ### [*create_network*]{style="color: #274472;"}
 
@@ -504,8 +500,8 @@ belonging to the community.
 
 ### [*extract_signatures*]{style="color: #274472;"}
 
-Thanks to this function, we can extract signaling-driven transcriptomic
-signatures. To do this, you need the transcriptomics dataset obtained
+To extract signaling-driven transcriptomic
+signatures you need the transcriptomics dataset obtained
 after Step 1 and the communities detected in Step 4.
 
 ### [Example of usage:]{style="color: #C38370;"}
