@@ -15,6 +15,7 @@ PatientProfiler is currently under active development, as such we suggest to del
 ## Prerequisites
 
 PatientProfiler is dependent on Saez lab algorithm CARNIVAL for performing the signalling pathway optimization. You can find all the instructions for installation in Saez lab repository [CARNIVAL](https://saezlab.github.io/CARNIVAL/).
+
 Note: Before installing and using PatientProfiler, you must first install [SignalingProfiler](https://www.nature.com/articles/s41540-024-00417-6), as it is not yet available on Bioconductor.
 
 ``` r
