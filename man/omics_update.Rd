@@ -12,7 +12,7 @@ omics_update(
   sw_len = 7,
   uniprot_idx = NULL,
   pep_col_name = NULL,
-  impute_method = "pmm",
+  imp_method = "pmm",
   zscore = "TRUE",
   zmethod = "column",
   metric = "median",
@@ -35,6 +35,9 @@ zeros in a row, the row will be removed (default: 80).}
 
 \item{pep_col_name}{string, it indicates the name of the peptide sequence column (if it's present) in your phosphoproteomic dataframe (default = "Peptide")}
 
+\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
+"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
+
 \item{zscore}{logical, whether to perform Z-score normalization (default: "TRUE").}
 
 \item{zmethod}{string, specifies whether Z-score normalization is performed by "row" or "column" (default: "column").}
@@ -42,9 +45,6 @@ zeros in a row, the row will be removed (default: 80).}
 \item{metric}{string, the centering metric for Z-score normalization. Options are "median" (default) or "mean".}
 
 \item{output_dir}{a string indicating the updated output folder.}
-
-\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
-"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
 }
 \value{
 This function updates the following global variables:

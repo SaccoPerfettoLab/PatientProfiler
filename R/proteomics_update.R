@@ -21,11 +21,11 @@
 #'
 #'
 #'@examples
-#'prot_updated <- proteomics_update(df,uniprot_idx = NULL, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
+#'prot_updated <- proteomics_update(df,uniprot_idx = NULL, imp_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
 
 proteomics_update <- function(df_pro,
                               uniprot_idx = NULL,
-                              impute_method = NULL,
+                              imp_method = NULL,
                               zscore = TRUE,
                               zmethod = "column",
                               metric = "median",
@@ -53,7 +53,7 @@ proteomics_update <- function(df_pro,
   
   # Imputazione dei valori mancanti
   message("Proteomics data: missing values imputation")
-  df_pro_imputed <<- impute_proteomics(df_pro_clean, 3, impute_method)
+  df_pro_imputed <<- impute_proteomics(df_pro_clean, 3, imp_method)
   readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
   message("Done!")
   

@@ -5,16 +5,16 @@
 #'
 #' @param df dataframe with missing data.
 #' @param start_column integer, the first numeric column to consider for imputation (default: 1).
-#' @param imputation_method string, the imputation method for `mice` (default: "pmm").
+#' @param imp_method string, the imputation method for `mice` (default: "pmm").
 #' @return The imputed data frame.
 #'
 #' @examples
-#' result <- impute_data(df, start_column = 1, imputation_method = "pmm")
+#' result <- impute_data(df, start_column = 1, imp_method = "pmm")
 #' View(imputed_df) # Access the saved variable
 #'
 #' @import mice
 
-impute_proteomics <- function(df, start_column = 1, imputation_method = NULL) {
+impute_proteomics <- function(df, start_column = 1, imp_method = NULL) {
 
   df[sapply(df, is.numeric)] <- lapply(df[sapply(df, is.numeric)], function(x) {x[is.infinite(x) | is.nan(x)] <- NA; x})
   
@@ -26,8 +26,8 @@ impute_proteomics <- function(df, start_column = 1, imputation_method = NULL) {
   meth = init$method
   predM = init$predictorMatrix
 
-  if (!is.null(imputation_method)) {
-    meth[colnames(df)[start_column:ncol(df)]] <- imputation_method
+  if (!is.null(imp_method)) {
+    meth[colnames(df)[start_column:ncol(df)]] <- imp_method
   }
 
   set.seed(103)

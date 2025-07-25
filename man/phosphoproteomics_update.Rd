@@ -9,7 +9,7 @@ phosphoproteomics_update(
   sw_len = 7,
   uniprot_idX = NULL,
   pep_col_name = NULL,
-  impute_method = NULL,
+  imp_method = NULL,
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -17,6 +17,9 @@ phosphoproteomics_update(
 )
 }
 \arguments{
+\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
+"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
+
 \item{output_dir}{a string indicating the updated output folder.}
 
 \item{df}{a data frame containing the phosphoproteomics data.}
@@ -27,9 +30,6 @@ phosphoproteomics_update(
 
 \item{peptide_col_name}{(Optional) A string representing the name of the peptide column in the data frame.
 If not provided, the function assumes no peptide column exists.}
-
-\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
-"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
 }
 \value{
 A data frame with the processed phosphoproteomics data, including modified peptide sequences,

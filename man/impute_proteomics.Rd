@@ -4,14 +4,14 @@
 \alias{impute_proteomics}
 \title{impute_proteomics}
 \usage{
-impute_proteomics(df, start_column = 1, imputation_method = NULL)
+impute_proteomics(df, start_column = 1, imp_method = NULL)
 }
 \arguments{
 \item{df}{dataframe with missing data.}
 
 \item{start_column}{integer, the first numeric column to consider for imputation (default: 1).}
 
-\item{imputation_method}{string, the imputation method for \code{mice} (default: "pmm").}
+\item{imp_method}{string, the imputation method for \code{mice} (default: "pmm").}
 }
 \value{
 The imputed data frame.
@@ -21,7 +21,7 @@ This function imputes missing values in a numeric data frame using the \code{mic
 to a global variable for user access.
 }
 \examples{
-result <- impute_data(df, start_column = 1, imputation_method = "pmm")
+result <- impute_data(df, start_column = 1, imp_method = "pmm")
 View(imputed_df) # Access the saved variable
 
 }

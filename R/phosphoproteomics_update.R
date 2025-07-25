@@ -30,7 +30,7 @@ phosphoproteomics_update <- function(df_pho,
                                      sw_len = 7,
                                      uniprot_idX = NULL,
                                      pep_col_name = NULL,
-                                     impute_method = NULL,
+                                     imp_method = NULL,
                                      zscore = TRUE,
                                      zmethod = "column",
                                      metric = "median",
@@ -48,9 +48,9 @@ phosphoproteomics_update <- function(df_pho,
 
   message("Phosphoproteomics data: missing values imputation")
   if ("sequence_window" %in% colnames(df_pho_clean)) {
-    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = impute_method)
+    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imputation_method = imp_method)
   } else {
-    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 5,imputation_method = impute_method)
+    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 5,imputation_method = imp_method)
   }
   readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
   message("Done!")

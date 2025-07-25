@@ -7,7 +7,7 @@
 proteomics_update(
   df_pro,
   uniprot_idx = NULL,
-  impute_method = NULL,
+  imp_method = NULL,
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -18,6 +18,9 @@ proteomics_update(
 \item{df_pro}{dataframe, containing a column with protein names.}
 
 \item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
+
+\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
+"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
 
 \item{zscore}{boolean, indicates whether to calculate z-scores for the data.
 If TRUE, z-scores are calculated; if FALSE, a data frame will be returned without z-score calculation.}
@@ -30,9 +33,6 @@ It could be "mean" or "median".}
 
 \item{output_dir}{a string indicating the updated output folder.}
 
-\item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
-"regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
-
 \item{sequence}{A boolean (TRUE or FALSE) indicating whether the dataset includes a column named "sequence".
 If TRUE, the function assumes the "sequence" column is present and may process it accordingly.
 If FALSE, the function proceeds without expecting the "sequence" column.}
@@ -44,5 +44,5 @@ tibble, it contains the filtered and processed proteomics data.
 proteomics_update
 }
 \examples{
-prot_updated <- proteomics_update(df,uniprot_idx = NULL, impute_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
+prot_updated <- proteomics_update(df,uniprot_idx = NULL, imp_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
 }
