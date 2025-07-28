@@ -46,8 +46,8 @@ transcriptomics_update <- function(df_tra,
 
   df_tra_agg <<- df_tra_clean %>%
     dplyr::group_by(gene_name) %>%
-    dplyr::summarize(dplyr::across(-gene_name, mean, na.rm = TRUE))
-
+    dplyr::summarize(across(everything(), mean, na.rm = TRUE))
+  
   readr::write_tsv(df_tra_agg, paste0(output_dir,"/","Transcriptomics_clean.tsv"))
 
   if (zscore) {
