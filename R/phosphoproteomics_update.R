@@ -28,7 +28,7 @@
 
 phosphoproteomics_update <- function(df_pho,
                                      sw_len = 7,
-                                     uniprot_idX = NULL,
+                                     uniprot_idx = NULL,
                                      pep_col_name = NULL,
                                      imp_method = NULL,
                                      zscore = TRUE,
