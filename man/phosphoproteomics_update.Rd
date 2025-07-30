@@ -7,7 +7,7 @@
 phosphoproteomics_update(
   df_pho,
   sw_len = 7,
-  uniprot_idX = NULL,
+  uniprot_idx = NULL,
   pep_col_name = NULL,
   imp_method = NULL,
   zscore = TRUE,
@@ -17,6 +17,8 @@ phosphoproteomics_update(
 )
 }
 \arguments{
+\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
+
 \item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
 
@@ -25,8 +27,6 @@ phosphoproteomics_update(
 \item{df}{a data frame containing the phosphoproteomics data.}
 
 \item{seq_len_i}{an integer specifying the length of the sequence window to be considered around the phosphopeptide.}
-
-\item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 
 \item{peptide_col_name}{(Optional) A string representing the name of the peptide column in the data frame.
 If not provided, the function assumes no peptide column exists.}
