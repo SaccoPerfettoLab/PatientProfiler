@@ -17,6 +17,8 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+library(tidyverse)
 ```
 
 PatientProfiler is an R package that allows personalized analysis of an
@@ -522,3 +524,83 @@ extract_signatures(base_path = "./Communities/output_communities/",
 
 The Signatures directory contains a dataframe for each signature with
 the genes list.
+
+
+Furthermore, it's possible to performs Kaplan-Meier survival analysis using the so obtained Signatures.
+To do this you need: a list of gene signatures (e.g., those extracted from Step 5), a transcriptomic expression matrix and optionally a clinical data table with patient survival information (serial_time, status)
+
+
+### [*test_signature_on_dataset*]{style="color: #274472;"}
+
+### [Example of usage:]{style="color: #C38370;"}
+
+```{r test_signature_example, eval = FALSE}
+
+# Define gene_signatures
+gene_signatures <- list(
+  community_1 = c(
+    "ARHGDIB", "STARD3", "RAPGEFL1", "ERBB2", "FAM83E"
+  ),
+  community_2 = c(
+    "CRABP1", "GABRP", "ELF5", "S100A1", "SNORD36A"
+  ),
+  community_3 = c(
+    "TPRG1", "CHAD", "MALRD1", "BMPR1B", "CST9", "ADCY1", "RGS22", "DNAJC12", "LINC00993",
+    "DNALI1", "LONRF2", "MIR6835"
+  )
+)
+
+
+
+url <- "https://perfettolab.bio.uniroma1.it/PerfettoLabData/PatientProfiler/BrcaUseCase/Step5/TCGA/transcriptomics_TCGA_zscored.tsv"
+file_path <- tempfile(fileext = ".tsv")
+response <- httr::GET(url, httr::write_disk(file_path, overwrite = TRUE))
+if (httr::http_status(response)$category == "Success") {
+  t_omic_TCGA <- utils::read.delim(file_path, sep = "\t", header = TRUE, stringsAsFactors = FALSE)
+} else {
+  stop("Error:", httr::http_status(response)$message)
+}
+t_omic_TCGA <- stats::aggregate(t_omic_TCGA[, -1], by = list(Name = t_omic_TCGA$gene_name), mean)
+transc <- t_omic_TCGA %>% dplyr::rename( gene_name = Name)
+colnames(transc)[-1] <- gsub("\\.", "-", colnames(transc)[-1])
+
+
+
+clinical <- read_tsv("clinical_TCGA_example.tsv")
+
+
+
+test_results <- test_signature_on_dataset(
+  gene_signatures = gene_signatures,
+  transcriptomic_data = transc,         
+  clinical_data = clinical,             
+  NES_filter = TRUE,
+  pval_cutoff = 0.01,
+  palette = 'npg'
+)
+
+test_results$plot
+
+```
+![](images/km.png)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
