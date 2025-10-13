@@ -16,6 +16,7 @@
 #' )
 #'
 #' result_df <- add_sequence_window(sample_df, peptide_col = "Peptide", seq_len_i = 7, sequence_col = "Sequence")
+#' @export
 
 add_sequence_window <- function(phospho_df, peptide_col, seq_len_i = 7, sequence_col = "Sequence" ) {
   
