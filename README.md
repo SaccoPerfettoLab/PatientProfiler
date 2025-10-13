@@ -31,6 +31,6 @@ The tutorial for the usage is [here](https://html-preview.github.io/?url=https:/
 
 ## Citation
 
-If you use PatientProfiler in your research please cite the [preprint](https://www.biorxiv.org/content/10.1101/2025.01.31.635886v1).
+If you use PatientProfiler in your research please cite the [publication](https://www.embopress.org/doi/full/10.1038/s44320-025-00160-y).
 
-> PatientProfiler: A network-based approach to personalized medicine Veronica Lombardi, Lorenzo Di Rocco, Eleonora Meo, Veronica Venafra, Elena Di Nisio, Valerio Perticaroli, Mihail Lorentz Nicolaeasa, Chiara Cencioni, Francesco Spallotta, Rodolfo Negri, Francesca Sacco, Livia Perfetto bioRxiv 2025.01.31.635886; doi: <https://doi.org/10.1101/2025.01.31.635886>
+> PatientProfiler: building patient-specific signaling models from proteogenomic data Veronica Lombardi, Lorenzo Di Rocco, Eleonora Meo, Veronica Venafra, Elena Di Nisio, Valerio Perticaroli, Mihail Lorentz Nicolaeasa, Chiara Cencioni, Francesco Spallotta, Rodolfo Negri, Francesca Sacco, Livia Perfetto; doi:  <https://doi.org/10.1038/s44320-025-00160-y>
