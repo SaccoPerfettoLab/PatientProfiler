@@ -19,8 +19,6 @@
 #'
 #' updated_df <- update_position_aa(sample_df, sw_col = 2, sequence_col = 3, peptide_col = 4)
 #' @export
-
-
 update_position_aa <- function(phospho_df, sw_col, sequence_col, peptide_col) {
   phospho_df$position <- NA
   phospho_df$aminoacid <- NA

@@ -14,7 +14,6 @@
 #'
 #' cleaned_df <- clean_multiple_peptide(sample_df, peptide_col = "Peptide")
 #' @export
-
 clean_multiple_peptide <- function(phospho_df, peptide_col) {
 
   for (i in 1:nrow(phospho_df)) {

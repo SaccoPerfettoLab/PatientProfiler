@@ -14,7 +14,6 @@
 #'
 #' modified_df <- add_multiplicity(sample_df, peptide_col = "Peptide")
 #' @export
-
 add_multiplicity <- function(df, peptide_col) {
   count_lower <- stringr::str_count(df[[peptide_col]], "[a-z]")
   count_star <- stringr::str_count(df[[peptide_col]], "\\*")
