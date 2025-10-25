@@ -6,8 +6,11 @@
 \usage{
 proteomics_update(
   df_pro,
+  threshold = 80,
   uniprot_idx = NULL,
   imp_method = NULL,
+  m = 5,
+  collapse = "median",
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -16,6 +19,9 @@ proteomics_update(
 }
 \arguments{
 \item{df_pro}{dataframe, containing a column with protein names.}
+
+\item{threshold}{numeric, it specifies the threshold percentage of NAs in each row of the dataframe. If there are >= threshold percentage of
+NAs in a row, the row will be removed.}
 
 \item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 

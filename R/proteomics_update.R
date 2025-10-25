@@ -2,6 +2,8 @@
 #'
 #'
 #' @param df_pro dataframe, containing a column with protein names.
+#' @param threshold numeric, it specifies the threshold percentage of NAs in each row of the dataframe. If there are >= threshold percentage of
+#'                  NAs in a row, the row will be removed.
 #' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param imp_method string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 #'                   "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").
@@ -24,37 +26,54 @@
 #'prot_updated <- proteomics_update(df,uniprot_idx = NULL, imp_method = "pmm",zscore = TRUE,zmethod = "column",metric = "median")
 
 proteomics_update <- function(df_pro,
+                              threshold = 80,
                               uniprot_idx = NULL,
                               imp_method = NULL,
+                              m = 5,
+                              collapse = "median",
                               zscore = TRUE,
                               zmethod = "column",
                               metric = "median",
                               output_dir) {
   
+  message("Proteomics data: filtering rows with excessive missing values")
+  df_pro <- remove_nas(df_pro, threshold)
+  
   message("Proteomics data: updating UNIPROT")
-  # Seleziona le colonne numeriche da aggregare
+  # Aggregate numeric columns by gene_name (mean of replicates)
   df_pro_agg <- aggregate(df_pro[, 2:ncol(df_pro)],
                           by = list(gene_name = df_pro$gene_name),
                           FUN = mean, na.rm = TRUE)
   
-  # Restituisci il dataframe aggregato
+  # Convert aggregated data to data frame
   df_pro_agg <- as.data.frame(df_pro_agg)
   
-  # Update proteomics data (aggiornamenti ulteriori)
+  # Update proteomics data (add or correct UNIPROT identifiers)
   
   df_pro_update <<- update_proteo(df_pro_agg, 1,uniprot_idx, sequence = FALSE)
   message("Done!")
   
-  # Rimuovi i duplicati
+  # Remove duplicate entries (same gene or protein)
   message("Proteomics data: removing duplicates")
   df_pro_clean <<- remove_duplicates_proteomics(df_pro_update)
-  readr::write_tsv(df_pro_clean, paste0(output_dir,"/","Proteomics_clean.tsv"))
+  #readr::write_tsv(df_pro_clean, paste0(output_dir,"/","Proteomics_clean.tsv"))
   message("Done!")
   
-  # Imputazione dei valori mancanti
+  # Impute missing values (based on chosen imputation method)
   message("Proteomics data: missing values imputation")
-  df_pro_imputed <<- impute_proteomics(df_pro_clean, 3, imp_method)
-  readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
+  
+  df_pro_imputed <<- impute_proteomics(df_pro_clean,
+                                start_column = 3,
+                                imp_method,
+                                m,
+                                maxit = 5,
+                                seed = 103,
+                                collapse = collapse,
+                                preserve_observed = TRUE,
+                                clean_patient_names = TRUE) 
+  
+  df_pro_imputed <- df_pro_imputed$imputed_df
+  #readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
   message("Done!")
   
   if (zscore) {
@@ -70,7 +89,7 @@ proteomics_update <- function(df_pro,
     df_pro_zscore <<- dplyr::mutate_all(as.data.frame(df_pro_zscore), as.numeric)
     
     df_pro_zscore <<- cbind(metadata_columns, df_pro_zscore)
-    readr::write_tsv(df_pro_zscore, paste0(output_dir,"/","Proteomics_zscore.tsv"))
+    readr::write_tsv(df_pro_zscore, paste0(output_dir,"/","Proteomics_updated.tsv"))
     
     return(df_pro_zscore)
     message("Done!")

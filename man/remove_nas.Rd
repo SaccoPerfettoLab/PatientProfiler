@@ -7,25 +7,27 @@
 remove_nas(df, threshold)
 }
 \arguments{
-\item{threshold}{integer, the maximum percentage of missing values allowed per row (e.g., 80 for 80\%). Rows with more missing values are removed.}
+\item{df}{tibble, a dataframe containing omics data.
+The first column is assumed to be non-numeric (e.g., identifiers).}
 
-\item{t_df}{tibble, a dataframe containing transcriptomics data. The first column is assumed to be non-numeric (e.g., identifiers).}
+\item{threshold}{numeric, the maximum percentage of missing values allowed per row (e.g., 80 for 80\%).
+Rows with more missing values are removed.}
 }
 \value{
 tibble, a cleaned dataframe with rows containing excessive missing values removed.
 }
 \description{
-This function removes rows from a data frame where the percentage of missing values (NAs) exceeds a specified threshold.
+This function removes rows from a data frame where the percentage of missing values (NAs)
+exceeds a specified threshold. It also treats NaN, Inf, and -Inf values as missing (NA).
 }
 \examples{
-# Example usage:
 df_transcriptomics <- data.frame(
   ID = c("Gene1", "Gene2", "Gene3"),
   Sample1 = c(1, NA, 3),
-  Sample2 = c(NA, NA, 4),
-  Sample3 = c(2, 1, NA)
+  Sample2 = c(NA, NaN, 4),
+  Sample3 = c(2, Inf, -Inf)
 )
-
 cleaned_data <- remove_nas(df_transcriptomics, threshold = 50)
 print(cleaned_data)
+
 }

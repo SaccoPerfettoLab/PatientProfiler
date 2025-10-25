@@ -6,10 +6,13 @@
 \usage{
 phosphoproteomics_update(
   df_pho,
+  threshold = 80,
   sw_len = 7,
   uniprot_idx = NULL,
   pep_col_name = NULL,
-  imp_method = NULL,
+  imp_method = "pmm",
+  m = 5,
+  collapse = collapse,
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
@@ -17,10 +20,17 @@ phosphoproteomics_update(
 )
 }
 \arguments{
+\item{threshold}{numeric, it specifies the threshold percentage of NAs in each row of the dataframe. If there are >= threshold percentage of
+NAs in a row, the row will be removed.}
+
 \item{uniprot_idx}{optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).}
 
 \item{imp_method}{string, the method to use for imputation (default: "pmm", but you can choose between "pmm", "norm", "norm.nob",
 "regression", "ri", "logreg", "polyreg", "predictive", "polr", "sample", "cart", "knn", "rf").}
+
+\item{m}{number of imputation with mice.}
+
+\item{collapse}{how to pull dataframes derived from the imputation with mice (default: "median").}
 
 \item{output_dir}{a string indicating the updated output folder.}
 

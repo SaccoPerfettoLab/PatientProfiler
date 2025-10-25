@@ -7,6 +7,10 @@
 #'
 #'
 #' @param df a data frame containing the phosphoproteomics data.
+#' @param threshold numeric, it specifies the threshold percentage of NAs in each row of the dataframe. If there are >= threshold percentage of
+#'                  NAs in a row, the row will be removed.
+#'@param m number of imputation with mice.
+#'@param collapse how to pull dataframes derived from the imputation with mice (default: "median").
 #' @param seq_len_i an integer specifying the length of the sequence window to be considered around the phosphopeptide.
 #' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param peptide_col_name (Optional) A string representing the name of the peptide column in the data frame.
@@ -27,15 +31,21 @@
 
 
 phosphoproteomics_update <- function(df_pho,
+                                     threshold = 80,
                                      sw_len = 7,
                                      uniprot_idx = NULL,
                                      pep_col_name = NULL,
-                                     imp_method = NULL,
+                                     imp_method = "pmm",
+                                     m = 5,
+                                     collapse = collapse,
                                      zscore = TRUE,
                                      zmethod = "column",
                                      metric = "median",
                                      output_dir){
 
+  message("Phosphoproteomics data: removing rows with excessive missing values")
+  df_pho <- remove_nas(df_pho, threshold)
+  
   message("Phosphoproteomics data: updating phosphorylation site informations")
   df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7, uniprot_idx, peptide_col_name = pep_col_name)
   message("Done!")
@@ -43,16 +53,35 @@ phosphoproteomics_update <- function(df_pho,
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
 
-  readr::write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv"))
+  #readr::write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv"))
   message("Done!")
-
+  
+  # Identify numeric columns, but exclude "position"
+  num_cols <- which(sapply(df_pho_clean, is.numeric))
+  exclude_cols <- which(colnames(df_pho_clean) %in% c("position"))
+  
+  valid_num_cols <- setdiff(num_cols, exclude_cols)
+  
+  if (length(valid_num_cols) == 0) stop("No valid numeric columns found for imputation.")
+  
+  # Use the first remaining numeric column as start_column
+  start_column <- min(valid_num_cols)
+  
+  
   message("Phosphoproteomics data: missing values imputation")
-  if ("sequence_window" %in% colnames(df_pho_clean)) {
-    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 6,imp_method)
-  } else {
-    df_pho_imputed <<- impute_proteomics(df_pho_clean,start_column = 5,imp_method)
-  }
-  readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
+  df_pho_imputed <<- impute_proteomics(df_pho_clean,
+                                       start_column = start_column,
+                                       imp_method, 
+                                       m,
+                                       maxit = 5,
+                                       seed = 103,
+                                       collapse = collapse,
+                                       preserve_observed = TRUE,
+                                       clean_patient_names = TRUE)
+  #readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
+
+  df_pho_imputed <- df_pho_imputed$imputed_df
+
   message("Done!")
 
   if (zscore) {
@@ -78,7 +107,7 @@ phosphoproteomics_update <- function(df_pho,
 
     df_pho_zscore <<- cbind(metadata_columns, df_pho_zscore)
     return(df_pho_zscore)
-    readr::write_tsv(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_zscore.tsv"))
+    readr::write_tsv(df_pho_zscore, paste0(output_dir,"/","Phosphoproteomics_updated.tsv"))
 
     message("Done!")
   } else {

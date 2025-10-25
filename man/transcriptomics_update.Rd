@@ -17,8 +17,8 @@ transcriptomics_update(
 \arguments{
 \item{df_tra}{tibble, a data frame containing the transcriptomics data.}
 
-\item{threshold}{numeric, it specifies the threshold percentage of zeros in each row the transcriptomic dataframe. If there are >= threshold percentage of
-zeros in a row, the row will be removed.}
+\item{threshold}{numeric, it specifies the threshold percentage of NAs in each row of the transcriptomic dataframe. If there are >= threshold percentage of
+NAs in a row, the row will be removed.}
 
 \item{zscore}{boolean, indicates whether to calculate z-scores for the data.
 If TRUE, z-scores are calculated; if FALSE, a data frame will be returned without z-score calculation.}

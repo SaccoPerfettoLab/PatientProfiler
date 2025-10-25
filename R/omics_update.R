@@ -11,8 +11,10 @@
 #' @param df_tr dataframe containing transcriptomics data.
 #' @param df_pr dataframe containing proteomics data.
 #' @param df_ph dataframe containing phosphoproteomics data.
-#' @param threshold numeric, it specifies the threshold percentage of zeros in each row the transcriptomic dataframe. If there are >= threshold percentage of
-#'                  zeros in a row, the row will be removed (default: 80).
+#' @param threshold numeric, it specifies the threshold percentage of NAs in each row of the dataframe. If there are >= threshold percentage of
+#'                  NAs in a row, the row will be removed.
+#'@param m number of imputation with mice.
+#'@param collapse how to pull dataframes derived from the imputation with mice (default: "median").
 #' @param sw_len integer, the sequence window length. It could be 7 or 15 (default: 7).
 #' @param uniprot_idx optional integer indicating the column index for UNIPROT IDs to be added at the uniprot column retrieved with AnnotationDbi (default is NULL).
 #' @param pep_col_name string, it indicates the name of the peptide sequence column (if it's present) in your phosphoproteomic dataframe (default = "Peptide")
@@ -55,6 +57,8 @@ omics_update <- function(df_tr = NULL,
                          df_pr = NULL,
                          df_ph = NULL,
                          threshold = 80,
+                         m= 5,
+                         collapse = "median",
                          sw_len = 7,
                          uniprot_idx = NULL,
                          pep_col_name = NULL,
@@ -84,7 +88,7 @@ omics_update <- function(df_tr = NULL,
 
   if(!is.null(df_pr)){
     message("Proteomics update started..")
-    proteomics_updated <<- proteomics_update(df_pr,uniprot_idx,imp_method,zscore,zmethod,metric, output_dir)
+    proteomics_updated <<- proteomics_update(df_pr,threshold,uniprot_idx,imp_method,m,collapse,zscore,zmethod,metric, output_dir)
     readr::write_tsv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.tsv"))
 
     message("Proteomics update complete!")
@@ -92,10 +96,13 @@ omics_update <- function(df_tr = NULL,
 
   if(!is.null(df_ph)){
     message("Phosphoproteomics update started..")
-    phosphoproteomics_updated <<- phosphoproteomics_update(df_pho = df_ph,
+    phosphoproteomics_updated <<- phosphoproteomics_update(df_ph,
+                                                           threshold,
+                                                           m, 
+                                                           collapse,
                                                            sw_len = 7,
                                                            uniprot_idx,
-                                                           pep_col_name = pep_col_name,
+                                                           pep_col_name,
                                                            imp_method,
                                                            zscore,
                                                            zmethod,

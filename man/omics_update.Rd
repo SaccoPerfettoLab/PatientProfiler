@@ -9,6 +9,8 @@ omics_update(
   df_pr = NULL,
   df_ph = NULL,
   threshold = 80,
+  m = 5,
+  collapse = "median",
   sw_len = 7,
   uniprot_idx = NULL,
   pep_col_name = NULL,
@@ -26,8 +28,12 @@ omics_update(
 
 \item{df_ph}{dataframe containing phosphoproteomics data.}
 
-\item{threshold}{numeric, it specifies the threshold percentage of zeros in each row the transcriptomic dataframe. If there are >= threshold percentage of
-zeros in a row, the row will be removed (default: 80).}
+\item{threshold}{numeric, it specifies the threshold percentage of NAs in each row of the dataframe. If there are >= threshold percentage of
+NAs in a row, the row will be removed.}
+
+\item{m}{number of imputation with mice.}
+
+\item{collapse}{how to pull dataframes derived from the imputation with mice (default: "median").}
 
 \item{sw_len}{integer, the sequence window length. It could be 7 or 15 (default: 7).}
 

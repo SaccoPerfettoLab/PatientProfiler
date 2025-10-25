@@ -4,24 +4,74 @@
 \alias{impute_proteomics}
 \title{impute_proteomics}
 \usage{
-impute_proteomics(df, start_column = 1, imp_method = NULL)
+impute_proteomics(
+  df,
+  start_column = 1,
+  imp_method = "pmm",
+  m = 5,
+  maxit = 5,
+  seed = 103,
+  collapse = c("median", "mean", "none"),
+  preserve_observed = TRUE,
+  clean_patient_names = TRUE
+)
 }
 \arguments{
-\item{df}{dataframe with missing data.}
+\item{df}{data.frame. Columns before \code{start_column} are identifiers (e.g., \code{gene_name}, \code{UNIPROT}).}
 
-\item{start_column}{integer, the first numeric column to consider for imputation (default: 1).}
+\item{start_column}{integer. Index of the first patient/sample column to impute (default: \code{1}).}
 
-\item{imp_method}{string, the imputation method for \code{mice} (default: "pmm").}
+\item{imp_method}{character or named vector. \code{mice} imputation method for patient columns
+(default: \code{"pmm"}). If a named vector, names must match patient column names (after
+optional sanitization).}
+
+\item{m}{integer. Number of multiple imputations (default: \code{5}).}
+
+\item{maxit}{integer. Number of \code{mice} iterations (default: \code{5}).}
+
+\item{seed}{integer. Random seed (default: \code{103}).}
+
+\item{collapse}{character. How to combine the \eqn{m} completed datasets:
+one of \code{c("median","mean","none")}. If \code{"none"}, returns only \code{mids} and the
+list of completed datasets; no collapsed \code{imputed_df} is produced. Default: \code{"median"}.}
+
+\item{preserve_observed}{logical. If \code{TRUE} (default), only original NAs are replaced
+by the collapsed values; observed entries remain unchanged. If \code{FALSE}, the collapsed
+matrix replaces the entire patient block.}
+
+\item{clean_patient_names}{logical. If \code{TRUE} (default), temporarily sanitize patient column names
+for \code{mice} (alphanumeric + underscores, uniqueness guaranteed) and restore original names
+in the returned data.}
 }
 \value{
-The imputed data frame.
+A list with:
+\itemize{
+\item \code{imputed_df}: the final imputed data.frame (only if \code{collapse != "none"}), with
+identifiers followed by patient columns and \emph{no NAs} in patient columns.
+\item \code{mids}: the \code{mids} object returned by \code{mice}.
+\item \code{completed_list}: a list of length \code{m} containing the \code{m} completed
+patient-only data.frames (\code{complete(mids, "all")}).
+}
 }
 \description{
-This function imputes missing values in a numeric data frame using the \code{mice} package and saves the imputed data
-to a global variable for user access.
+Impute missing values in patient/sample columns using mice.
+Optionally collapse the completed datasets into a single imputed matrix by taking the
+cell-wise median (default) or mean.
 }
 \examples{
-result <- impute_data(df, start_column = 1, imp_method = "pmm")
-View(imputed_df) # Access the saved variable
+# Example: df has columns: gene_name, UNIPROT, then patient columns
+res <- impute_proteomics(
+  df                 = df_raw,
+  start_column       = 3,          # patients start at column 3
+  imp_method         = "pmm",
+  m                  = 5,
+  maxit              = 5,
+  seed               = 103,
+  collapse           = "median",   # cell-wise median across m imputations
+  preserve_observed  = TRUE,
+  clean_patient_names = TRUE
+)
+
+df_final <- res$imputed_df   # ready for downstream (e.g., z-scores, VIPER)
 
 }

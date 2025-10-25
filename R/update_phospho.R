@@ -84,9 +84,11 @@ update_phospho <- function(df, site_col, gn_idx, seq_len_i=7, uniprot_idx = NULL
 
 
   } else {
-
+    
+    site_col_idx <- which(colnames(df2) == "Site")
+    
     # If no peptide column is provided, directly create amino acid position
-    df9 <- create_aa_position(df2, site_col)
+    df9 <- create_aa_position(df2, site_col_idx)
 
     # Reorder and clean the dataframe columns
     df9 <- df9 %>%
