@@ -50,12 +50,15 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
     user_uniprot_df <- omic_df %>%
       dplyr::select(SYMBOL = gene_name, UNIPROT = dplyr::all_of(uniprot_col_name)) %>%
       dplyr::filter(!is.na(UNIPROT), UNIPROT != "", !is.na(SYMBOL), SYMBOL != "") %>%
-      dplyr::distinct()
+      dplyr::distinct() %>%
+      dplyr::mutate(SYMBOL = as.character(SYMBOL),
+                    UNIPROT = as.character(UNIPROT))
     
     uniprot_ids_df <- dplyr::bind_rows(uniprot_ids_df, user_uniprot_df) %>%
+      dplyr::mutate(SYMBOL = as.character(SYMBOL),
+                    UNIPROT = as.character(UNIPROT)) %>%
       dplyr::distinct()
   }
-  
   
   uniprot_ids <- uniprot_ids_df$UNIPROT
 
