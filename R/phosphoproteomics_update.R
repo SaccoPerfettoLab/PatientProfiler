@@ -30,7 +30,7 @@
 
 
 
-phosphoproteomics_update2 <- function(df_pho,
+phosphoproteomics_update <- function(df_pho,
                                      threshold = 80,
                                      sw_len = 7,
                                      uniprot_idx = NULL,
