@@ -28,7 +28,7 @@ update_phospho <- function(df, site_col, gn_idx, seq_len_i=7, uniprot_idx = NULL
   # Step 1: Clear invalid sites
   df1 <- remove_invalid_site(df, site_col)
     # Step 2: Retrieve primary gene names
-  df2 <- retrieve_primary_gene_name2(df1, gn_idx, uniprot_idx)
+  df2 <- retrieve_primary_gene_name(df1, gn_idx, uniprot_idx)
   message("---- UNIPROT obtained! ----")
   
   # Identify the sequence column
