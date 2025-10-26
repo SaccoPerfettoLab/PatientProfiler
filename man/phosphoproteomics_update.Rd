@@ -12,7 +12,7 @@ phosphoproteomics_update(
   pep_col_name = NULL,
   imp_method = "pmm",
   m = 5,
-  collapse = collapse,
+  collapse = "median",
   zscore = TRUE,
   zmethod = "column",
   metric = "median",
