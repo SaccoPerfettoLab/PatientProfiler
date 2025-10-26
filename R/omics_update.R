@@ -97,17 +97,17 @@ omics_update <- function(df_tr = NULL,
   if(!is.null(df_ph)){
     message("Phosphoproteomics update started..")
     phosphoproteomics_updated <<- phosphoproteomics_update(df_ph,
-                                                           threshold,
-                                                           m, 
-                                                           collapse,
-                                                           sw_len = 7,
-                                                           uniprot_idx,
-                                                           pep_col_name,
-                                                           imp_method,
-                                                           zscore,
-                                                           zmethod,
-                                                           metric,
-                                                           output_dir)
+                                                           threshold    = threshold,
+                                                           sw_len       = sw_len,        
+                                                           uniprot_idx  = uniprot_idx,
+                                                           pep_col_name = pep_col_name,  
+                                                           imp_method   = imp_method,
+                                                           m            = m,
+                                                           collapse     = collapse,      
+                                                           zscore       = zscore,
+                                                           zmethod      = zmethod,
+                                                           metric       = metric,
+                                                           output_dir   = output_dir)
 
     readr::write_tsv(phosphoproteomics_updated, paste0(output_dir,"/","Phosphoproteomics_updated.tsv"))
 

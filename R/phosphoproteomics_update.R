@@ -37,7 +37,7 @@ phosphoproteomics_update <- function(df_pho,
                                      pep_col_name = NULL,
                                      imp_method = "pmm",
                                      m = 5,
-                                     collapse = collapse,
+                                     collapse = "median",
                                      zscore = TRUE,
                                      zmethod = "column",
                                      metric = "median",
@@ -50,10 +50,7 @@ phosphoproteomics_update <- function(df_pho,
   df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7, uniprot_idx, peptide_col_name = pep_col_name)
   message("Done!")
 
-  # if ("UNIPROT" %in% names(df_pho_update)) {
-  #   df_pho_update$UNIPROT <- as.character(df_pho_update$UNIPROT)
-  # }
-  # 
+  
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
 
