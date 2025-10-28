@@ -59,6 +59,7 @@ omics_update <- function(df_tr = NULL,
                          threshold = 80,
                          m= 5,
                          collapse = "median",
+                         group = NULL,
                          sw_len = 7,
                          uniprot_idx = NULL,
                          pep_col_name = NULL,
@@ -88,7 +89,7 @@ omics_update <- function(df_tr = NULL,
 
   if(!is.null(df_pr)){
     message("Proteomics update started..")
-    proteomics_updated <<- proteomics_update(df_pr,threshold,uniprot_idx,imp_method,m,collapse,zscore,zmethod,metric, output_dir)
+    proteomics_updated <<- proteomics_update(df_pr,threshold,uniprot_idx,imp_method,m,collapse,group,zscore,zmethod,metric, output_dir)
     readr::write_tsv(proteomics_updated, paste0(output_dir,"/","Proteomics_updated.tsv"))
 
     message("Proteomics update complete!")
@@ -103,7 +104,8 @@ omics_update <- function(df_tr = NULL,
                                                            pep_col_name = pep_col_name,  
                                                            imp_method   = imp_method,
                                                            m            = m,
-                                                           collapse     = collapse,      
+                                                           collapse     = collapse, 
+                                                           group        = group,
                                                            zscore       = zscore,
                                                            zmethod      = zmethod,
                                                            metric       = metric,

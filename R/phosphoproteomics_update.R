@@ -38,6 +38,7 @@ phosphoproteomics_update <- function(df_pho,
                                      imp_method = "pmm",
                                      m = 5,
                                      collapse = "median",
+                                     group = group,
                                      zscore = TRUE,
                                      zmethod = "column",
                                      metric = "median",
@@ -78,7 +79,7 @@ phosphoproteomics_update <- function(df_pho,
                                        seed = 103,
                                        collapse = collapse,
                                        preserve_observed = TRUE,
-                                       clean_patient_names = TRUE)
+                                       clean_patient_names = TRUE, group)
   #readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
 
   df_pho_imputed <- df_pho_imputed$imputed_df

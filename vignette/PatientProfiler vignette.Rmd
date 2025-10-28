@@ -126,16 +126,19 @@ To **harmonize** your raw omics data, you need to:
 1.  Read your input dataframe(s);
 2.  Format the input in the way described in the "Prepare your data"
     section;
-3.  If you provide a transcriptomics dataframe as input, choose the
-    percent *threshold* of zeros to filter rows with \>= threshold% of
-    zeros;
-4.  If you provide a phosphoproteomics dataframe, choose the *lenght of
-    the sequence window*. You can insert **7** or **15;**
-5.  Choose the **imputation** method for proteomics and
+3.  Choose the percent *threshold* of NAs to filter rows with \>= threshold% of
+    missing values;
+4.  Choose the **number of imputations** for proteomics and
     phosphoproteomics;
-6.  If you want to **normalize** with Z-score your data, insert *TRUE*
+5.  Choose **how to pull** dataframes derived from the imputation of proteomics and
+    phosphoproteomics;
+6.  If you provide a phosphoproteomics dataframe, choose the *lenght of
+    the sequence window*. You can insert **7** or **15;**
+7.  Choose the **imputation** method for proteomics and
+    phosphoproteomics;
+8.  If you want to **normalize** with Z-score your data, insert *TRUE*
     for the zscore parameter, if not choose *FALSE;*
-7.  In the case you select *TRUE* for the Z-score calculation, you can
+9.  In the case you select *TRUE* for the Z-score calculation, you can
     also set the *method* (by "column" or by "row") and the *metric*
     ("median" or "mean").
 
@@ -154,6 +157,8 @@ omics_update(
              df_pr = NULL,   
              df_ph = phosphoproteomics_data,  
              threshold = 80,
+             m= 5,
+             collapse = "median",
              sw_len = 7, 
              uniprot_idx = NULL,
              pep_col_name = "Peptide",
@@ -163,6 +168,7 @@ omics_update(
              metric = "median",
              output_dir = 'PatientProfiler_processed_input'
              )
+
 ```
 
 The result of this step is each selected dataframe manipulated according

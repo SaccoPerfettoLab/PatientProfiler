@@ -70,7 +70,7 @@ proteomics_update <- function(df_pro,
                                 seed = 103,
                                 collapse = collapse,
                                 preserve_observed = TRUE,
-                                clean_patient_names = TRUE) 
+                                clean_patient_names = TRUE,group = group) 
   
   df_pro_imputed <- df_pro_imputed$imputed_df
   #readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
