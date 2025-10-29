@@ -74,7 +74,7 @@ proteomics_update <- function(df_pro,
                                 clean_patient_names = TRUE,group = group) 
   
   df_pro_imputed <- df_pro_imputed$imputed_df
-  #readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv"))
+  readr::write_tsv(df_pro_imputed, paste0(output_dir,"/","Proteomics_imputed.tsv")) ####
   message("Done!")
   
   if (zscore) {

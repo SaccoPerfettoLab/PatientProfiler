@@ -55,7 +55,7 @@ phosphoproteomics_update <- function(df_pho,
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
 
-  #readr::write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv"))
+  readr::write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv")) ####
   message("Done!")
   
   # Identify numeric columns, but exclude "position"
@@ -80,7 +80,7 @@ phosphoproteomics_update <- function(df_pho,
                                        collapse = collapse,
                                        preserve_observed = TRUE,
                                        clean_patient_names = TRUE, group)
-  #readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv"))
+  readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv")) ####
 
   df_pho_imputed <- df_pho_imputed$imputed_df
 
