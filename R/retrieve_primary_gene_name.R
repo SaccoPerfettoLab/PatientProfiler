@@ -95,8 +95,8 @@ retrieve_primary_gene_name <- function(omic_df = br_pr, gn_idx=1, uniprot_idx = 
 
   # Relocate UNIPROT, old and new gene symbol
   omic_df_update <- omic_df_update %>%
-    dplyr::relocate(gene_name, gene_name.new, UNIPROT, Sequence) %>%
-    tidyr::separate_rows(gene_name)
+    dplyr::relocate(gene_name, gene_name.new, UNIPROT, Sequence) #%>%
+    #tidyr::separate_rows(gene_name)
 
   # Check proteins having multiple primary new gene symbols
   omic_df_update <- dplyr::left_join(omic_df_update,
