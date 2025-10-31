@@ -45,16 +45,15 @@ omics_preparation <- function(
   if (!is.null(df_tr_updated)) {
     message("Transcriptomic data patients preparation...")
     
-    # sanitize IDs and drop rows with NA IDs (gene_ID or gene_name)
-    if (!all(c("gene_ID","gene_name") %in% names(df_tr_updated))) {
-      stop("df_tr_updated must contain columns: gene_ID, gene_name")
+    # sanitize IDs and drop rows with NA IDs ( gene_name)
+    if (!all(c("gene_name") %in% names(df_tr_updated))) {
+      stop("df_tr_updated must contain columns: gene_name")
     }
     df_tr_updated <- df_tr_updated %>%
-      mutate(
-        gene_ID   = .norm(gene_ID),
+      dplyr::mutate(
         gene_name = .norm(gene_name)
       ) %>%
-      filter(!is.na(gene_ID), !is.na(gene_name))
+      filter(!is.na(gene_name))
     
     if (dir.exists(transc_dir_name)) unlink(transc_dir_name, recursive = TRUE)
     dir.create(transc_dir_name, recursive = TRUE)
