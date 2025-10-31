@@ -54,6 +54,10 @@ proteomics_update <- function(df_pro,
   df_pro_update <<- update_proteo(df_pro_agg, 1,uniprot_idx, sequence = FALSE)
   message("Done!")
   
+  
+  message("Proteomics data: collapse duplicates")
+  df_pro_update <- collapse_by_uniprot_choose_gene(df_pro_update)
+  
   # Remove duplicate entries (same gene or protein)
   message("Proteomics data: removing duplicates")
   df_pro_clean <<- remove_duplicates_proteomics(df_pro_update)

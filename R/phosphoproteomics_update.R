@@ -51,6 +51,8 @@ phosphoproteomics_update <- function(df_pho,
   df_pho_update <<- update_phospho(df = df_pho,site_col = 2,gn_idx = 1,seq_len_i = 7, uniprot_idx, peptide_col_name = pep_col_name)
   message("Done!")
 
+  message("Phosphoproteomics data: removing duplicates")
+  df_pho_update <- collapse_by_uniprot_choose_gene(df_pho_update)
   
   message("Phosphoproteomics data: removing duplicates")
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
@@ -80,10 +82,11 @@ phosphoproteomics_update <- function(df_pho,
                                        collapse = collapse,
                                        preserve_observed = TRUE,
                                        clean_patient_names = TRUE, group)
+  
+
+  df_pho_imputed <- as.data.frame(df_pho_imputed$imputed_df)
   readr::write_tsv(df_pho_imputed, paste0(output_dir,"/","Phosphoproteomics_imputed.tsv")) ####
-
-  df_pho_imputed <- df_pho_imputed$imputed_df
-
+  
   message("Done!")
 
   if (zscore) {
