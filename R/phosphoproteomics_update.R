@@ -52,9 +52,8 @@ phosphoproteomics_update <- function(df_pho,
   message("Done!")
 
   message("Phosphoproteomics data: removing duplicates")
-  df_pho_update <- collapse_by_uniprot_choose_gene(df_pho_update)
-  
-  message("Phosphoproteomics data: removing duplicates")
+
+  df_pho_update <- df_pho_update %>% distinct(UNIPROT, aminoacid, position,.keep_all = TRUE)
   df_pho_clean <<- remove_duplicates_phosphoproteomics(df_pho_update)
 
   readr::write_tsv(df_pho_clean, paste0(output_dir,"/","Phosphoproteomics_clean.tsv")) ####
