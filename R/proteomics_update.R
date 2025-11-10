@@ -64,6 +64,9 @@ proteomics_update <- function(df_pro,
   #readr::write_tsv(df_pro_clean, paste0(output_dir,"/","Proteomics_clean.tsv"))
   message("Done!")
   
+  readr::write_tsv(df_pro_clean, paste0(output_dir,"/","Proteomics_clean.tsv")) ####
+  message("Done!")
+  
   # Impute missing values (based on chosen imputation method)
   message("Proteomics data: missing values imputation")
   
