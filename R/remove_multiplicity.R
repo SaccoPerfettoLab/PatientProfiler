@@ -18,7 +18,7 @@
 #'
 #' cleaned_df <- remove_multiplicity(sample_df, peptide_col = "Peptide", mult_col = 3, gn_idx = 1)
 #' @export
-remove_multiplicity_by_prefix <- function(phospho_df, peptide_col, mult_col, gn_idx) {
+remove_multiplicity <- function(phospho_df, peptide_col, mult_col, gn_idx) {
 
   gene_vec <- toupper(trimws(as.character(phospho_df[[gn_idx]])))
   peptide_vec <- toupper(trimws(as.character(phospho_df[[peptide_col]])))
