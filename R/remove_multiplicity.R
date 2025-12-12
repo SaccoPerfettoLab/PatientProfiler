@@ -18,43 +18,37 @@
 #'
 #' cleaned_df <- remove_multiplicity(sample_df, peptide_col = "Peptide", mult_col = 3, gn_idx = 1)
 #' @export
-remove_multiplicity <- function(phospho_df, peptide_col, mult_col, gn_idx) {
 
+
+remove_multiplicity <- function (phospho_df, peptide_col, mult_col, gn_idx) {
+  
   gene_vec <- toupper(trimws(as.character(phospho_df[[gn_idx]])))
+  
   peptide_vec <- toupper(trimws(as.character(phospho_df[[peptide_col]])))
+  
   multiplicity_vec <- as.numeric(phospho_df[[mult_col]])
   
-  # temporary key
   phospho_df$Gene <- gene_vec
-  phospho_df$Peptide <- peptide_vec
+  phospho_df$Peptide2 <- peptide_vec
   phospho_df$Multiplicity <- multiplicity_vec
   
- 
   filtered_rows <- c()
   
   for (gene in unique(phospho_df$Gene)) {
     subset <- phospho_df[phospho_df$Gene == gene, ]
-    
-    # find variants
     while (nrow(subset) > 0) {
-      p <- subset$Peptide[1]
-      matches <- grep(paste0("^", p), subset$Peptide)
-      
-      # retain variant with minor multiplicity
+      p <- subset$Peptide2[1]
+      matches <- grep(paste0("^", p), subset$Peptide2)
       group <- subset[matches, ]
       min_m <- min(group$Multiplicity, na.rm = TRUE)
-      keep_row <- group[which(group$Multiplicity == min_m)[1], , drop = FALSE]
-      
+      keep_row <- group[which(group$Multiplicity == min_m)[1], 
+                        , drop = FALSE]
       filtered_rows <- rbind(filtered_rows, keep_row)
-      
       subset <- subset[-matches, ]
     }
   }
-  
-  # remove temporary columns
   filtered_rows$Gene <- NULL
-  filtered_rows$Peptide <- NULL
-  filtered_rows$Multiplicity <- NULL
-  
+  filtered_rows$Peptide2 <- NULL
+  #filtered_rows$Multiplicity <- NULL
   return(filtered_rows)
 }
