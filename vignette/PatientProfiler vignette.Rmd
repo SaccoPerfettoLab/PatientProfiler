@@ -107,6 +107,10 @@ The input has to have specific columns, as described here:
 
     -   patients
 
+
+⚠️ Warning: The order of the columns is important and must strictly follow this structure. Incorrect column ordering may lead to errors during data processing.
+
+
 ## [STEP 1a) RAW DATA HARMONIZATION]{style="color: #41729F;"}
 
 ::: {style="display: flex; align-items: center; color: red"}
