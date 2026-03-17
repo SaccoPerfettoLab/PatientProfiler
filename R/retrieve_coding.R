@@ -1,49 +1,64 @@
 #' Filter for coding genes
 #'
-#' This function filters a data frame to retain only rows corresponding to coding genes based on the `org.Hs.eg.db` database.
+#' This function filters a data frame to retain only rows corresponding to
+#' protein-coding genes using the Ensembl BioMart database.
 #'
-#' @param df tibble, a transcriptomics dataframe containing gene names.
-#' @param gn_col string, the name of the column in `df` containing gene symbols to match against coding genes (default: "gene_name").
+#' @param df tibble/data.frame, a transcriptomics dataframe containing a column
+#'   named "gene_name" with gene symbols.
 #'
-#' @return a filtered dataframe containing only rows with coding genes.
+#' @return A filtered dataframe containing only rows with protein-coding genes.
 #'
 #' @examples
-#' # Example usage:
-#' filtered_df <- retrieve_coding(my_df, gn_col = "GeneSymbol")
+#' filtered_df <- retrieve_coding(my_df)
 #' head(filtered_df)
 #'
-
 retrieve_coding <- function(df) {
-  # Check and install BiocManager if not already installed
+  
+  # Check that gene_name column exists
+  if (!"gene_name" %in% colnames(df)) {
+    stop("Column 'gene_name' not found in input dataframe.")
+  }
+  
+  # Check and install BiocManager if needed
   if (!requireNamespace("BiocManager", quietly = TRUE)) {
-    message("Installing BiocManager...")
     install.packages("BiocManager")
   }
-
-  # Check and install AnnotationDbi if not already installed
-  if (!requireNamespace("AnnotationDbi", quietly = TRUE)) {
-    message("Installing AnnotationDbi from Bioconductor...")
-    BiocManager::install("AnnotationDbi")
+  
+  # Check and install biomaRt if needed
+  if (!requireNamespace("biomaRt", quietly = TRUE)) {
+    BiocManager::install("biomaRt")
   }
-
-  # Check and install org.Hs.eg.db if not already installed
-  if (!requireNamespace("org.Hs.eg.db", quietly = TRUE)) {
-    message("Installing org.Hs.eg.db from Bioconductor...")
-    BiocManager::install("org.Hs.eg.db")
+  
+  # Check and install dplyr if needed
+  if (!requireNamespace("dplyr", quietly = TRUE)) {
+    install.packages("dplyr")
   }
-
-  # Retrieve coding genes
-  message("Retrieving coding genes from org.Hs.eg.db...")
-  coding_genes <- AnnotationDbi::select(
-    org.Hs.eg.db,
-    keys = AnnotationDbi::keys(org.Hs.eg.db, keytype = "ENSEMBL"),
-    columns = c("ENSEMBL", "SYMBOL"),
-    keytype = "ENSEMBL"
+  
+  message("Retrieving protein-coding genes from Ensembl BioMart...")
+  
+  # Connect to Ensembl BioMart
+  mart <- biomaRt::useEnsembl(
+    biomart = "ensembl",
+    dataset = "hsapiens_gene_ensembl"
   )
-
-  # Filter the input dataframe
-  df_coding <- dplyr::filter(df, gene_name %in% coding_genes$SYMBOL)
-  message("Coding genes obtained!")
-
+  
+  # Retrieve protein-coding genes
+  map_gn <- biomaRt::getBM(
+    attributes = c("ensembl_gene_id", "hgnc_symbol"),
+    filters = "transcript_biotype",
+    values = "protein_coding",
+    mart = mart
+  )
+  
+  # Keep only valid (non-empty) HGNC symbols
+  coding_genes <- unique(map_gn$hgnc_symbol)
+  coding_genes <- coding_genes[!is.na(coding_genes) & coding_genes != ""]
+  
+  # Filter dataframe
+  df_coding <- df %>%
+    dplyr::filter(gene_name %in% coding_genes)
+  
+  message("Protein-coding genes obtained!")
+  
   return(df_coding)
 }

@@ -23,6 +23,7 @@
 #' @param zscore logical, whether to perform Z-score normalization (default: "TRUE").
 #' @param zmethod string, specifies whether Z-score normalization is performed by "row" or "column" (default: "column").
 #' @param metric string, the centering metric for Z-score normalization. Options are "median" (default) or "mean".
+#' @param retrieve_coding Boolean, if TRUE biomaRt is queried to annotate genes and keep only coding ones; default: FALSE
 #' @param output_dir a string indicating the updated output folder.
 #'
 #' @return This function updates the following global variables:
@@ -46,7 +47,8 @@
 #'   imp_method = "pmm",
 #'   zscore = TRUE,
 #'   zmethod = "column",
-#'   metric = "median"
+#'   metric = "median",
+#'   retrieve_coding = T
 #' )
 #'
 #' @export
@@ -67,6 +69,7 @@ omics_update <- function(df_tr = NULL,
                          zscore = "TRUE",
                          zmethod = "column",
                          metric = "median",
+                         retrieve_coding = FALSE,
                          output_dir = "PatientProfiler_processed_input") {
   t0 <- Sys.time()
   
@@ -81,7 +84,7 @@ omics_update <- function(df_tr = NULL,
   if (!is.null(df_tr)) {
     message("Transcriptomics update started..")
 
-    transcriptomics_updated <<- transcriptomics_update(df_tr,threshold,zscore,zmethod,metric,output_dir)
+    transcriptomics_updated <<- transcriptomics_update(df_tr,threshold,zscore,zmethod,metric,output_dir, retrieve_coding)
 
     readr::write_tsv(transcriptomics_updated, paste0(output_dir,"/","Transcriptomics_updated.tsv"))
     message("Transcriptomics update complete!")
