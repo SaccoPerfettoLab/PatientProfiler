@@ -40,6 +40,11 @@ transcriptomics_update <- function(df_tra,
 
   colnames(df_tra) <- gsub("[.-]", "", colnames(df_tra))
 
+  
+  df_tra <- df_tra %>%
+    dplyr::mutate(across(where(is.numeric), ~ na_if(., 0)))
+  
+  
   df_tra_clean <- remove_nas(df_tra, threshold)
 
   df_tra_clean <- df_tra_clean %>%
