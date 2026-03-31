@@ -30,6 +30,8 @@
 #'     \item \code{completed_list}: list of m completed datasets
 #'   }
 #' @import mice
+#' 
+#' @export
 
 
 
