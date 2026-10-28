@@ -179,7 +179,7 @@ extract_cohort_activity_no_phosphoscore<- function(
     }
     
     tryCatch({
-      extract_protein_activity_no_phosphoscore2(
+      extract_protein_activity_no_phosphoscore(
         prot_file = prot_file,
         trans_file = trans_file,
         phospho_file = phospho_file,
