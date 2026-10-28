@@ -80,87 +80,53 @@ extract_protein_activity_no_phosphoscore <- function(
     kin_params = list(),
     output_dir = "Activities"
 ) {
-  # Create output directory if it does not exist
-  if (!dir.exists(output_dir)) {
-    dir.create(output_dir)
-  }
+  if (!dir.exists(output_dir)) dir.create(output_dir, recursive = TRUE)
   
-  # Initialize omics data objects
-  Prot_P <- NULL
-  Trans_P <- NULL
-  Phospho_P <- NULL
+  Prot_P <- NULL; Trans_P <- NULL; Phospho_P <- NULL
+  if (!is.null(prot_file))    Prot_P    <- readr::read_tsv(prot_file,    show_col_types = FALSE)
+  if (!is.null(trans_file))   Trans_P   <- readr::read_tsv(trans_file,   show_col_types = FALSE)
+  if (!is.null(phospho_file)) Phospho_P <- readr::read_tsv(phospho_file, show_col_types = FALSE)
   
-  # Load input files if provided
-  if (!is.null(prot_file)) {
-    Prot_P <- readr::read_tsv(prot_file, show_col_types = FALSE)
-  }
-  
-  if (!is.null(trans_file)) {
-    Trans_P <- readr::read_tsv(trans_file, show_col_types = FALSE)
-  }
-  
-  if (!is.null(phospho_file)) {
-    Phospho_P <- readr::read_tsv(phospho_file, show_col_types = FALSE)
-  }
-  
-  # Default TFEA parameters
   default_tf_params <- list(
-    omic_data = Trans_P,
-    analysis = "tfea",
-    organism = "human",
-    reg_minsize = 10,
-    exp_sign = FALSE,
-    collectri = FALSE,
-    hypergeom_corr = TRUE,
-    GO_annotation = TRUE,
-    correct_proteomics = FALSE,
-    prot_df = Prot_P,
-    custom = FALSE,
-    custom_path = NULL
+    omic_data = Trans_P, analysis = "tfea", organism = "human", reg_minsize = 10,
+    exp_sign = FALSE, collectri = FALSE, hypergeom_corr = TRUE, GO_annotation = TRUE,
+    correct_proteomics = FALSE, prot_df = Prot_P, custom = FALSE, custom_path = NULL
   )
-  
   tf_params <- modifyList(default_tf_params, tf_params)
   
-  # Default KSEA parameters
   default_kin_params <- list(
-    omic_data = Phospho_P,
-    analysis = "ksea",
-    organism = "human",
-    reg_minsize = 5,
-    exp_sign = FALSE,
-    integrated_regulons = TRUE,
-    hypergeom_corr = TRUE,
-    GO_annotation = TRUE,
-    correct_proteomics = FALSE,
-    prot_df = Prot_P,
-    custom = FALSE,
-    custom_path = NULL
+    omic_data = Phospho_P, analysis = "ksea", organism = "human", reg_minsize = 5,
+    exp_sign = FALSE, integrated_regulons = TRUE, hypergeom_corr = TRUE, GO_annotation = TRUE,
+    correct_proteomics = FALSE, prot_df = Prot_P, custom = FALSE, custom_path = NULL
   )
-  
   kin_params <- modifyList(default_kin_params, kin_params)
   
-  # Run TFEA if transcriptomics data are available
   tf_activity_foot_1 <- if (!is.null(Trans_P)) {
     do.call(SignalingProfiler::run_footprint_based_analysis, tf_params)
-  } else {
-    data.frame()
-  }
+  } else data.frame()
   
-  # Run KSEA if phosphoproteomics data are available
   kin_phos_activity_foot_1 <- if (!is.null(Phospho_P)) {
     do.call(SignalingProfiler::run_footprint_based_analysis, kin_params)
-  } else {
-    data.frame()
-  }
+  } else data.frame()
   
-  # Combine only footprint-based results
   toy_activity_df <- dplyr::bind_rows(tf_activity_foot_1, kin_phos_activity_foot_1)
   
-  # Standardize output format
   if (!is.null(toy_activity_df) && nrow(toy_activity_df) > 0) {
+    
+    # make sure both score columns exist, then use weightedNES where available, NES otherwise
+    for (col in c("weightedNES", "NES")) {
+      if (!col %in% names(toy_activity_df)) toy_activity_df[[col]] <- NA_real_
+    }
+    n_fallback <- sum(is.na(toy_activity_df$weightedNES) & !is.na(toy_activity_df$NES))
+    if (n_fallback > 0) {
+      message(n_fallback, " row(s) had no weightedNES: NES used as final_score.")
+    }
+    
     toy_activity_df <- toy_activity_df %>%
-      dplyr::mutate(method = "VIPER") %>%
-      dplyr::rename(final_score = weightedNES) %>%
+      dplyr::mutate(
+        final_score = dplyr::coalesce(weightedNES, NES),
+        method      = "VIPER"
+      ) %>%
       dplyr::select(UNIPROT, gene_name, mf, final_score, method)
     
     patient_name <- extract_patient_id(basename(prot_file %||% trans_file %||% phospho_file))

@@ -75,7 +75,7 @@
 #' )
 #'
 #' @export
-extract_cohort_activity_no_phosphoscore <- function(
+extract_cohort_activity_no_phosphoscore<- function(
     prot_dir = NULL,
     trans_dir = NULL,
     phospho_dir = NULL,
@@ -179,7 +179,7 @@ extract_cohort_activity_no_phosphoscore <- function(
     }
     
     tryCatch({
-      extract_protein_activity_no_phosphoscore(
+      extract_protein_activity_no_phosphoscore2(
         prot_file = prot_file,
         trans_file = trans_file,
         phospho_file = phospho_file,
